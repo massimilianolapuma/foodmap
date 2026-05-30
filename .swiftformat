@@ -1,0 +1,19 @@
+# SwiftFormat configuration for FoodMap
+--swiftversion 5.10
+
+--exclude .build,DerivedData,FoodMap.xcodeproj
+
+--indent 4
+--maxwidth 140
+--wraparguments before-first
+--wrapparameters before-first
+--wrapcollections before-first
+--commas inline
+--trimwhitespace always
+--semicolons never
+--self remove
+--importgrouping testable-bottom
+--stripunusedargs closure-only
+--decimalgrouping 3,6
+--ranges no-space
+--disable wrapMultilineStatementBraces

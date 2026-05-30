@@ -1,0 +1,34 @@
+# FoodMap — Roadmap & Status
+
+> Source of truth for phases and progress. Update the **Status** column as work lands.
+> Each phase maps to one or more GitHub issues (see [BACKLOG.md](BACKLOG.md)).
+
+Legend: ✅ done · 🚧 in progress · ⬜ not started
+
+## Phases
+
+| Phase | Title | Status | Notes |
+| --- | --- | --- | --- |
+| P0 | Project scaffold & tooling | ✅ | XcodeGen, SwiftLint, SwiftFormat, CI, agents, copilot-instructions. |
+| P1 | Domain + Data + skeleton UI + test suite | ✅ | Entities, value objects, use cases, OFF networking, SwiftData repos, 5 feature screens, 18 unit tests green. |
+| P2 | Barcode scanning end-to-end | ⬜ | AVFoundation capture → OFF lookup → add-to-inventory flow wired in ScannerView. Permissions UX. |
+| P3 | Expiry acquisition (manual + OCR) | ⬜ | Vision OCR pipeline into ExpiryDateParser; manual date entry; confirm/correct UX. |
+| P4 | Inventory management by location | ⬜ | Edit/move/delete, quantity, sort by expiry, per-location filtering, empty states. |
+| P5 | Expiry alerts | ⬜ | UserNotifications scheduling using profile lead days; settings; permission handling. |
+| P6 | AI meal planning | ⬜ | RuleBasedMealPlanner first; FoundationModels on-device adapter behind `MealPlannerAIService`. Prioritize expiring items. |
+| P7 | Shopping list | ⬜ | Generate from meal plan, aggregate, check-off, categories, manual add. |
+| P8 | Polish, accessibility, design system, App Store prep | ⬜ | DesignSystem tokens, a11y, localization (IT/EN), icons, screenshots, privacy manifest. |
+
+## Current focus
+- **P1 complete** — skeleton + tests green on iPhone 17 simulator.
+- **Next:** P2 (barcode scanning end-to-end).
+
+## Verified build/test commands
+```sh
+xcodegen generate
+swiftformat .
+swiftlint --strict
+xcodebuild -scheme FoodMap -destination 'platform=iOS Simulator,name=iPhone 17' test CODE_SIGNING_ALLOWED=NO
+```
+
+> Simulator note: only the **iPhone 17 family** is installed (17, 17 Pro, 17 Pro Max, 17e). Do NOT use iPhone 16.

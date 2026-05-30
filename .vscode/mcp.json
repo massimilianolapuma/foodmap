@@ -1,0 +1,16 @@
+{
+  "inputs": [
+    {
+      "id": "penpot_token",
+      "type": "promptString",
+      "description": "Penpot user token for the FoodMap design file MCP",
+      "password": true
+    }
+  ],
+  "servers": {
+    "penpot": {
+      "type": "http",
+      "url": "https://design.penpot.app/mcp/stream?userToken=${input:penpot_token}"
+    }
+  }
+}

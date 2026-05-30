@@ -1,0 +1,5 @@
+# Test-target overrides: force-unwrapping and string→data conversions are
+# idiomatic and safe in unit-test fixtures.
+disabled_rules:
+  - force_unwrapping
+  - non_optional_string_data_conversion
