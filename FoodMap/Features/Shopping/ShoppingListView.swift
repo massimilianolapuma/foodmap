@@ -138,7 +138,7 @@ private struct ShoppingItemRow: View {
 
 /// Sheet that collects a manual shopping-list item and validates it via the model.
 private struct AddShoppingItemView: View {
-    @ObservedObject var model: ShoppingListViewModel
+    @Bindable var model: ShoppingListViewModel
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
