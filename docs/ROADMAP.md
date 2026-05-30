@@ -12,7 +12,7 @@ Legend: ✅ done · 🚧 in progress · ⬜ not started
 | P0 | Project scaffold & tooling | ✅ | XcodeGen, SwiftLint, SwiftFormat, CI, agents, copilot-instructions. |
 | P1 | Domain + Data + skeleton UI + test suite | ✅ | Entities, value objects, use cases, OFF networking, SwiftData repos, 5 feature screens, 18 unit tests green. |
 | P2 | Barcode scanning end-to-end | ✅ | Live AVFoundation preview, scan→OFF lookup→confirmation sheet→add-to-inventory, permission UX. Issues #1–#4. |
-| P3 | Expiry acquisition (manual + OCR) | ⬜ | Vision OCR pipeline into ExpiryDateParser; manual date entry; confirm/correct UX. |
+| P3 | Expiry acquisition (manual + OCR) | ✅ | ImagePicker → Vision OCR → candidate dates + manual DatePicker correction. Issues #5–#7. |
 | P4 | Inventory management by location | ⬜ | Edit/move/delete, quantity, sort by expiry, per-location filtering, empty states. |
 | P5 | Expiry alerts | ⬜ | UserNotifications scheduling using profile lead days; settings; permission handling. |
 | P6 | AI meal planning | ⬜ | RuleBasedMealPlanner first; FoundationModels on-device adapter behind `MealPlannerAIService`. Prioritize expiring items. |
@@ -20,8 +20,8 @@ Legend: ✅ done · 🚧 in progress · ⬜ not started
 | P8 | Polish, accessibility, design system, App Store prep | ⬜ | DesignSystem tokens, a11y, localization (IT/EN), icons, screenshots, privacy manifest. |
 
 ## Current focus
-- **P1 complete** — skeleton + tests green on iPhone 17 simulator.
-- **Next:** P2 (barcode scanning end-to-end).
+- **P2 & P3 complete** — barcode scanning + expiry OCR/manual, 28 tests green on iPhone 17 simulator.
+- **Next:** P4 (inventory management by location).
 
 ## Verified build/test commands
 ```sh

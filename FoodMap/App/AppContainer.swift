@@ -27,6 +27,7 @@ public final class AppContainer: ObservableObject {
     public let expiryCalculator: CalculateExpiryStatusUseCase
     public let getExpiringProducts: GetExpiringProductsUseCase
     public let addScannedProduct: AddScannedProductToInventoryUseCase
+    public let updateProduct: UpdateProductUseCase
     public let generateShoppingList: GenerateShoppingListFromMealPlanUseCase
 
     public init(inMemory: Bool = false) {
@@ -64,6 +65,7 @@ public final class AppContainer: ObservableObject {
         expiryCalculator = calculator
         getExpiringProducts = GetExpiringProductsUseCase(inventory: productRepo, expiryCalculator: calculator)
         addScannedProduct = AddScannedProductToInventoryUseCase(repository: productRepo)
+        updateProduct = UpdateProductUseCase(repository: productRepo)
         generateShoppingList = GenerateShoppingListFromMealPlanUseCase()
     }
 }
