@@ -55,6 +55,38 @@ struct FakeExpiryOCR: ExpiryOCRService {
     }
 }
 
+/// Records scheduling/cancellation calls for verifying alert sync behavior.
+final class FakeNotificationScheduler: NotificationScheduler, @unchecked Sendable {
+    var authorizationGranted = true
+    var authorizationError: FoodMapError?
+    private(set) var requestAuthorizationCount = 0
+    private(set) var scheduled: [(id: UUID, leadDays: Int)] = []
+    private(set) var cancelled: [UUID] = []
+    private(set) var cancelAllCount = 0
+
+    var scheduledIDs: [UUID] {
+        scheduled.map(\.id)
+    }
+
+    func requestAuthorization() async throws -> Bool {
+        requestAuthorizationCount += 1
+        if let authorizationError { throw authorizationError }
+        return authorizationGranted
+    }
+
+    func scheduleExpiryAlert(for product: Product, leadDays: Int) async throws {
+        scheduled.append((product.id, leadDays))
+    }
+
+    func cancelAlert(for productID: UUID) async {
+        cancelled.append(productID)
+    }
+
+    func cancelAll() async {
+        cancelAllCount += 1
+    }
+}
+
 /// Minimal in-memory `ProductRepository` for exercising use cases in tests.
 final class InMemoryProductRepository: ProductRepository, @unchecked Sendable {
     private var products: [UUID: Product] = [:]

@@ -12,6 +12,7 @@ public final class UserProfile {
     public var dailyCalorieTarget: Int?
     public var dailyProteinTargetGrams: Int?
     public var expiryAlertLeadDays: Int
+    public var alertsEnabled: Bool
     public var householdSize: Int
 
     public init(
@@ -23,6 +24,7 @@ public final class UserProfile {
         dailyCalorieTarget: Int? = nil,
         dailyProteinTargetGrams: Int? = nil,
         expiryAlertLeadDays: Int = 3,
+        alertsEnabled: Bool = true,
         householdSize: Int = 1
     ) {
         self.id = id
@@ -33,6 +35,7 @@ public final class UserProfile {
         self.dailyCalorieTarget = dailyCalorieTarget
         self.dailyProteinTargetGrams = dailyProteinTargetGrams
         self.expiryAlertLeadDays = expiryAlertLeadDays
+        self.alertsEnabled = alertsEnabled
         self.householdSize = householdSize
     }
 }

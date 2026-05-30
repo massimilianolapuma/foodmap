@@ -29,6 +29,7 @@ public final class AppContainer: ObservableObject {
     public let addScannedProduct: AddScannedProductToInventoryUseCase
     public let updateProduct: UpdateProductUseCase
     public let generateShoppingList: GenerateShoppingListFromMealPlanUseCase
+    public let syncExpiryAlerts: SyncExpiryAlertsUseCase
 
     public init(inMemory: Bool = false) {
         // Persistence
@@ -67,5 +68,6 @@ public final class AppContainer: ObservableObject {
         addScannedProduct = AddScannedProductToInventoryUseCase(repository: productRepo)
         updateProduct = UpdateProductUseCase(repository: productRepo)
         generateShoppingList = GenerateShoppingListFromMealPlanUseCase()
+        syncExpiryAlerts = SyncExpiryAlertsUseCase(scheduler: notificationScheduler, products: productRepo)
     }
 }
