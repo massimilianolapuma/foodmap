@@ -11,7 +11,7 @@ Legend: ✅ done · 🚧 in progress · ⬜ not started
 | --- | --- | --- | --- |
 | P0 | Project scaffold & tooling | ✅ | XcodeGen, SwiftLint, SwiftFormat, CI, agents, copilot-instructions. |
 | P1 | Domain + Data + skeleton UI + test suite | ✅ | Entities, value objects, use cases, OFF networking, SwiftData repos, 5 feature screens, 18 unit tests green. |
-| P2 | Barcode scanning end-to-end | ⬜ | AVFoundation capture → OFF lookup → add-to-inventory flow wired in ScannerView. Permissions UX. |
+| P2 | Barcode scanning end-to-end | ✅ | Live AVFoundation preview, scan→OFF lookup→confirmation sheet→add-to-inventory, permission UX. Issues #1–#4. |
 | P3 | Expiry acquisition (manual + OCR) | ⬜ | Vision OCR pipeline into ExpiryDateParser; manual date entry; confirm/correct UX. |
 | P4 | Inventory management by location | ⬜ | Edit/move/delete, quantity, sort by expiry, per-location filtering, empty states. |
 | P5 | Expiry alerts | ⬜ | UserNotifications scheduling using profile lead days; settings; permission handling. |

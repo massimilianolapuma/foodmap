@@ -22,7 +22,8 @@ struct ScannerView: View {
                 model = ScannerViewModel(
                     lookup: container.productLookup,
                     addProduct: container.addScannedProduct,
-                    scanner: container.barcodeScanner
+                    scanner: container.barcodeScanner,
+                    expiryOCR: container.expiryOCR
                 )
             }
         }
@@ -160,11 +161,9 @@ private struct ConfirmationSheet: View {
                     Picker("Unit", selection: $model.unit) {
                         ForEach(MeasurementUnit.allCases, id: \.self) { Text($0.abbreviation).tag($0) }
                     }
-                    Toggle("Has expiry date", isOn: $model.hasExpiry)
-                    if model.hasExpiry {
-                        DatePicker("Expires", selection: $model.expiryDate, displayedComponents: .date)
-                    }
                 }
+
+                expirySection
             }
             .navigationTitle("Add product")
             .navigationBarTitleDisplayMode(.inline)
@@ -176,6 +175,87 @@ private struct ConfirmationSheet: View {
                     Button("Add") { Task { await model.confirmAdd() } }
                 }
             }
+            .sheet(isPresented: $model.isCapturingExpiry) {
+                ImagePicker(sourceType: .camera) { data in
+                    Task { await model.recognizeExpiry(from: data) }
+                }
+                .ignoresSafeArea()
+            }
+            .alert("Camera access needed", isPresented: $model.permissionDenied) {
+                Button("Open Settings") { openSettings() }
+                Button("Cancel", role: .cancel) {}
+            } message: {
+                Text("Enable camera access in Settings to scan expiry dates.")
+            }
         }
+    }
+
+    private var expirySection: some View {
+        Section("Expiry") {
+            Button {
+                requestExpiryCapture()
+            } label: {
+                Label("Scan expiry date", systemImage: "text.viewfinder")
+            }
+
+            if model.isRecognizingExpiry {
+                HStack {
+                    ProgressView()
+                    Text("Reading date\u{2026}")
+                        .foregroundStyle(.secondary)
+                }
+            }
+
+            if !model.expiryCandidates.isEmpty {
+                ForEach(model.expiryCandidates, id: \.self) { date in
+                    Button {
+                        model.selectExpiryCandidate(date)
+                    } label: {
+                        Label(
+                            date.formatted(date: .abbreviated, time: .omitted),
+                            systemImage: isSelected(date) ? "checkmark.circle.fill" : "calendar"
+                        )
+                    }
+                }
+            }
+
+            if model.noExpiryDetected {
+                Text("No date detected \u{2014} enter manually")
+                    .foregroundStyle(.secondary)
+            }
+
+            Toggle("Has expiry date", isOn: $model.hasExpiry)
+            if model.hasExpiry {
+                DatePicker("Expires", selection: $model.expiryDate, displayedComponents: .date)
+            }
+        }
+    }
+
+    private func isSelected(_ date: Date) -> Bool {
+        model.hasExpiry && model.expiryDate == date
+    }
+
+    private func requestExpiryCapture() {
+        switch AVCaptureDevice.authorizationStatus(for: .video) {
+        case .authorized:
+            model.isCapturingExpiry = true
+        case .notDetermined:
+            AVCaptureDevice.requestAccess(for: .video) { granted in
+                Task { @MainActor in
+                    if granted {
+                        model.isCapturingExpiry = true
+                    } else {
+                        model.permissionDenied = true
+                    }
+                }
+            }
+        default:
+            model.permissionDenied = true
+        }
+    }
+
+    private func openSettings() {
+        guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+        UIApplication.shared.open(url)
     }
 }

@@ -24,18 +24,30 @@ final class ScannerViewModel: ObservableObject {
     /// The looked-up product awaiting user confirmation before being added.
     @Published var pendingProduct: ProductLookupResult?
 
+    /// Drives the expiry-date still-capture sheet.
+    @Published var isCapturingExpiry = false
+    /// Candidate expiry dates recognized from a captured image, most-likely first.
+    @Published private(set) var expiryCandidates: [Date] = []
+    /// Whether OCR ran but found no usable date, prompting manual entry.
+    @Published private(set) var noExpiryDetected = false
+    /// Whether an OCR recognition pass is in flight.
+    @Published private(set) var isRecognizingExpiry = false
+
     private let lookup: ProductLookupService
     private let addProduct: AddScannedProductToInventoryUseCase
     private let scanner: BarcodeScannerService
+    private let expiryOCR: ExpiryOCRService
 
     init(
         lookup: ProductLookupService,
         addProduct: AddScannedProductToInventoryUseCase,
-        scanner: BarcodeScannerService
+        scanner: BarcodeScannerService,
+        expiryOCR: ExpiryOCRService
     ) {
         self.lookup = lookup
         self.addProduct = addProduct
         self.scanner = scanner
+        self.expiryOCR = expiryOCR
     }
 
     /// Starts the camera, shows the scanning sheet, and processes the first barcode found.
@@ -98,6 +110,29 @@ final class ScannerViewModel: ObservableObject {
     func cancelConfirmation() {
         pendingProduct = nil
         state = .idle
+        resetExpiryCapture()
+    }
+
+    /// Runs on-device OCR over a captured still image and exposes candidate dates.
+    func recognizeExpiry(from imageData: Data) async {
+        isRecognizingExpiry = true
+        noExpiryDetected = false
+        defer { isRecognizingExpiry = false }
+        do {
+            let candidates = try await expiryOCR.recognizeExpiryDates(in: imageData)
+            expiryCandidates = candidates
+            noExpiryDetected = candidates.isEmpty
+        } catch {
+            expiryCandidates = []
+            noExpiryDetected = true
+        }
+    }
+
+    /// Selects a recognized candidate as the expiry date; the user can still adjust it manually.
+    func selectExpiryCandidate(_ date: Date) {
+        expiryDate = date
+        hasExpiry = true
+        noExpiryDetected = false
     }
 
     private func finishScan(with code: String) async {
@@ -129,5 +164,12 @@ final class ScannerViewModel: ObservableObject {
         quantity = 1
         hasExpiry = false
         expiryDate = Date()
+        resetExpiryCapture()
+    }
+
+    private func resetExpiryCapture() {
+        expiryCandidates = []
+        noExpiryDetected = false
+        isCapturingExpiry = false
     }
 }

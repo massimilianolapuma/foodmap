@@ -6,12 +6,14 @@ final class ScannerViewModelTests: XCTestCase {
     private func makeModel(
         lookup: FakeProductLookup,
         scanner: FakeBarcodeScanner,
-        repository: InMemoryProductRepository = InMemoryProductRepository()
+        repository: InMemoryProductRepository = InMemoryProductRepository(),
+        expiryOCR: FakeExpiryOCR = FakeExpiryOCR()
     ) -> ScannerViewModel {
         ScannerViewModel(
             lookup: lookup,
             addProduct: AddScannedProductToInventoryUseCase(repository: repository),
-            scanner: scanner
+            scanner: scanner,
+            expiryOCR: expiryOCR
         )
     }
 
@@ -100,5 +102,66 @@ final class ScannerViewModelTests: XCTestCase {
 
         XCTAssertFalse(model.isScanning)
         XCTAssertEqual(scanner.stopCount, 1)
+    }
+
+    func testRecognizeExpiryPopulatesCandidatesWithoutAutoSelecting() async {
+        let candidates = [
+            Date(timeIntervalSince1970: 1_700_000_000),
+            Date(timeIntervalSince1970: 1_800_000_000)
+        ]
+        let model = makeModel(
+            lookup: FakeProductLookup(product: sampleProduct()),
+            scanner: FakeBarcodeScanner(),
+            expiryOCR: FakeExpiryOCR(dates: candidates)
+        )
+
+        await model.recognizeExpiry(from: Data())
+
+        XCTAssertEqual(model.expiryCandidates, candidates)
+        XCTAssertFalse(model.noExpiryDetected)
+        XCTAssertFalse(model.hasExpiry)
+    }
+
+    func testSelectExpiryCandidateSetsExpiryDate() async {
+        let candidate = Date(timeIntervalSince1970: 1_700_000_000)
+        let model = makeModel(
+            lookup: FakeProductLookup(product: sampleProduct()),
+            scanner: FakeBarcodeScanner(),
+            expiryOCR: FakeExpiryOCR(dates: [candidate])
+        )
+
+        await model.recognizeExpiry(from: Data())
+        model.selectExpiryCandidate(candidate)
+
+        XCTAssertTrue(model.hasExpiry)
+        XCTAssertEqual(model.expiryDate, candidate)
+        XCTAssertFalse(model.noExpiryDetected)
+    }
+
+    func testRecognizeExpiryWithNoMatchesFlagsManualEntry() async {
+        let model = makeModel(
+            lookup: FakeProductLookup(product: sampleProduct()),
+            scanner: FakeBarcodeScanner(),
+            expiryOCR: FakeExpiryOCR(dates: [])
+        )
+
+        await model.recognizeExpiry(from: Data())
+
+        XCTAssertTrue(model.expiryCandidates.isEmpty)
+        XCTAssertTrue(model.noExpiryDetected)
+        XCTAssertFalse(model.hasExpiry)
+    }
+
+    func testRecognizeExpiryFailureFlagsManualEntry() async {
+        let model = makeModel(
+            lookup: FakeProductLookup(product: sampleProduct()),
+            scanner: FakeBarcodeScanner(),
+            expiryOCR: FakeExpiryOCR(error: .ocrFailed)
+        )
+
+        await model.recognizeExpiry(from: Data())
+
+        XCTAssertTrue(model.expiryCandidates.isEmpty)
+        XCTAssertTrue(model.noExpiryDetected)
     }
 }

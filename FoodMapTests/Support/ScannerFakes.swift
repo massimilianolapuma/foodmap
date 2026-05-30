@@ -44,6 +44,17 @@ struct FakeProductLookup: ProductLookupService {
     }
 }
 
+/// Returns a fixed list of candidate dates or throws a fixed error for any image.
+struct FakeExpiryOCR: ExpiryOCRService {
+    var dates: [Date] = []
+    var error: FoodMapError?
+
+    func recognizeExpiryDates(in imageData: Data) async throws -> [Date] {
+        if let error { throw error }
+        return dates
+    }
+}
+
 /// Minimal in-memory `ProductRepository` for exercising use cases in tests.
 final class InMemoryProductRepository: ProductRepository, @unchecked Sendable {
     private var products: [UUID: Product] = [:]
