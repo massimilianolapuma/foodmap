@@ -4,6 +4,7 @@ import SwiftUI
 /// Scan or manually enter a barcode, look it up, confirm details, and add it to the pantry.
 struct ScannerView: View {
     @EnvironmentObject private var container: AppContainer
+    @Environment(\.dismiss) private var dismiss
     @State private var model: ScannerViewModel?
 
     var body: some View {
@@ -16,6 +17,12 @@ struct ScannerView: View {
                 }
             }
             .navigationTitle("Scan")
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") { dismiss() }
+                        .accessibilityIdentifier("scanner.doneButton")
+                }
+            }
         }
         .task {
             if model == nil {

@@ -10,8 +10,8 @@ final class NavigationUITests: FoodMapUITestCase {
             app.tabBars.firstMatch.waitForExistence(timeout: defaultTimeout),
             "Tab bar should be visible at launch"
         )
-        // iPhone shows at most five tab-bar buttons; with six tabs the last two
-        // collapse into a system "More" tab, so expect at least five buttons.
+        // The app exposes five primary tabs, so every one stays visible on
+        // iPhone without overflowing into a system "More" tab.
         let hasTabs = NSPredicate(format: "count >= 5")
         let expectation = XCTNSPredicateExpectation(predicate: hasTabs, object: app.tabBars.buttons)
         XCTAssertEqual(
@@ -26,8 +26,12 @@ final class NavigationUITests: FoodMapUITestCase {
         selectTab("tab.inventory", label: "Pantry", in: app)
         XCTAssertTrue(app.navigationBars["Pantry"].waitForExistence(timeout: defaultTimeout))
 
-        selectTab("tab.scanner", label: "Scan", in: app)
+        // Scanning is reached from within the Pantry tab.
+        let scanButton = app.buttons["inventory.scanButton"]
+        XCTAssertTrue(scanButton.waitForExistence(timeout: defaultTimeout))
+        scanButton.tap()
         XCTAssertTrue(app.navigationBars["Scan"].waitForExistence(timeout: defaultTimeout))
+        app.buttons["scanner.doneButton"].tap()
 
         selectTab("tab.meals", label: "Meals", in: app)
         XCTAssertTrue(app.navigationBars["Meals"].waitForExistence(timeout: defaultTimeout))
