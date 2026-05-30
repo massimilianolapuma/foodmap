@@ -1,20 +1,22 @@
 import Foundation
+import Observation
 
 /// Drives the shopping list screen: loads items from the repository, groups them
 /// by grocery category, and routes every mutation (add, toggle, delete, clear)
 /// through the `ShoppingListRepository` so the screen stays testable.
 @MainActor
-final class ShoppingListViewModel: ObservableObject {
-    @Published private(set) var items: [ShoppingListItem] = []
-    @Published var errorMessage: String?
+@Observable
+final class ShoppingListViewModel {
+    private(set) var items: [ShoppingListItem] = []
+    var errorMessage: String?
 
     // Manual-add form state.
-    @Published var newName = ""
-    @Published var newQuantity: Double = 1
-    @Published var newUnit: MeasurementUnit = .piece
-    @Published var newCategory: GroceryCategory = .other
+    var newName = ""
+    var newQuantity: Double = 1
+    var newUnit: MeasurementUnit = .piece
+    var newCategory: GroceryCategory = .other
 
-    private let repository: ShoppingListRepository
+    @ObservationIgnored private let repository: ShoppingListRepository
 
     init(repository: ShoppingListRepository) {
         self.repository = repository
