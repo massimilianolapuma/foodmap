@@ -50,11 +50,12 @@ private struct ExpiringRow: View {
             Circle()
                 .fill(status.color)
                 .frame(width: 12, height: 12)
+                .accessibilityHidden(true)
             VStack(alignment: .leading) {
-                Text(product.name).font(.headline)
+                Text(product.name).font(DesignSystem.Typography.headline)
                 Text(product.storageLocation.displayName)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .font(DesignSystem.Typography.caption)
+                    .foregroundStyle(DesignSystem.Colors.secondaryText)
             }
             Spacer()
             if let days {
@@ -64,5 +65,15 @@ private struct ExpiringRow: View {
             }
         }
         .padding(.vertical, DesignSystem.Spacing.xs)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(accessibilityLabel)
+    }
+
+    private var accessibilityLabel: String {
+        var parts = [product.name, product.storageLocation.displayName, status.accessibilityDescription]
+        if let days {
+            parts.append(days < 0 ? "Expired" : "\(days) days remaining")
+        }
+        return parts.joined(separator: ", ")
     }
 }

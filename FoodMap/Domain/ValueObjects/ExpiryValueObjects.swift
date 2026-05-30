@@ -18,6 +18,19 @@ public enum ExpiryStatus: String, Codable, CaseIterable, Sendable {
         }
     }
 
+    /// VoiceOver-friendly description of the expiry status, used as a text
+    /// accessibility label for color-only indicators (color alone is not
+    /// sufficient for colorblind users). Pure presentation-agnostic string.
+    public var accessibilityDescription: String {
+        switch self {
+        case .expired: "Expiry: expired"
+        case .critical: "Expiry: critical, use today"
+        case .soon: "Expiry: use soon"
+        case .upcoming: "Expiry: this week"
+        case .fresh: "Expiry: fresh"
+        }
+    }
+
     /// Lower is more urgent — used for sorting prioritized lists.
     public var sortRank: Int {
         switch self {

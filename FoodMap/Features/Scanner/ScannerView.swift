@@ -49,10 +49,12 @@ private struct ScannerForm: View {
                 Button("Scan with camera") {
                     Task { await model.beginScan() }
                 }
+                .accessibilityHint("Opens the camera to scan a product barcode")
                 Button("Look up") {
                     Task { await model.lookupManual() }
                 }
                 .disabled(model.barcode.trimmingCharacters(in: .whitespaces).isEmpty)
+                .accessibilityHint("Looks up the entered barcode in the product database")
             }
 
             Section {
@@ -120,7 +122,7 @@ private struct ScanningView: View {
             VStack {
                 Spacer()
                 Text("Point the camera at a barcode")
-                    .font(.callout)
+                    .font(DesignSystem.Typography.callout)
                     .padding(.horizontal, 16)
                     .padding(.vertical, 8)
                     .background(.ultraThinMaterial, in: Capsule())
@@ -130,6 +132,7 @@ private struct ScanningView: View {
                     .padding(.bottom, 40)
             }
         }
+        .accessibilityElement(children: .contain)
     }
 }
 
@@ -143,14 +146,15 @@ private struct ConfirmationSheet: View {
             Form {
                 Section("Product") {
                     Text(product.name)
-                        .font(.headline)
+                        .font(DesignSystem.Typography.headline)
                     if let brand = product.brand, !brand.isEmpty {
                         Text(brand)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(DesignSystem.Colors.secondaryText)
                     }
                     Text(product.barcode)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .font(DesignSystem.Typography.caption)
+                        .foregroundStyle(DesignSystem.Colors.secondaryText)
+                        .accessibilityLabel("Barcode \(product.barcode)")
                 }
 
                 Section("Details") {

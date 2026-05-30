@@ -105,21 +105,26 @@ private struct ShoppingItemRow: View {
         Button(action: onToggle) {
             HStack(spacing: DesignSystem.Spacing.md) {
                 Image(systemName: item.isChecked ? "checkmark.circle.fill" : "circle")
-                    .foregroundStyle(item.isChecked ? DesignSystem.Colors.accent : .secondary)
+                    .foregroundStyle(item.isChecked ? DesignSystem.Colors.accent : DesignSystem.Colors.secondaryText)
+                    .accessibilityHidden(true)
                 VStack(alignment: .leading) {
                     Text(item.name)
-                        .font(.headline)
+                        .font(DesignSystem.Typography.headline)
                         .strikethrough(item.isChecked)
-                        .foregroundStyle(item.isChecked ? .secondary : .primary)
+                        .foregroundStyle(item.isChecked ? DesignSystem.Colors.secondaryText : DesignSystem.Colors.primaryText)
                 }
                 Spacer()
                 Text("\(item.quantity.formatted()) \(item.unit.abbreviation)")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                    .font(DesignSystem.Typography.subheadline)
+                    .foregroundStyle(DesignSystem.Colors.secondaryText)
             }
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(item.name), \(item.quantity.formatted()) \(item.unit.abbreviation)")
+        .accessibilityValue(item.isChecked ? "Purchased" : "Not purchased")
+        .accessibilityHint("Double tap to toggle purchased")
     }
 }
 
@@ -153,8 +158,8 @@ private struct AddShoppingItemView: View {
                 }
                 if let errorMessage = model.errorMessage {
                     Text(errorMessage)
-                        .font(.caption)
-                        .foregroundStyle(.red)
+                        .font(DesignSystem.Typography.caption)
+                        .foregroundStyle(DesignSystem.Colors.critical)
                 }
             }
             .navigationTitle("Add item")

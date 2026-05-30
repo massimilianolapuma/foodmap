@@ -16,12 +16,12 @@ Legend: ✅ done · 🚧 in progress · ⬜ not started
 | P4 | Inventory management by location | ✅ | Per-location filter, sort by expiry, edit/move/delete/adjust quantity, empty states. Issues #8–#10. |
 | P5 | Expiry alerts | ✅ | SyncExpiryAlertsUseCase, UserProfile.alertsEnabled, permission + settings toggle, re-sync. Issues #11–#12. |
 | P6 | AI meal planning | ✅ | RuleBased prioritizes expiring items; FoundationModels on-device adapter (iOS 26+) with fallback. Issues #13–#14. |
-| P7 | Shopping list | ⬜ | Generate from meal plan, aggregate, check-off, categories, manual add. |
+| P7 | Shopping list | ✅ | Generate from meal plan (aggregated), check-off, category sections, manual add, Shopping tab. Issues #15–#16. |
 | P8 | Polish, accessibility, design system, App Store prep | ⬜ | DesignSystem tokens, a11y, localization (IT/EN), icons, screenshots, privacy manifest. |
 
 ## Current focus
-- **P2–P6 complete** — scanning, expiry OCR, inventory, alerts, AI meal planning, 52 tests green on iPhone 17 simulator.
-- **Next:** P7 (shopping list).
+- **P2–P7 complete** — scanning, expiry OCR, inventory, alerts, AI meal planning, shopping list, 62 tests green on iPhone 17 simulator.
+- **Next:** P8 (polish, accessibility, design system, App Store prep).
 
 ## Verified build/test commands
 ```sh

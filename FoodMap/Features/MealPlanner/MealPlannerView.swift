@@ -45,19 +45,22 @@ struct MealPlannerView: View {
                 List {
                     ForEach(plan.meals.sorted { $0.dayIndex < $1.dayIndex }) { meal in
                         VStack(alignment: .leading, spacing: DesignSystem.Spacing.xs) {
-                            Text(meal.name).font(.headline)
+                            Text(meal.name).font(DesignSystem.Typography.headline)
                             Text("Day \(meal.dayIndex + 1) · \(meal.mealType.displayName)")
-                                .font(.caption).foregroundStyle(.secondary)
+                                .font(DesignSystem.Typography.caption)
+                                .foregroundStyle(DesignSystem.Colors.secondaryText)
                             if !meal.recipeSummary.isEmpty {
-                                Text(meal.recipeSummary).font(.subheadline)
+                                Text(meal.recipeSummary).font(DesignSystem.Typography.subheadline)
                             }
                         }
+                        .accessibilityElement(children: .combine)
                     }
                 }
                 Button("Add missing items to shopping list") {
                     Task { await model.createShoppingList() }
                 }
                 .padding()
+                .accessibilityHint("Adds ingredients not in your pantry to the shopping list")
             } else {
                 ContentUnavailableView(
                     "No plan yet",
@@ -77,6 +80,8 @@ struct MealPlannerView: View {
             }
             .buttonStyle(.borderedProminent)
             .padding()
+            .accessibilityLabel(model.isGenerating ? "Generating plan" : "Generate plan")
+            .accessibilityHint("Creates a meal plan that prioritizes products expiring soon")
         }
     }
 }

@@ -114,18 +114,34 @@ private struct InventoryRow: View {
 
     var body: some View {
         HStack(spacing: DesignSystem.Spacing.md) {
-            Circle().fill(status.color).frame(width: 10, height: 10)
+            Circle()
+                .fill(status.color)
+                .frame(width: 10, height: 10)
+                .accessibilityHidden(true)
             VStack(alignment: .leading) {
-                Text(product.name).font(.headline)
+                Text(product.name).font(DesignSystem.Typography.headline)
                 if let brand = product.brand {
-                    Text(brand).font(.caption).foregroundStyle(.secondary)
+                    Text(brand)
+                        .font(DesignSystem.Typography.caption)
+                        .foregroundStyle(DesignSystem.Colors.secondaryText)
                 }
             }
             Spacer()
             Text("\(product.quantity.formatted()) \(product.unit.abbreviation)")
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
+                .font(DesignSystem.Typography.subheadline)
+                .foregroundStyle(DesignSystem.Colors.secondaryText)
         }
         .contentShape(Rectangle())
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(accessibilityLabel)
+        .accessibilityHint("Double tap to edit")
+    }
+
+    private var accessibilityLabel: String {
+        var parts = [product.name]
+        if let brand = product.brand { parts.append(brand) }
+        parts.append("\(product.quantity.formatted()) \(product.unit.abbreviation)")
+        parts.append(status.accessibilityDescription)
+        return parts.joined(separator: ", ")
     }
 }

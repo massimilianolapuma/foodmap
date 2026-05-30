@@ -9,6 +9,20 @@ public enum DesignSystem {
         public static let upcoming = Color.yellow
         public static let fresh = Color.green
         public static let secondaryBackground = Color(.secondarySystemBackground)
+        public static let primaryText = Color.primary
+        public static let secondaryText = Color.secondary
+    }
+
+    /// Semantic typography tokens mapped to Dynamic Type text styles so text
+    /// scales with the user's preferred content size. Avoid fixed point sizes.
+    public enum Typography {
+        public static let titleL = Font.largeTitle
+        public static let title = Font.title2
+        public static let headline = Font.headline
+        public static let subheadline = Font.subheadline
+        public static let body = Font.body
+        public static let callout = Font.callout
+        public static let caption = Font.caption
     }
 
     public enum Spacing {
