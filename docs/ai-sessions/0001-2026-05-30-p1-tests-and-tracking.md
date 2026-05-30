@@ -28,5 +28,5 @@ durable tracking & memory infrastructure so context doesn't need re-explaining.
   existing `.github/copilot-instructions.md`.
 
 ## Next
-- File the GitHub issues from `docs/BACKLOG.md`.
-- Begin **P2**: wire AVFoundation barcode capture → OFF lookup → add-to-inventory.
+- Filed GitHub issues **#1–#20** (P2–P8) with `phase/area/type` labels.
+- Begin **P2**: wire AVFoundation barcode capture → OFF lookup → add-to-inventory (issues #1–#4).
