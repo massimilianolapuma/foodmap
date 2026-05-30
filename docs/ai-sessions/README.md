@@ -13,3 +13,4 @@ is never lost between conversations. **Newest file reflects the latest state.**
 | Session | Date | Summary |
 | --- | --- | --- |
 | [0001](0001-2026-05-30-p1-tests-and-tracking.md) | 2026-05-30 | P1 tests green (18/18); set up tracking infra (AGENTS.md, docs, repo memory). |
+| [0002](0002-2026-05-30-p2-p8-feature-build.md) | 2026-05-30 | P2–P8 full feature build (#1–#20); 64 tests green; localization, privacy, App Store assets. |

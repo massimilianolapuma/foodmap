@@ -17,11 +17,11 @@ Legend: ✅ done · 🚧 in progress · ⬜ not started
 | P5 | Expiry alerts | ✅ | SyncExpiryAlertsUseCase, UserProfile.alertsEnabled, permission + settings toggle, re-sync. Issues #11–#12. |
 | P6 | AI meal planning | ✅ | RuleBased prioritizes expiring items; FoundationModels on-device adapter (iOS 26+) with fallback. Issues #13–#14. |
 | P7 | Shopping list | ✅ | Generate from meal plan (aggregated), check-off, category sections, manual add, Shopping tab. Issues #15–#16. |
-| P8 | Polish, accessibility, design system, App Store prep | ⬜ | DesignSystem tokens, a11y, localization (IT/EN), icons, screenshots, privacy manifest. |
+| P8 | Polish, accessibility, design system, App Store prep | ✅ | Typography tokens, VoiceOver/Dynamic Type, IT/EN localization, privacy manifest, App Store copy. Issues #17–#20. |
 
 ## Current focus
-- **P2–P7 complete** — scanning, expiry OCR, inventory, alerts, AI meal planning, shopping list, 62 tests green on iPhone 17 simulator.
-- **Next:** P8 (polish, accessibility, design system, App Store prep).
+- **All phases P0–P8 complete** — full feature set, 64 tests green on iPhone 17 simulator.
+- **Next:** on-device verification (camera/OCR/notifications/FoundationModels) on a real device; App Store assets finalization (screenshots, icon); developer account + signing when ready.
 
 ## Verified build/test commands
 ```sh
