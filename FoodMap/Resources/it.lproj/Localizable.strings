@@ -1,0 +1,105 @@
+/* FoodMap — Italian localized strings. */
+
+/* MARK: Tab bar / RootView */
+"Today" = "Oggi";
+"Pantry" = "Dispensa";
+"Scan" = "Scansiona";
+"Meals" = "Pasti";
+"Shopping" = "Spesa";
+"Profile" = "Profilo";
+
+/* MARK: Dashboard */
+"Nothing expiring soon" = "Niente in scadenza";
+"Scan products to start tracking expiry dates." = "Scansiona i prodotti per iniziare a tracciare le scadenze.";
+"Expired" = "Scaduto";
+
+/* MARK: Inventory */
+"Your pantry is empty" = "La tua dispensa è vuota";
+"Scan or add products to track them here." = "Scansiona o aggiungi prodotti per tracciarli qui.";
+"Filter" = "Filtro";
+"All" = "Tutti";
+"Nothing in %@" = "Niente in %@";
+"Move or add products to your %@." = "Sposta o aggiungi prodotti in %@.";
+"Double tap to edit" = "Tocca due volte per modificare";
+
+/* MARK: Product editor */
+"Edit Product" = "Modifica prodotto";
+"Details" = "Dettagli";
+"Name" = "Nome";
+"Brand" = "Marca";
+"Category" = "Categoria";
+"Storage" = "Conservazione";
+"Location" = "Posizione";
+"Quantity" = "Quantità";
+"Unit" = "Unità";
+"Expiry" = "Scadenza";
+"Has expiry date" = "Ha una data di scadenza";
+"Expires" = "Scade il";
+"Delete Product" = "Elimina prodotto";
+"Delete this product?" = "Eliminare questo prodotto?";
+"Delete" = "Elimina";
+"Couldn't save" = "Impossibile salvare";
+
+/* MARK: Common actions */
+"Cancel" = "Annulla";
+"Save" = "Salva";
+"Add" = "Aggiungi";
+"OK" = "OK";
+"Open Settings" = "Apri Impostazioni";
+
+/* MARK: Scanner */
+"Barcode" = "Codice a barre";
+"Enter barcode" = "Inserisci codice a barre";
+"Scan with camera" = "Scansiona con la fotocamera";
+"Look up" = "Cerca";
+"Opens the camera to scan a product barcode" = "Apre la fotocamera per scansionare il codice a barre di un prodotto";
+"Looks up the entered barcode in the product database" = "Cerca il codice a barre inserito nel database dei prodotti";
+"Camera access needed" = "Accesso alla fotocamera necessario";
+"Enable camera access in Settings to scan product barcodes." = "Abilita l'accesso alla fotocamera nelle Impostazioni per scansionare i codici a barre.";
+"Enable camera access in Settings to scan expiry dates." = "Abilita l'accesso alla fotocamera nelle Impostazioni per scansionare le date di scadenza.";
+"Added %@" = "Aggiunto %@";
+"Point the camera at a barcode" = "Inquadra un codice a barre con la fotocamera";
+"Product" = "Prodotto";
+"Quantity: %@" = "Quantità: %@";
+"Add product" = "Aggiungi prodotto";
+"Scan expiry date" = "Scansiona la data di scadenza";
+"Reading date…" = "Lettura della data…";
+"No date detected — enter manually" = "Nessuna data rilevata — inserisci manualmente";
+"Barcode %@" = "Codice a barre %@";
+
+/* MARK: Meal planner */
+"Horizon" = "Periodo";
+"1 day" = "1 giorno";
+"3 days" = "3 giorni";
+"Week" = "Settimana";
+"Day %lld · %@" = "Giorno %lld · %@";
+"Add missing items to shopping list" = "Aggiungi gli ingredienti mancanti alla lista della spesa";
+"Adds ingredients not in your pantry to the shopping list" = "Aggiunge alla lista della spesa gli ingredienti che non hai in dispensa";
+"No plan yet" = "Nessun piano";
+"Generate a plan that uses your expiring products first." = "Genera un piano che usa prima i prodotti in scadenza.";
+"Generate plan" = "Genera piano";
+"Generating plan" = "Generazione piano";
+"Creates a meal plan that prioritizes products expiring soon" = "Crea un piano dei pasti che dà priorità ai prodotti in scadenza";
+
+/* MARK: Shopping list */
+"Add item" = "Aggiungi articolo";
+"Clear purchased" = "Rimuovi acquistati";
+"Clear all" = "Rimuovi tutto";
+"More" = "Altro";
+"Nothing to buy" = "Niente da comprare";
+"Generate a list from a meal plan, or add items manually." = "Genera una lista da un piano dei pasti o aggiungi articoli manualmente.";
+"Item" = "Articolo";
+"Purchased" = "Acquistato";
+"Not purchased" = "Non acquistato";
+"Double tap to toggle purchased" = "Tocca due volte per segnare come acquistato";
+
+/* MARK: Profile */
+"Diet" = "Dieta";
+"Diet type" = "Tipo di dieta";
+"Allergens" = "Allergeni";
+"Alerts" = "Avvisi";
+"Expiry alerts" = "Avvisi di scadenza";
+"Notify %lld day(s) before" = "Avvisa %lld giorno/i prima";
+"Household size: %lld" = "Componenti del nucleo: %lld";
+"Notifications are off" = "Le notifiche sono disattivate";
+"Enable notifications in Settings to receive expiry alerts." = "Abilita le notifiche nelle Impostazioni per ricevere gli avvisi di scadenza.";

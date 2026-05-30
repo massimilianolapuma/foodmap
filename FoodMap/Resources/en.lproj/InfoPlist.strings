@@ -1,0 +1,2 @@
+"NSCameraUsageDescription" = "FoodMap uses the camera to scan product barcodes and expiry dates.";
+"NSPhotoLibraryUsageDescription" = "FoodMap can read a photo of an expiry date so it can recognize the date for you.";

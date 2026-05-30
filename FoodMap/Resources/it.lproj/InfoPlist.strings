@@ -1,0 +1,2 @@
+"NSCameraUsageDescription" = "FoodMap usa la fotocamera per scansionare i codici a barre dei prodotti e le date di scadenza.";
+"NSPhotoLibraryUsageDescription" = "FoodMap può leggere una foto di una data di scadenza per riconoscere la data al posto tuo.";

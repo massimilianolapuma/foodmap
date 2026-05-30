@@ -1,0 +1,105 @@
+/* FoodMap — English (development language) localized strings. */
+
+/* MARK: Tab bar / RootView */
+"Today" = "Today";
+"Pantry" = "Pantry";
+"Scan" = "Scan";
+"Meals" = "Meals";
+"Shopping" = "Shopping";
+"Profile" = "Profile";
+
+/* MARK: Dashboard */
+"Nothing expiring soon" = "Nothing expiring soon";
+"Scan products to start tracking expiry dates." = "Scan products to start tracking expiry dates.";
+"Expired" = "Expired";
+
+/* MARK: Inventory */
+"Your pantry is empty" = "Your pantry is empty";
+"Scan or add products to track them here." = "Scan or add products to track them here.";
+"Filter" = "Filter";
+"All" = "All";
+"Nothing in %@" = "Nothing in %@";
+"Move or add products to your %@." = "Move or add products to your %@.";
+"Double tap to edit" = "Double tap to edit";
+
+/* MARK: Product editor */
+"Edit Product" = "Edit Product";
+"Details" = "Details";
+"Name" = "Name";
+"Brand" = "Brand";
+"Category" = "Category";
+"Storage" = "Storage";
+"Location" = "Location";
+"Quantity" = "Quantity";
+"Unit" = "Unit";
+"Expiry" = "Expiry";
+"Has expiry date" = "Has expiry date";
+"Expires" = "Expires";
+"Delete Product" = "Delete Product";
+"Delete this product?" = "Delete this product?";
+"Delete" = "Delete";
+"Couldn't save" = "Couldn't save";
+
+/* MARK: Common actions */
+"Cancel" = "Cancel";
+"Save" = "Save";
+"Add" = "Add";
+"OK" = "OK";
+"Open Settings" = "Open Settings";
+
+/* MARK: Scanner */
+"Barcode" = "Barcode";
+"Enter barcode" = "Enter barcode";
+"Scan with camera" = "Scan with camera";
+"Look up" = "Look up";
+"Opens the camera to scan a product barcode" = "Opens the camera to scan a product barcode";
+"Looks up the entered barcode in the product database" = "Looks up the entered barcode in the product database";
+"Camera access needed" = "Camera access needed";
+"Enable camera access in Settings to scan product barcodes." = "Enable camera access in Settings to scan product barcodes.";
+"Enable camera access in Settings to scan expiry dates." = "Enable camera access in Settings to scan expiry dates.";
+"Added %@" = "Added %@";
+"Point the camera at a barcode" = "Point the camera at a barcode";
+"Product" = "Product";
+"Quantity: %@" = "Quantity: %@";
+"Add product" = "Add product";
+"Scan expiry date" = "Scan expiry date";
+"Reading date…" = "Reading date…";
+"No date detected — enter manually" = "No date detected — enter manually";
+"Barcode %@" = "Barcode %@";
+
+/* MARK: Meal planner */
+"Horizon" = "Horizon";
+"1 day" = "1 day";
+"3 days" = "3 days";
+"Week" = "Week";
+"Day %lld · %@" = "Day %lld · %@";
+"Add missing items to shopping list" = "Add missing items to shopping list";
+"Adds ingredients not in your pantry to the shopping list" = "Adds ingredients not in your pantry to the shopping list";
+"No plan yet" = "No plan yet";
+"Generate a plan that uses your expiring products first." = "Generate a plan that uses your expiring products first.";
+"Generate plan" = "Generate plan";
+"Generating plan" = "Generating plan";
+"Creates a meal plan that prioritizes products expiring soon" = "Creates a meal plan that prioritizes products expiring soon";
+
+/* MARK: Shopping list */
+"Add item" = "Add item";
+"Clear purchased" = "Clear purchased";
+"Clear all" = "Clear all";
+"More" = "More";
+"Nothing to buy" = "Nothing to buy";
+"Generate a list from a meal plan, or add items manually." = "Generate a list from a meal plan, or add items manually.";
+"Item" = "Item";
+"Purchased" = "Purchased";
+"Not purchased" = "Not purchased";
+"Double tap to toggle purchased" = "Double tap to toggle purchased";
+
+/* MARK: Profile */
+"Diet" = "Diet";
+"Diet type" = "Diet type";
+"Allergens" = "Allergens";
+"Alerts" = "Alerts";
+"Expiry alerts" = "Expiry alerts";
+"Notify %lld day(s) before" = "Notify %lld day(s) before";
+"Household size: %lld" = "Household size: %lld";
+"Notifications are off" = "Notifications are off";
+"Enable notifications in Settings to receive expiry alerts." = "Enable notifications in Settings to receive expiry alerts.";

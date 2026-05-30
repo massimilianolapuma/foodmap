@@ -5,6 +5,7 @@ options:
     iOS: "17.0"
   createIntermediateGroups: true
   groupSortPosition: top
+  developmentLanguage: en
 settings:
   base:
     SWIFT_VERSION: "5.10"
@@ -27,6 +28,7 @@ targets:
         INFOPLIST_KEY_CFBundleDisplayName: FoodMap
         INFOPLIST_KEY_UILaunchScreen_Generation: YES
         INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+        INFOPLIST_KEY_NSPhotoLibraryUsageDescription: "FoodMap can read a photo of an expiry date so it can recognize the date for you."
         INFOPLIST_KEY_NSCameraUsageDescription: "FoodMap uses the camera to scan product barcodes and expiry dates."
         INFOPLIST_KEY_UISupportedInterfaceOrientations: "UIInterfaceOrientationPortrait"
         INFOPLIST_KEY_UIUserInterfaceStyle: Automatic
