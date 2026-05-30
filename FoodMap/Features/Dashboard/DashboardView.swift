@@ -25,6 +25,7 @@ struct DashboardView: View {
                         systemImage: "checkmark.seal",
                         description: Text("Scan products to start tracking expiry dates.")
                     )
+                    .accessibilityIdentifier("dashboard.emptyState")
                 } else {
                     List(expiring) { product in
                         ExpiringRow(
@@ -33,6 +34,7 @@ struct DashboardView: View {
                             days: expiryCalculator.daysRemaining(for: product)
                         )
                     }
+                    .accessibilityIdentifier("dashboard.list")
                 }
             }
             .navigationTitle("Today")

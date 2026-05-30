@@ -42,13 +42,26 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.foodmap.app.tests
+  FoodMapUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: FoodMapUITests
+    dependencies:
+      - target: FoodMap
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.foodmap.app.uitests
+        TEST_TARGET_NAME: FoodMap
 schemes:
   FoodMap:
     build:
       targets:
         FoodMap: all
         FoodMapTests: [test]
+        FoodMapUITests: [test]
     test:
       targets:
         - FoodMapTests
+        - FoodMapUITests
       gatherCoverageData: true

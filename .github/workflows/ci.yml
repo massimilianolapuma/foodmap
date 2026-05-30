@@ -2,9 +2,12 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, "feat/**", "fix/**", "chore/**"]
   pull_request:
     branches: [main]
+
+permissions:
+  contents: read
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -13,16 +16,23 @@ concurrency:
 jobs:
   build-test:
     name: Lint, Build & Test
-    runs-on: macos-15
+    runs-on: macos-26
+    timeout-minutes: 45
     env:
       SCHEME: FoodMap
-      DESTINATION: "platform=iOS Simulator,name=iPhone 17"
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
-      - name: Select Xcode
-        run: sudo xcode-select -s /Applications/Xcode_26.app || true
+      - name: Select latest stable Xcode
+        uses: maxim-lobanov/setup-xcode@60606e260d2fc5762a71e64e74b2174e8ea3c8bd # v1.6.0
+        with:
+          xcode-version: latest-stable
+
+      - name: Show toolchain
+        run: |
+          xcodebuild -version
+          swift --version
 
       - name: Install tooling
         run: brew install xcodegen swiftlint swiftformat
@@ -36,19 +46,19 @@ jobs:
       - name: SwiftLint (strict)
         run: swiftlint --strict
 
-      - name: Build
+      - name: Build & test (unit)
         run: |
-          xcodebuild build \
-            -scheme "$SCHEME" \
-            -destination "$DESTINATION" \
-            CODE_SIGNING_ALLOWED=NO \
-            | xcpretty || xcodebuild build -scheme "$SCHEME" -destination "$DESTINATION" CODE_SIGNING_ALLOWED=NO
-
-      - name: Test
-        run: |
+          set -o pipefail
+          DEVICE="iPhone 17"
+          if ! xcrun simctl list devices available | grep -q "$DEVICE ("; then
+            echo "iPhone 17 not available on this runner; selecting another iPhone simulator."
+            DEVICE=$(xcrun simctl list devices available \
+              | grep -oE 'iPhone [0-9][0-9A-Za-z ]*' | sed 's/ *$//' | head -1)
+          fi
+          echo "Using simulator: $DEVICE"
           xcodebuild test \
             -scheme "$SCHEME" \
-            -destination "$DESTINATION" \
-            CODE_SIGNING_ALLOWED=NO \
+            -destination "platform=iOS Simulator,name=$DEVICE" \
+            -skip-testing:FoodMapUITests \
             -enableCodeCoverage YES \
-            | xcpretty || xcodebuild test -scheme "$SCHEME" -destination "$DESTINATION" CODE_SIGNING_ALLOWED=NO
+            CODE_SIGNING_ALLOWED=NO

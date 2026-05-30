@@ -21,6 +21,7 @@ struct InventoryView: View {
                         systemImage: "shippingbox",
                         description: Text("Scan or add products to track them here.")
                     )
+                    .accessibilityIdentifier("inventory.emptyState")
                 } else {
                     VStack(spacing: 0) {
                         filterPicker
@@ -45,6 +46,7 @@ struct InventoryView: View {
         .pickerStyle(.segmented)
         .padding(.horizontal)
         .padding(.top, DesignSystem.Spacing.sm)
+        .accessibilityIdentifier("inventory.filter")
     }
 
     @ViewBuilder
@@ -55,6 +57,7 @@ struct InventoryView: View {
                 systemImage: "tray",
                 description: Text("Move or add products to your \(filter.displayName.lowercased()).")
             )
+            .accessibilityIdentifier("inventory.filteredEmptyState")
         } else {
             List {
                 ForEach(visibleLocations, id: \.self) { location in
@@ -76,6 +79,7 @@ struct InventoryView: View {
                     }
                 }
             }
+            .accessibilityIdentifier("inventory.list")
         }
     }
 

@@ -44,6 +44,7 @@ struct ShoppingListView: View {
             } label: {
                 Label("Add item", systemImage: "plus")
             }
+            .accessibilityIdentifier("shopping.addButton")
         }
         if let model, !model.isEmpty {
             ToolbarItem(placement: .topBarLeading) {
@@ -52,12 +53,15 @@ struct ShoppingListView: View {
                         Task { await model.clearPurchased() }
                     }
                     .disabled(!model.hasCheckedItems)
+                    .accessibilityIdentifier("shopping.clearPurchased")
                     Button("Clear all", role: .destructive) {
                         Task { await model.clearAll() }
                     }
+                    .accessibilityIdentifier("shopping.clearAll")
                 } label: {
                     Label("More", systemImage: "ellipsis.circle")
                 }
+                .accessibilityIdentifier("shopping.menuButton")
             }
         }
     }
@@ -72,7 +76,9 @@ struct ShoppingListView: View {
             } actions: {
                 Button("Add item") { isAddingItem = true }
                     .buttonStyle(.borderedProminent)
+                    .accessibilityIdentifier("shopping.emptyAddButton")
             }
+            .accessibilityIdentifier("shopping.emptyState")
         } else {
             List {
                 ForEach(model.sections, id: \.category) { section in
@@ -93,6 +99,7 @@ struct ShoppingListView: View {
                     }
                 }
             }
+            .accessibilityIdentifier("shopping.list")
         }
     }
 }
@@ -125,6 +132,7 @@ private struct ShoppingItemRow: View {
         .accessibilityLabel("\(item.name), \(item.quantity.formatted()) \(item.unit.abbreviation)")
         .accessibilityValue(item.isChecked ? "Purchased" : "Not purchased")
         .accessibilityHint("Double tap to toggle purchased")
+        .accessibilityIdentifier("shopping.item")
     }
 }
 
@@ -138,6 +146,7 @@ private struct AddShoppingItemView: View {
             Form {
                 Section("Item") {
                     TextField("Name", text: $model.newName)
+                        .accessibilityIdentifier("shopping.add.nameField")
                     Stepper(
                         value: $model.newQuantity,
                         in: 0.5...999,
@@ -174,6 +183,7 @@ private struct AddShoppingItemView: View {
                             if await model.addManualItem() { dismiss() }
                         }
                     }
+                    .accessibilityIdentifier("shopping.add.confirm")
                 }
             }
         }

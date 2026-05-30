@@ -53,7 +53,14 @@ public final class AppContainer: ObservableObject {
         // Services
         productLookup = OpenFoodFactsService()
         // On-device AI when available (iOS 26+); deterministic rule-based fallback otherwise.
-        mealPlanner = FoundationModelsMealPlanner(fallback: RuleBasedMealPlanner())
+        // Under UI testing, use the deterministic rule-based planner directly so the app
+        // never spins up the on-device model subsystem (which keeps the app from reaching
+        // an idle state the automation can drive).
+        if Self.isUITesting {
+            mealPlanner = RuleBasedMealPlanner()
+        } else {
+            mealPlanner = FoundationModelsMealPlanner(fallback: RuleBasedMealPlanner())
+        }
         notificationScheduler = LocalNotificationScheduler()
         let parser = ExpiryDateParser()
         expiryDateParser = parser
@@ -70,5 +77,46 @@ public final class AppContainer: ObservableObject {
         updateProduct = UpdateProductUseCase(repository: productRepo)
         generateShoppingList = GenerateShoppingListFromMealPlanUseCase()
         syncExpiryAlerts = SyncExpiryAlertsUseCase(scheduler: notificationScheduler, products: productRepo)
+    }
+}
+
+public extension AppContainer {
+    /// True when the app is launched by the XCUITest suite with the `-uiTesting` argument.
+    /// Used to start from a deterministic, in-memory state so UI tests are repeatable.
+    static var isUITesting: Bool {
+        ProcessInfo.processInfo.arguments.contains("-uiTesting")
+    }
+
+    /// Seeds a small, deterministic dataset for UI testing. No-op unless launched
+    /// with `-uiTesting`. Inserts a couple of pantry products so the inventory and
+    /// dashboard screens render real content (and their filters) during E2E runs.
+    @MainActor
+    func seedUITestDataIfNeeded() {
+        guard Self.isUITesting else { return }
+        let context = modelContainer.mainContext
+        let descriptor = FetchDescriptor<Product>()
+        if let existing = try? context.fetch(descriptor), !existing.isEmpty { return }
+
+        let calendar = Calendar.current
+        let soon = calendar.date(byAdding: .day, value: 2, to: .now)
+        let later = calendar.date(byAdding: .day, value: 5, to: .now)
+
+        context.insert(Product(
+            name: "Milk",
+            brand: "Seed Dairy",
+            storageLocation: .fridge,
+            quantity: 1,
+            unit: .liter,
+            expiryDate: soon
+        ))
+        context.insert(Product(
+            name: "Pasta",
+            brand: "Seed Foods",
+            storageLocation: .pantry,
+            quantity: 2,
+            unit: .piece,
+            expiryDate: later
+        ))
+        try? context.save()
     }
 }
