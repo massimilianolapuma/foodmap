@@ -16,6 +16,9 @@ struct RootView: View {
             MealPlannerView()
                 .tabItem { Label("Meals", systemImage: "fork.knife") }
 
+            ShoppingListView()
+                .tabItem { Label("Shopping", systemImage: "cart") }
+
             ProfileView()
                 .tabItem { Label("Profile", systemImage: "person.crop.circle") }
         }

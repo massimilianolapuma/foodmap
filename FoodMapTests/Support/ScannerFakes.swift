@@ -119,3 +119,39 @@ final class InMemoryProductRepository: ProductRepository, @unchecked Sendable {
         products.values.filter { $0.storageLocation == location }
     }
 }
+
+/// In-memory `ShoppingListRepository` that records mutations for verification.
+final class InMemoryShoppingListRepository: ShoppingListRepository, @unchecked Sendable {
+    private(set) var items: [ShoppingListItem] = []
+    private(set) var addCount = 0
+    private(set) var updateCount = 0
+    private(set) var deletedIDs: [UUID] = []
+    private(set) var clearCheckedCount = 0
+
+    init(items: [ShoppingListItem] = []) {
+        self.items = items
+    }
+
+    func add(_ newItems: [ShoppingListItem]) async throws {
+        addCount += 1
+        items.append(contentsOf: newItems)
+    }
+
+    func fetchAll() async throws -> [ShoppingListItem] {
+        items.sorted { $0.addedAt > $1.addedAt }
+    }
+
+    func update(_: ShoppingListItem) async throws {
+        updateCount += 1
+    }
+
+    func delete(id: UUID) async throws {
+        deletedIDs.append(id)
+        items.removeAll { $0.id == id }
+    }
+
+    func clearChecked() async throws {
+        clearCheckedCount += 1
+        items.removeAll(where: \.isChecked)
+    }
+}

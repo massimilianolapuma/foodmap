@@ -35,4 +35,30 @@ final class MealPlanningUseCasesTests: XCTestCase {
         XCTAssertEqual(items.first?.name, "Tomato")
         XCTAssertEqual(items.first?.quantity, 5)
     }
+
+    func testShoppingListAggregatesAcrossMealsCaseInsensitively() {
+        let useCase = GenerateShoppingListFromMealPlanUseCase()
+        let meal1 = Meal(name: "M1", ingredients: [
+            MealIngredient(name: "Pasta", quantity: 1, unit: .piece, isAvailableInPantry: false)
+        ])
+        let meal2 = Meal(name: "M2", ingredients: [
+            MealIngredient(name: "pasta", quantity: 1, unit: .piece, isAvailableInPantry: false)
+        ])
+        let plan = MealPlan(title: "Plan", meals: [meal1, meal2])
+        let items = useCase(plan: plan)
+        XCTAssertEqual(items.count, 1)
+        XCTAssertEqual(items.first?.quantity, 2)
+    }
+
+    func testShoppingListKeepsDifferentUnitsSeparate() {
+        let useCase = GenerateShoppingListFromMealPlanUseCase()
+        let meal = Meal(name: "M1", ingredients: [
+            MealIngredient(name: "Flour", quantity: 200, unit: .gram, isAvailableInPantry: false),
+            MealIngredient(name: "Flour", quantity: 1, unit: .pack, isAvailableInPantry: false)
+        ])
+        let plan = MealPlan(title: "Plan", meals: [meal])
+        let items = useCase(plan: plan)
+        XCTAssertEqual(items.count, 2)
+        XCTAssertEqual(Set(items.map(\.unit)), [.gram, .pack])
+    }
 }
