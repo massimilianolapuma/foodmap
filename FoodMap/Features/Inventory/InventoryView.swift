@@ -11,6 +11,7 @@ struct InventoryView: View {
     /// `nil` means "All locations".
     @State private var filter: StorageLocation?
     @State private var selectedProduct: Product?
+    @State private var isScanning = false
 
     var body: some View {
         NavigationStack {
@@ -30,8 +31,21 @@ struct InventoryView: View {
                 }
             }
             .navigationTitle("Pantry")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        isScanning = true
+                    } label: {
+                        Label("Scan", systemImage: "barcode.viewfinder")
+                    }
+                    .accessibilityIdentifier("inventory.scanButton")
+                }
+            }
             .sheet(item: $selectedProduct) { product in
                 ProductEditView(product: product)
+            }
+            .sheet(isPresented: $isScanning) {
+                ScannerView()
             }
         }
     }

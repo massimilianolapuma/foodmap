@@ -12,10 +12,6 @@ struct RootView: View {
                 .tabItem { Label("Pantry", systemImage: "shippingbox") }
                 .accessibilityIdentifier("tab.inventory")
 
-            ScannerView()
-                .tabItem { Label("Scan", systemImage: "barcode.viewfinder") }
-                .accessibilityIdentifier("tab.scanner")
-
             MealPlannerView()
                 .tabItem { Label("Meals", systemImage: "fork.knife") }
                 .accessibilityIdentifier("tab.meals")

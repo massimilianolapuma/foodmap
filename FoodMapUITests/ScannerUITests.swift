@@ -6,7 +6,11 @@ import XCTest
 final class ScannerUITests: FoodMapUITestCase {
     func testScannerManualLookupDegradesGracefully() {
         let app = launchApp()
-        selectTab("tab.scanner", label: "Scan", in: app)
+        selectTab("tab.inventory", label: "Pantry", in: app)
+
+        let scanButton = app.buttons["inventory.scanButton"]
+        XCTAssertTrue(scanButton.waitForExistence(timeout: defaultTimeout), "Pantry should expose a Scan entry point")
+        scanButton.tap()
 
         XCTAssertTrue(app.navigationBars["Scan"].waitForExistence(timeout: defaultTimeout))
 
