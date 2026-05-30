@@ -70,12 +70,14 @@ private struct ProfileForm: View {
 
             Section("Alerts") {
                 Toggle("Expiry alerts", isOn: alertsBinding)
+                    .accessibilityIdentifier("profile.alertsToggle")
                 if profile.alertsEnabled {
                     Stepper(
                         "Notify \(profile.expiryAlertLeadDays) day(s) before",
                         value: leadDaysBinding,
                         in: 1...14
                     )
+                    .accessibilityIdentifier("profile.leadDaysStepper")
                 }
                 Stepper(
                     "Household size: \(profile.householdSize)",
@@ -84,6 +86,7 @@ private struct ProfileForm: View {
                     }),
                     in: 1...12
                 )
+                .accessibilityIdentifier("profile.householdStepper")
             }
         }
         .alert("Notifications are off", isPresented: $model.permissionDenied) {

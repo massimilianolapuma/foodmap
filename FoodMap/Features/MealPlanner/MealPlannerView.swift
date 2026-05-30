@@ -56,10 +56,12 @@ struct MealPlannerView: View {
                         .accessibilityElement(children: .combine)
                     }
                 }
+                .accessibilityIdentifier("meals.list")
                 Button("Add missing items to shopping list") {
                     Task { await model.createShoppingList() }
                 }
                 .padding()
+                .accessibilityIdentifier("meals.addToShoppingButton")
                 .accessibilityHint("Adds ingredients not in your pantry to the shopping list")
             } else {
                 ContentUnavailableView(
@@ -67,6 +69,7 @@ struct MealPlannerView: View {
                     systemImage: "fork.knife",
                     description: Text("Generate a plan that uses your expiring products first.")
                 )
+                .accessibilityIdentifier("meals.emptyState")
             }
 
             Button {
@@ -80,6 +83,7 @@ struct MealPlannerView: View {
             }
             .buttonStyle(.borderedProminent)
             .padding()
+            .accessibilityIdentifier("meals.generateButton")
             .accessibilityLabel(model.isGenerating ? "Generating plan" : "Generate plan")
             .accessibilityHint("Creates a meal plan that prioritizes products expiring soon")
         }

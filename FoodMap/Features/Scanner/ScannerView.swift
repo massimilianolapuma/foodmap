@@ -46,14 +46,17 @@ private struct ScannerForm: View {
             Section("Barcode") {
                 TextField("Enter barcode", text: $model.barcode)
                     .keyboardType(.numberPad)
+                    .accessibilityIdentifier("scanner.barcodeField")
                 Button("Scan with camera") {
                     Task { await model.beginScan() }
                 }
+                .accessibilityIdentifier("scanner.scanButton")
                 .accessibilityHint("Opens the camera to scan a product barcode")
                 Button("Look up") {
                     Task { await model.lookupManual() }
                 }
                 .disabled(model.barcode.trimmingCharacters(in: .whitespaces).isEmpty)
+                .accessibilityIdentifier("scanner.lookupButton")
                 .accessibilityHint("Looks up the entered barcode in the product database")
             }
 
