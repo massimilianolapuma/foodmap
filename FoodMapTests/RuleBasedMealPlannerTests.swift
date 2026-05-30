@@ -1,0 +1,77 @@
+import XCTest
+@testable import FoodMap
+
+/// Tests for the deterministic rule-based planner (issue #13): expiring-first
+/// prioritization, diet filtering, and day-count correctness.
+final class RuleBasedMealPlannerTests: XCTestCase {
+    private let profileStandard = UserProfile(dietType: .standard)
+
+    /// Planner pinned to a fixed clock + UTC calendar so expiry math is deterministic.
+    private func makePlanner(today: Date) -> RuleBasedMealPlanner {
+        RuleBasedMealPlanner(
+            expiryCalculator: CalculateExpiryStatusUseCase(
+                clock: FixedClock(fixed: today),
+                calendar: .utcGregorian
+            )
+        )
+    }
+
+    func testMostExpiringProductIsUsedAsPrimaryFirst() async throws {
+        let today = Date.make(year: 2026, month: 6, day: 1)
+        let expiringSoon = Product(name: "Spinach", expiryDate: .make(year: 2026, month: 6, day: 1))
+        let fresh = Product(name: "Canned beans", expiryDate: .make(year: 2026, month: 12, day: 1))
+        let planner = makePlanner(today: today)
+
+        let plan = try await planner.generatePlan(
+            from: [fresh, expiringSoon],
+            profile: profileStandard,
+            planType: .singleDay
+        )
+
+        let firstPrimary = try XCTUnwrap(plan.meals.first?.ingredients.first?.name)
+        XCTAssertEqual(firstPrimary, "Spinach", "The most-expiring product must drive the first meal")
+        XCTAssertTrue(plan.meals.first?.name.contains("Spinach") ?? false)
+    }
+
+    func testDayCountMatchesPlanType() async throws {
+        let today = Date.make(year: 2026, month: 6, day: 1)
+        let products = [
+            Product(name: "Tomato", expiryDate: .make(year: 2026, month: 6, day: 2)),
+            Product(name: "Rice", expiryDate: .make(year: 2026, month: 6, day: 20))
+        ]
+        let planner = makePlanner(today: today)
+
+        let cases: [(MealPlanType, Int)] = [(.singleDay, 2), (.threeDays, 6), (.week, 14)]
+        for (planType, expected) in cases {
+            let plan = try await planner.generatePlan(from: products, profile: profileStandard, planType: planType)
+            XCTAssertEqual(plan.meals.count, expected, "\(planType) should yield \(expected) meals (days × 2)")
+        }
+    }
+
+    func testDietRestrictionsFilterOutMeatMeals() async throws {
+        let today = Date.make(year: 2026, month: 6, day: 1)
+        // Veg items expire soonest; the meat item is freshest so it is never a companion
+        // of the top-priority items — only its own primary meal should be rejected.
+        let tomato = Product(name: "Tomato", expiryDate: .make(year: 2026, month: 6, day: 1))
+        let rice = Product(name: "Rice", expiryDate: .make(year: 2026, month: 6, day: 3))
+        let beans = Product(name: "Beans", expiryDate: .make(year: 2026, month: 6, day: 6))
+        let chicken = Product(name: "Chicken breast", expiryDate: .make(year: 2026, month: 6, day: 20))
+        let planner = makePlanner(today: today)
+        let vegan = UserProfile(dietType: .vegana)
+
+        let plan = try await planner.generatePlan(
+            from: [rice, chicken, tomato, beans],
+            profile: vegan,
+            planType: .threeDays
+        )
+
+        // 6 meals total; the single chicken-primary meal is filtered out → 5 remain.
+        XCTAssertEqual(plan.meals.count, 5)
+        for meal in plan.meals {
+            XCTAssertFalse(
+                meal.name.lowercased().contains("chicken"),
+                "Vegan plan must not surface chicken meals"
+            )
+        }
+    }
+}

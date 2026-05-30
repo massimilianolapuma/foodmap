@@ -52,7 +52,8 @@ public final class AppContainer: ObservableObject {
 
         // Services
         productLookup = OpenFoodFactsService()
-        mealPlanner = RuleBasedMealPlanner()
+        // On-device AI when available (iOS 26+); deterministic rule-based fallback otherwise.
+        mealPlanner = FoundationModelsMealPlanner(fallback: RuleBasedMealPlanner())
         notificationScheduler = LocalNotificationScheduler()
         let parser = ExpiryDateParser()
         expiryDateParser = parser
