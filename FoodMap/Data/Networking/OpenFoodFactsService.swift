@@ -18,12 +18,19 @@ public final class OpenFoodFactsService: ProductLookupService {
     private let baseURL: URL
     private let maxResponseBytes = 2_000_000
 
+    private static let defaultBaseURL: URL = {
+        guard let url = URL(string: "https://world.openfoodfacts.org") else {
+            preconditionFailure("Invalid Open Food Facts base URL")
+        }
+        return url
+    }()
+
     public init(
         httpClient: HTTPClient = URLSession.shared,
-        baseURL: URL = URL(string: "https://world.openfoodfacts.org")!
+        baseURL: URL? = nil
     ) {
         self.httpClient = httpClient
-        self.baseURL = baseURL
+        self.baseURL = baseURL ?? Self.defaultBaseURL
     }
 
     public func fetchProduct(by barcode: String) async throws -> ProductLookupResult {
