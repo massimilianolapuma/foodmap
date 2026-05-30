@@ -3,6 +3,7 @@
 FoodMap is a native iOS app (Swift / SwiftUI, **iOS 17+**) for pantry & expiry management with AI meal planning. It scans product barcodes, identifies products via Open Food Facts, tracks expiry by storage location, alerts before items expire, and generates meal plans that prioritize expiring products plus a shopping list.
 
 ## Architecture — Clean Architecture + MVVM
+
 Strict layering. Dependencies point inward only.
 
 - **Domain** (`Domain/`) — pure Swift, no framework UI/networking deps.
@@ -16,6 +17,7 @@ Strict layering. Dependencies point inward only.
 - **App** (`App/`) — `FoodMapApp`, `AppContainer` (DI composition root), `RootView`.
 
 ## Engineering conventions
+
 - Swift concurrency: `async/await`; mark view models `@MainActor`; isolate shared mutable state with actors.
 - Dependency injection via `AppContainer`; avoid singletons unless strictly necessary.
 - Keep SwiftUI views thin — logic lives in view models and use cases.
@@ -26,11 +28,13 @@ Strict layering. Dependencies point inward only.
 - Prefer first-party Apple frameworks: AVFoundation (barcode), Vision (OCR), UserNotifications (alerts), FoundationModels (on-device AI, behind a protocol).
 
 ## Privacy & security
+
 - Allergies, diet types, and nutrition targets are **sensitive** — minimize data, process on-device, never send to third parties.
 - No secrets in source. No inappropriate medical claims in code or copy.
 - Treat scanned text and API responses as untrusted input.
 
 ## Tooling
+
 - Project generated with **XcodeGen** (`project.yml`) — run `xcodegen generate` after changing it.
 - Lint/format: `swiftlint --strict`, `swiftformat .` — must pass before commit.
 - Build/test: `xcodebuild -scheme FoodMap -destination 'platform=iOS Simulator,name=iPhone 17' build|test`.
@@ -38,6 +42,7 @@ Strict layering. Dependencies point inward only.
   - During tests, CoreData `error: ... Failed to create file` log lines are recovery noise — recovery succeeds and tests pass.
 
 ## Tracking & context (read these first)
+
 - **`AGENTS.md`** — single entry point: the working loop, where things live, golden rules.
 - **`docs/ROADMAP.md`** — phases P0–P8 with current status and verified commands.
 - **`docs/BACKLOG.md`** — planned GitHub issues mapped to phases.
@@ -45,6 +50,7 @@ Strict layering. Dependencies point inward only.
 - **`docs/decisions/`** — ADRs for non-obvious choices.
 
 ## Workflow rules
+
 - **Run tests locally and ensure they pass before any commit or push.**
 - Every unit of work maps to a GitHub issue; reference it in the commit (`Closes #<n>`).
 - Use Conventional Commits (`feat:`, `fix:`, `chore:`, `test:`, `docs:`, `refactor:`).

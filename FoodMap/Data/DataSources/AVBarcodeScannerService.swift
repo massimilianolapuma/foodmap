@@ -84,6 +84,12 @@ public final class AVBarcodeScannerService: NSObject, BarcodeScannerService, @un
     }
 }
 
+extension AVBarcodeScannerService: CameraPreviewProviding {
+    public var previewSession: AVCaptureSession {
+        captureSession
+    }
+}
+
 extension AVBarcodeScannerService: AVCaptureMetadataOutputObjectsDelegate {
     public func metadataOutput(
         _: AVCaptureMetadataOutput,

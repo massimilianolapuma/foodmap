@@ -14,6 +14,7 @@ public final class AppContainer: ObservableObject {
     public let expiryDateParser: ExpiryDateParser
     public let expiryOCR: ExpiryOCRService
     public let barcodeScanner: BarcodeScannerService
+    public let cameraPreviewProvider: CameraPreviewProviding
 
     // Repositories
     public let productRepository: ProductRepository
@@ -54,7 +55,9 @@ public final class AppContainer: ObservableObject {
         let parser = ExpiryDateParser()
         expiryDateParser = parser
         expiryOCR = VisionExpiryOCRService(parser: parser)
-        barcodeScanner = AVBarcodeScannerService()
+        let scanner = AVBarcodeScannerService()
+        barcodeScanner = scanner
+        cameraPreviewProvider = scanner
 
         // Use cases
         let calculator = CalculateExpiryStatusUseCase()
