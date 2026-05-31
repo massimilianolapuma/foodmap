@@ -144,6 +144,12 @@ private struct InventoryRow: View {
                         .font(DesignSystem.Typography.caption)
                         .foregroundStyle(DesignSystem.Colors.secondaryText)
                 }
+                if product.expiryIsEstimated, product.expiryDate != nil {
+                    Label(String(localized: "Estimated expiry"), systemImage: "wand.and.stars")
+                        .font(DesignSystem.Typography.caption)
+                        .foregroundStyle(DesignSystem.Colors.secondaryText)
+                        .accessibilityIdentifier("inventory.estimatedExpiry")
+                }
             }
             Spacer()
             Text("\(product.quantity.formatted()) \(product.unit.abbreviation)")
@@ -172,6 +178,9 @@ private struct InventoryRow: View {
         if let brand = product.brand { parts.append(brand) }
         parts.append("\(product.quantity.formatted()) \(product.unit.abbreviation)")
         parts.append(status.accessibilityDescription)
+        if product.expiryIsEstimated, product.expiryDate != nil {
+            parts.append(String(localized: "Estimated expiry"))
+        }
         return parts.joined(separator: ", ")
     }
 }

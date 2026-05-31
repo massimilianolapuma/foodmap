@@ -46,6 +46,7 @@
 "Expiry" = "Expiry";
 "Has expiry date" = "Has expiry date";
 "Expires" = "Expires";
+"Estimated expiry" = "Estimated expiry";
 "Delete Product" = "Delete Product";
 "Delete this product?" = "Delete this product?";
 "Delete" = "Delete";
