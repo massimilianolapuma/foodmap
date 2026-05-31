@@ -83,3 +83,29 @@ public struct GenerateShoppingListFromMealPlanUseCase: Sendable {
         return aggregated.values.sorted { $0.name < $1.name }
     }
 }
+
+/// Builds a shopping list from a single meal's ingredients that are not in the
+/// pantry, aggregating duplicates by name+unit. Lets the user add just one
+/// recipe's missing items instead of the whole plan.
+public struct GenerateShoppingListFromMealUseCase: Sendable {
+    public init() {}
+
+    public func callAsFunction(meal: Meal, sourceMealPlanID: UUID? = nil) -> [ShoppingListItem] {
+        var aggregated: [String: ShoppingListItem] = [:]
+        for ingredient in meal.ingredients where !ingredient.isAvailableInPantry {
+            let key = ingredient.name.lowercased() + "|" + ingredient.unit.rawValue
+            if let existing = aggregated[key] {
+                existing.quantity += ingredient.quantity
+            } else {
+                aggregated[key] = ShoppingListItem(
+                    name: ingredient.name,
+                    quantity: ingredient.quantity,
+                    unit: ingredient.unit,
+                    category: .other,
+                    sourceMealPlanID: sourceMealPlanID
+                )
+            }
+        }
+        return aggregated.values.sorted { $0.name < $1.name }
+    }
+}

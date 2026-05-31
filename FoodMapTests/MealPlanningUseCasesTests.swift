@@ -96,4 +96,35 @@ final class MealPlanningUseCasesTests: XCTestCase {
         XCTAssertEqual(items.count, 2)
         XCTAssertEqual(Set(items.map(\.unit)), [.gram, .pack])
     }
+
+    func testSingleMealShoppingListAggregatesMissingIngredients() {
+        let useCase = GenerateShoppingListFromMealUseCase()
+        let meal = Meal(name: "M1", ingredients: [
+            MealIngredient(name: "Tomato", quantity: 2, unit: .piece, isAvailableInPantry: false),
+            MealIngredient(name: "tomato", quantity: 3, unit: .piece, isAvailableInPantry: false),
+            MealIngredient(name: "Salt", quantity: 1, unit: .piece, isAvailableInPantry: true)
+        ])
+        let items = useCase(meal: meal)
+        XCTAssertEqual(items.count, 1)
+        XCTAssertEqual(items.first?.name, "Tomato")
+        XCTAssertEqual(items.first?.quantity, 5)
+    }
+
+    func testSingleMealShoppingListSetsSourceMealPlanID() {
+        let useCase = GenerateShoppingListFromMealUseCase()
+        let planID = UUID()
+        let meal = Meal(name: "M1", ingredients: [
+            MealIngredient(name: "Onion", quantity: 1, unit: .piece, isAvailableInPantry: false)
+        ])
+        let items = useCase(meal: meal, sourceMealPlanID: planID)
+        XCTAssertEqual(items.first?.sourceMealPlanID, planID)
+    }
+
+    func testSingleMealShoppingListEmptyWhenAllInPantry() {
+        let useCase = GenerateShoppingListFromMealUseCase()
+        let meal = Meal(name: "M1", ingredients: [
+            MealIngredient(name: "Salt", quantity: 1, unit: .piece, isAvailableInPantry: true)
+        ])
+        XCTAssertTrue(useCase(meal: meal).isEmpty)
+    }
 }

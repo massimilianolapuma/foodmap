@@ -99,6 +99,8 @@
 "Day %lld · %@" = "Day %lld · %@";
 "Add missing items to shopping list" = "Add missing items to shopping list";
 "Adds ingredients not in your pantry to the shopping list" = "Adds ingredients not in your pantry to the shopping list";
+"Add to shopping list" = "Add to shopping list";
+"Adds this recipe's ingredients not in your pantry to the shopping list" = "Adds this recipe's ingredients not in your pantry to the shopping list";
 "No plan yet" = "No plan yet";
 "Generate a plan that uses your expiring products first." = "Generate a plan that uses your expiring products first.";
 "Generate plan" = "Generate plan";
