@@ -16,9 +16,10 @@ the meal detail screen. Previously only the whole meal plan could be added.
     list from a single meal's ingredients not in the pantry, aggregating
     duplicates by `name+unit`, optionally tagging `sourceMealPlanID`. Mirrors the
     existing plan-level use case.
-- `FoodMap/App/AppContainer.swift` — exposes the new use case (default-wired).
 - `FoodMap/Features/MealPlanner/MealPlannerViewModel.swift`
-  - Injects `GenerateShoppingListFromMealUseCase` (default `.init()`).
+  - Injects `GenerateShoppingListFromMealUseCase` via its default initializer
+    (`.init()`); the view model owns the use case — `AppContainer` is not
+    changed and still only exposes `GenerateShoppingListFromMealPlanUseCase`.
   - New `addMealToShoppingList(_:)`: generates from the meal using the current
     `plan?.id`, reuses the existing private `merge(_:)` so items merge into
     matching rows instead of duplicating, surfaces a confirmation, and confirms
