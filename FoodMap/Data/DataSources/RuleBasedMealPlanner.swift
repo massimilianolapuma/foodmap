@@ -20,11 +20,7 @@ public struct RuleBasedMealPlanner: MealPlannerAIService {
         profile: UserProfile,
         planType: MealPlanType
     ) async throws -> MealPlan {
-        let dayCount = switch planType {
-        case .singleDay: 1
-        case .threeDays: 3
-        case .week: 7
-        }
+        let dayCount = planType.dayCount
 
         // Sort the pantry by urgency so the most-expiring items are used first.
         let prioritized = products.sorted {
@@ -153,6 +149,7 @@ public struct RuleBasedMealPlanner: MealPlannerAIService {
         case .singleDay: "Today's plan"
         case .threeDays: "3-day plan"
         case .week: "Weekly plan"
+        case .month: "Monthly plan"
         }
     }
 }
