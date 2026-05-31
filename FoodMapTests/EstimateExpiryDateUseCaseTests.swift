@@ -56,4 +56,16 @@ final class EstimateExpiryDateUseCaseTests: XCTestCase {
             )
         }
     }
+
+    func testEstimateNormalizesToStartOfDaySoSameDayScansMatch() throws {
+        let useCase = makeUseCase()
+        let morning = try XCTUnwrap(calendar.date(byAdding: .hour, value: 8, to: reference))
+        let evening = try XCTUnwrap(calendar.date(byAdding: .hour, value: 20, to: reference))
+        let first = try XCTUnwrap(useCase(category: .meatFish, storageLocation: .fridge, from: morning))
+        let second = try XCTUnwrap(useCase(category: .meatFish, storageLocation: .fridge, from: evening))
+        // Same calendar day → identical estimate, so the inventory merge keeps a
+        // single row instead of duplicating.
+        XCTAssertEqual(first, second)
+        XCTAssertEqual(first, calendar.date(byAdding: .day, value: 2, to: calendar.startOfDay(for: reference)))
+    }
 }

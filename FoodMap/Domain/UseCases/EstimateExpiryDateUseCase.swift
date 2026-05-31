@@ -25,7 +25,14 @@ public struct EstimateExpiryDateUseCase: Sendable {
         guard let days = Self.shelfLifeDays(category: category, storageLocation: storageLocation) else {
             return nil
         }
-        return calendar.date(byAdding: .day, value: days, to: referenceDate)
+        // Normalize to the start of the reference day so a whole-day shelf life
+        // yields a stable timestamp. Without this the current time-of-day leaks
+        // into the estimate, so scanning the same perishable twice on the same
+        // day produces slightly different dates and the inventory merge (which
+        // matches on exact `expiryDate`) creates a duplicate row instead of
+        // increasing the quantity.
+        let startOfDay = calendar.startOfDay(for: referenceDate)
+        return calendar.date(byAdding: .day, value: days, to: startOfDay)
     }
 
     /// Conservative shelf life in days by category and storage location.
