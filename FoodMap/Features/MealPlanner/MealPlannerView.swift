@@ -61,6 +61,7 @@ struct MealPlannerView: View {
                     Task { await model.createShoppingList() }
                 }
                 .padding()
+                .disabled(model.isAddingToShopping)
                 .accessibilityIdentifier("meals.addToShoppingButton")
                 .accessibilityHint("Adds ingredients not in your pantry to the shopping list")
             } else {
@@ -86,6 +87,18 @@ struct MealPlannerView: View {
             .accessibilityIdentifier("meals.generateButton")
             .accessibilityLabel(model.isGenerating ? "Generating plan" : "Generate plan")
             .accessibilityHint("Creates a meal plan that prioritizes products expiring soon")
+        }
+        .alert(
+            "Shopping list",
+            isPresented: Binding(
+                get: { model.shoppingConfirmation != nil },
+                set: { if !$0 { model.shoppingConfirmation = nil } }
+            ),
+            presenting: model.shoppingConfirmation
+        ) { _ in
+            Button("OK", role: .cancel) {}
+        } message: { message in
+            Text(message)
         }
     }
 }
