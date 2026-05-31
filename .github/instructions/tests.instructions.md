@@ -13,6 +13,7 @@ Rules for unit tests (`FoodMapTests`) and UI tests (`FoodMapUITests`).
 - New features and bug fixes require tests. A bug fix should add a regression test that fails without the fix.
 - Cover the happy path, edge cases, and error/invalid-input conditions.
 - Test names must clearly describe the behavior under test.
+- The project targets **≥ 80% line coverage** over the logic layers (Domain, Data, Core, App composition, Feature view models). CI enforces a ratchet baseline via `scripts/coverage_gate.py`; add tests to move it up — never lower it to make a build pass. SwiftUI Views / Design System are excluded (covered by `FoodMapUITests`).
 
 ## Determinism
 

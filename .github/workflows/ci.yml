@@ -66,6 +66,16 @@ jobs:
             -resultBundlePath build/FoodMap.xcresult \
             CODE_SIGNING_ALLOWED=NO
 
+      - name: Coverage gate
+        # Enforces a minimum line coverage over the logic layers (Domain, Data,
+        # Core, App, Feature view models). SwiftUI Views / Design System are
+        # excluded because they are covered by the UI test target, which CI
+        # skips. Goal is 80% (see docs/decisions and copilot-instructions);
+        # COVERAGE_MIN is a ratchet baseline that should only ever go up.
+        env:
+          COVERAGE_MIN: "60"
+        run: python3 scripts/coverage_gate.py build/FoodMap.xcresult
+
       - name: Generate Cobertura coverage report
         run: |
           brew install xcresultparser
