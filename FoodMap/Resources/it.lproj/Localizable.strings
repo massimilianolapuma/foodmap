@@ -1,5 +1,15 @@
 /* FoodMap — Italian localized strings. */
 
+/* MARK: Onboarding */
+"Welcome to FoodMap" = "Benvenuto in FoodMap";
+"Track what's in your pantry and stop losing food to forgotten expiry dates." = "Tieni traccia di cosa hai in dispensa e smetti di buttare cibo per le scadenze dimenticate.";
+"Scan in seconds" = "Scansiona in pochi secondi";
+"Scan a barcode to identify products, then capture expiry dates with your camera." = "Scansiona un codice a barre per identificare i prodotti, poi cattura le date di scadenza con la fotocamera.";
+"Cook smart" = "Cucina in modo intelligente";
+"Get meal plans that use what's expiring first, plus an automatic shopping list." = "Ricevi piani pasto che usano prima ciò che sta per scadere, con lista della spesa automatica.";
+"Continue" = "Continua";
+"Get started" = "Inizia";
+
 /* MARK: Tab bar / RootView */
 "Today" = "Oggi";
 "Pantry" = "Dispensa";

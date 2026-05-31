@@ -5,10 +5,16 @@ import SwiftUI
 struct FoodMapApp: App {
     @StateObject private var container = AppContainer(inMemory: AppContainer.isUITesting)
 
+    init() {
+        OnboardingState.configure()
+    }
+
     var body: some Scene {
         WindowGroup {
-            AuthGateView(model: container.authViewModel) {
-                RootView()
+            OnboardingGateView {
+                AuthGateView(model: container.authViewModel) {
+                    RootView()
+                }
             }
             .environmentObject(container)
             .modelContainer(container.modelContainer)
