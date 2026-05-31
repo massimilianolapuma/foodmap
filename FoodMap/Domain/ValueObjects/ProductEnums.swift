@@ -27,6 +27,23 @@ public enum ProductCategory: String, Codable, CaseIterable, Sendable {
         case .other: String(localized: "Other")
         }
     }
+
+    /// SF Symbol used as an on-device representative icon when no product photo is
+    /// available. Generated locally — never a cloud image — to preserve privacy.
+    public var iconName: String {
+        switch self {
+        case .fruitsVegetables: "carrot.fill"
+        case .dairy: "drop.fill"
+        case .meatFish: "fish.fill"
+        case .bakery: "birthday.cake.fill"
+        case .pantryStaples: "shippingbox.fill"
+        case .frozen: "snowflake"
+        case .beverages: "cup.and.saucer.fill"
+        case .snacks: "popcorn.fill"
+        case .condiments: "fork.knife"
+        case .other: "bag.fill"
+        }
+    }
 }
 
 /// Where a product is physically stored. Affects default expiry windows.

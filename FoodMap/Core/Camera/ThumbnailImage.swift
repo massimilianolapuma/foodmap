@@ -1,4 +1,3 @@
-import ImageIO
 import SwiftUI
 import UIKit
 
@@ -47,27 +46,10 @@ actor ThumbnailLoader {
         if let cached = cache.object(forKey: key) {
             return cached
         }
-        guard let image = Self.downsample(data: data, maxPixel: maxPixel) else {
+        guard let image = ImageDownsampler.downsample(data: data, maxPixel: maxPixel) else {
             return nil
         }
         cache.setObject(image, forKey: key)
         return image
-    }
-
-    private static func downsample(data: Data, maxPixel: CGFloat) -> UIImage? {
-        let sourceOptions = [kCGImageSourceShouldCache: false] as CFDictionary
-        guard let source = CGImageSourceCreateWithData(data as CFData, sourceOptions) else {
-            return nil
-        }
-        let options: [CFString: Any] = [
-            kCGImageSourceCreateThumbnailFromImageAlways: true,
-            kCGImageSourceShouldCacheImmediately: true,
-            kCGImageSourceCreateThumbnailWithTransform: true,
-            kCGImageSourceThumbnailMaxPixelSize: maxPixel
-        ]
-        guard let cgImage = CGImageSourceCreateThumbnailAtIndex(source, 0, options as CFDictionary) else {
-            return nil
-        }
-        return UIImage(cgImage: cgImage)
     }
 }
