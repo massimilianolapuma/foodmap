@@ -2,6 +2,9 @@
 
 [![CI](https://github.com/massimilianolapuma/foodmap/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/massimilianolapuma/foodmap/actions/workflows/ci.yml)
 [![CodeQL](https://github.com/massimilianolapuma/foodmap/actions/workflows/codeql.yml/badge.svg?branch=main)](https://github.com/massimilianolapuma/foodmap/actions/workflows/codeql.yml)
+[![Platform](https://img.shields.io/badge/platform-iOS%2017%2B-blue.svg)](https://developer.apple.com/ios/)
+[![Swift](https://img.shields.io/badge/Swift-5.10-orange.svg)](https://swift.org)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 FoodMap is a native **iOS app (Swift / SwiftUI, iOS 17+)** for pantry & expiry
 management with AI meal planning. Scan a product barcode → look it up on Open
