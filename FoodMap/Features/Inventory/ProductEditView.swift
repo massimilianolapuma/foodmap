@@ -56,6 +56,10 @@ private struct EditForm: View {
                 }
             }
 
+            Section("Photo") {
+                PhotoCaptureField(imageData: $model.imageData)
+            }
+
             Section("Quantity") {
                 Stepper(value: $model.quantity, in: 0...9999, step: 1) {
                     Text("\(model.quantity.formatted()) \(model.unit.abbreviation)")

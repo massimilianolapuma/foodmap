@@ -89,6 +89,47 @@ final class UpdateProductUseCaseTests: XCTestCase {
         }
     }
 
+    func testImageDataIsPersisted() async throws {
+        let product = Product(name: "Eggs")
+        let repository = try await makeRepository(seed: product)
+        let useCase = UpdateProductUseCase(repository: repository)
+
+        let photo = Data([0x01, 0x02, 0x03])
+        let edits = ProductEdits(
+            name: "Eggs",
+            brand: nil,
+            category: .other,
+            storageLocation: .fridge,
+            quantity: 1,
+            unit: .piece,
+            imageData: photo
+        )
+        try await useCase(id: product.id, edits: edits)
+
+        let stored = try await repository.fetch(id: product.id)
+        XCTAssertEqual(stored?.imageData, photo)
+    }
+
+    func testImageDataIsClearedWhenNil() async throws {
+        let product = Product(name: "Eggs", imageData: Data([0xAA, 0xBB]))
+        let repository = try await makeRepository(seed: product)
+        let useCase = UpdateProductUseCase(repository: repository)
+
+        let edits = ProductEdits(
+            name: "Eggs",
+            brand: nil,
+            category: .other,
+            storageLocation: .fridge,
+            quantity: 1,
+            unit: .piece,
+            imageData: nil
+        )
+        try await useCase(id: product.id, edits: edits)
+
+        let stored = try await repository.fetch(id: product.id)
+        XCTAssertNil(stored?.imageData)
+    }
+
     func testBlankBrandIsClearedToNil() async throws {
         let product = Product(name: "Eggs", brand: "Acme")
         let repository = try await makeRepository(seed: product)

@@ -177,6 +177,14 @@ private struct ConfirmationSheet: View {
                     }
                 }
 
+                Section {
+                    PhotoCaptureField(imageData: $model.capturedImageData)
+                } header: {
+                    Text("Photo")
+                } footer: {
+                    Text("Add a photo to recognize this product at a glance. You can skip this and add one later.")
+                }
+
                 expirySection
             }
             .navigationTitle("Add product")

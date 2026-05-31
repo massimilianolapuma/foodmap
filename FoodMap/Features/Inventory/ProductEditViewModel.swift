@@ -19,6 +19,7 @@ final class ProductEditViewModel: ObservableObject {
     @Published var unit: MeasurementUnit
     @Published var hasExpiry: Bool
     @Published var expiryDate: Date
+    @Published var imageData: Data?
     @Published private(set) var outcome: Outcome = .none
     @Published private(set) var isBusy = false
 
@@ -36,6 +37,7 @@ final class ProductEditViewModel: ObservableObject {
         unit = product.unit
         hasExpiry = product.expiryDate != nil
         expiryDate = product.expiryDate ?? Date()
+        imageData = product.imageData
         self.update = update
         self.repository = repository
     }
@@ -62,7 +64,8 @@ final class ProductEditViewModel: ObservableObject {
             storageLocation: storageLocation,
             quantity: quantity,
             unit: unit,
-            expiryDate: hasExpiry ? expiryDate : nil
+            expiryDate: hasExpiry ? expiryDate : nil,
+            imageData: imageData
         )
         do {
             try await update(id: productID, edits: edits)

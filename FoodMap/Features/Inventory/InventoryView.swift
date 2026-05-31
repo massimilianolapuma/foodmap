@@ -1,5 +1,6 @@
 import SwiftData
 import SwiftUI
+import UIKit
 
 /// Pantry inventory grouped by storage location, sorted by expiry, with
 /// per-location filtering and tap-to-edit.
@@ -136,6 +137,7 @@ private struct InventoryRow: View {
                 .fill(status.color)
                 .frame(width: 10, height: 10)
                 .accessibilityHidden(true)
+            thumbnail
             VStack(alignment: .leading) {
                 Text(product.name).font(DesignSystem.Typography.headline)
                 if let brand = product.brand {
@@ -153,6 +155,18 @@ private struct InventoryRow: View {
         .accessibilityElement(children: .combine)
         .accessibilityLabel(accessibilityLabel)
         .accessibilityHint("Double tap to edit")
+    }
+
+    @ViewBuilder
+    private var thumbnail: some View {
+        if let data = product.imageData, let image = UIImage(data: data) {
+            Image(uiImage: image)
+                .resizable()
+                .scaledToFill()
+                .frame(width: 40, height: 40)
+                .clipShape(RoundedRectangle(cornerRadius: 8))
+                .accessibilityHidden(true)
+        }
     }
 
     private var accessibilityLabel: String {

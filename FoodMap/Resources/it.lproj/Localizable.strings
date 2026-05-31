@@ -51,6 +51,17 @@
 "Delete" = "Elimina";
 "Couldn't save" = "Impossibile salvare";
 
+/* MARK: Product photo */
+"Photo" = "Foto";
+"Product photo" = "Foto del prodotto";
+"Add Photo" = "Aggiungi foto";
+"Replace Photo" = "Sostituisci foto";
+"Remove Photo" = "Rimuovi foto";
+"Add a photo" = "Aggiungi una foto";
+"Take Photo" = "Scatta foto";
+"Choose from Library" = "Scegli dalla libreria";
+"Add a photo to recognize this product at a glance. You can skip this and add one later." = "Aggiungi una foto per riconoscere il prodotto a colpo d'occhio. Puoi saltare e aggiungerla più tardi.";
+
 /* MARK: Common actions */
 "Cancel" = "Annulla";
 "Save" = "Salva";
