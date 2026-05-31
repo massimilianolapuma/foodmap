@@ -114,10 +114,10 @@ struct MealPlannerView: View {
     private func previewDetail(for meal: Meal) -> String? {
         var parts: [String] = []
         if let minutes = meal.totalMinutes {
-            parts.append("\(minutes) min")
+            parts.append(String(localized: "\(minutes) min"))
         }
         if let kcal = meal.estimatedCalories {
-            parts.append("\(kcal) kcal")
+            parts.append(String(localized: "\(kcal) kcal"))
         }
         return parts.isEmpty ? nil : parts.joined(separator: " · ")
     }

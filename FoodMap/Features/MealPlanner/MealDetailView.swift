@@ -73,13 +73,13 @@ struct MealDetailView: View {
 
     private var metaRow: some View {
         HStack(spacing: DesignSystem.Spacing.lg) {
-            metaItem(systemImage: "calendar", text: "Day \(meal.dayIndex + 1)")
+            metaItem(systemImage: "calendar", text: String(localized: "Day \(meal.dayIndex + 1)"))
             metaItem(systemImage: "fork.knife", text: meal.mealType.displayName)
             if let minutes = meal.totalMinutes {
-                metaItem(systemImage: "clock", text: "\(minutes) min")
+                metaItem(systemImage: "clock", text: String(localized: "\(minutes) min"))
             }
             if let kcal = meal.estimatedCalories {
-                metaItem(systemImage: "flame", text: "\(kcal) kcal")
+                metaItem(systemImage: "flame", text: String(localized: "\(kcal) kcal"))
             }
         }
         .font(DesignSystem.Typography.caption)

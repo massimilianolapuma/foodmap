@@ -45,7 +45,8 @@ public final class Meal {
     public var recipeSummary: String
     public var estimatedCalories: Int?
     /// Ordered, step-by-step preparation instructions for the recipe.
-    public var steps: [String]
+    /// Inline default so lightweight migration can backfill existing rows.
+    public var steps: [String] = []
     /// Hands-on preparation time in minutes.
     public var prepMinutes: Int?
     /// Cooking time in minutes.
