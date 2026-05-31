@@ -10,6 +10,10 @@ struct PhotoCaptureField: View {
     @State private var pickerSource: PickerSource?
     @State private var showSourceDialog = false
 
+    private var isCameraAvailable: Bool {
+        UIImagePickerController.isSourceTypeAvailable(.camera)
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: DesignSystem.Spacing.sm) {
             if let imageData, let image = UIImage(data: imageData) {
@@ -46,7 +50,9 @@ struct PhotoCaptureField: View {
             }
         }
         .confirmationDialog("Add a photo", isPresented: $showSourceDialog, titleVisibility: .visible) {
-            Button("Take Photo") { pickerSource = PickerSource(type: .camera) }
+            if isCameraAvailable {
+                Button("Take Photo") { pickerSource = PickerSource(type: .camera) }
+            }
             Button("Choose from Library") { pickerSource = PickerSource(type: .photoLibrary) }
             Button("Cancel", role: .cancel) {}
         }

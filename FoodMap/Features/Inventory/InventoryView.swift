@@ -1,6 +1,5 @@
 import SwiftData
 import SwiftUI
-import UIKit
 
 /// Pantry inventory grouped by storage location, sorted by expiry, with
 /// per-location filtering and tap-to-edit.
@@ -159,10 +158,8 @@ private struct InventoryRow: View {
 
     @ViewBuilder
     private var thumbnail: some View {
-        if let data = product.imageData, let image = UIImage(data: data) {
-            Image(uiImage: image)
-                .resizable()
-                .scaledToFill()
+        if let data = product.imageData {
+            ThumbnailImage(id: product.id.uuidString, data: data, size: 40)
                 .frame(width: 40, height: 40)
                 .clipShape(RoundedRectangle(cornerRadius: 8))
                 .accessibilityHidden(true)
