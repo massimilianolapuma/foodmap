@@ -7,6 +7,7 @@ struct MealPlannerView: View {
     @Query private var products: [Product]
     @Query private var profiles: [UserProfile]
     @State private var model: MealPlannerViewModel?
+    @State private var pdfDocument: MealPlanPDF?
 
     var body: some View {
         NavigationStack {
@@ -18,6 +19,22 @@ struct MealPlannerView: View {
                 }
             }
             .navigationTitle("Meals")
+            .toolbar {
+                if let pdfDocument {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        ShareLink(
+                            item: pdfDocument,
+                            preview: SharePreview(model?.plan?.title ?? String(localized: "Meal plan"))
+                        ) {
+                            Label("Export PDF", systemImage: "square.and.arrow.up")
+                        }
+                        .accessibilityIdentifier("meals.exportPDFButton")
+                    }
+                }
+            }
+            .onChange(of: planSignature, initial: true) {
+                refreshPDF()
+            }
         }
         .task {
             if model == nil {
@@ -121,5 +138,25 @@ struct MealPlannerView: View {
             parts.append(String(localized: "\(kcal) kcal"))
         }
         return parts.isEmpty ? nil : parts.joined(separator: " · ")
+    }
+
+    /// A value that changes whenever the plan or any of its meals change, so the
+    /// exported PDF stays current after generation or a recipe swap.
+    private var planSignature: String {
+        guard let plan = model?.plan else { return "" }
+        let meals = plan.meals.map { "\($0.id.uuidString)\($0.name)" }.joined()
+        return "\(plan.id.uuidString)\(meals)"
+    }
+
+    /// Re-renders the shareable PDF for the current plan, or clears it when no
+    /// plan exists.
+    private func refreshPDF() {
+        guard let plan = model?.plan else {
+            pdfDocument = nil
+            return
+        }
+        let data = MealPlanPDFRenderer.render(plan)
+        let safeTitle = plan.title.replacingOccurrences(of: "/", with: "-")
+        pdfDocument = MealPlanPDF(data: data, filename: "\(safeTitle).pdf")
     }
 }

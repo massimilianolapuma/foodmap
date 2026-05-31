@@ -103,6 +103,9 @@
 "Generate plan" = "Generate plan";
 "Generating plan" = "Generating plan";
 "Creates a meal plan that prioritizes products expiring soon" = "Creates a meal plan that prioritizes products expiring soon";
+"Export PDF" = "Export PDF";
+"Meal plan" = "Meal plan";
+"Starting %@" = "Starting %@";
 
 /* MARK: Recipe detail */
 "Ingredients" = "Ingredients";

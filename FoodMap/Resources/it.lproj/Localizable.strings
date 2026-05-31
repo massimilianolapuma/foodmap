@@ -103,6 +103,9 @@
 "Generate plan" = "Genera piano";
 "Generating plan" = "Generazione piano";
 "Creates a meal plan that prioritizes products expiring soon" = "Crea un piano dei pasti che dà priorità ai prodotti in scadenza";
+"Export PDF" = "Esporta PDF";
+"Meal plan" = "Piano dei pasti";
+"Starting %@" = "Dal %@";
 
 /* MARK: Recipe detail */
 "Ingredients" = "Ingredienti";
