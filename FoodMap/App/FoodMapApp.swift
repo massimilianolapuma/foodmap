@@ -7,10 +7,12 @@ struct FoodMapApp: App {
 
     var body: some Scene {
         WindowGroup {
-            RootView()
-                .environmentObject(container)
-                .modelContainer(container.modelContainer)
-                .task { container.seedUITestDataIfNeeded() }
+            AuthGateView(model: container.authViewModel) {
+                RootView()
+            }
+            .environmentObject(container)
+            .modelContainer(container.modelContainer)
+            .task { container.seedUITestDataIfNeeded() }
         }
     }
 }

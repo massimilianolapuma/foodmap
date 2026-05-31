@@ -20,7 +20,7 @@ struct ProfileView: View {
         NavigationStack {
             Group {
                 if let model {
-                    ProfileForm(model: model, profile: profile, save: save)
+                    ProfileForm(model: model, authModel: container.authViewModel, profile: profile, save: save)
                 } else {
                     ProgressView()
                 }
@@ -46,6 +46,7 @@ struct ProfileView: View {
 /// Thin form bound to the profile `@Model`; routes alert changes through the view model.
 private struct ProfileForm: View {
     @ObservedObject var model: ProfileViewModel
+    @ObservedObject var authModel: AuthViewModel
     let profile: UserProfile
     let save: () -> Void
 
@@ -88,6 +89,14 @@ private struct ProfileForm: View {
                 )
                 .accessibilityIdentifier("profile.householdStepper")
             }
+
+            Section("Account") {
+                LabeledContent("Signed in as", value: accountDescription)
+                Button("Sign out", role: .destructive) {
+                    Task { await authModel.signOut() }
+                }
+                .accessibilityIdentifier("profile.signOut")
+            }
         }
         .alert("Notifications are off", isPresented: $model.permissionDenied) {
             Button("Open Settings") { openSettings() }
@@ -95,6 +104,12 @@ private struct ProfileForm: View {
         } message: {
             Text("Enable notifications in Settings to receive expiry alerts.")
         }
+    }
+
+    private var accountDescription: String {
+        guard let user = authModel.user else { return "Local account" }
+        if user.isAnonymous { return "Local account" }
+        return user.email ?? user.displayName ?? "Apple account"
     }
 
     private var alertsBinding: Binding<Bool> {

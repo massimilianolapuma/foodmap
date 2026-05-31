@@ -15,6 +15,8 @@ public final class AppContainer: ObservableObject {
     public let expiryOCR: ExpiryOCRService
     public let barcodeScanner: BarcodeScannerService
     public let cameraPreviewProvider: CameraPreviewProviding
+    public let authService: AuthenticationService
+    let authViewModel: AuthViewModel
 
     // Repositories
     public let productRepository: ProductRepository
@@ -68,6 +70,16 @@ public final class AppContainer: ObservableObject {
         let scanner = AVBarcodeScannerService()
         barcodeScanner = scanner
         cameraPreviewProvider = scanner
+
+        // Authentication. Under UI testing, start pre-authenticated with a local
+        // anonymous session so end-to-end flows reach the tab interface without
+        // driving the system Sign in with Apple sheet. Otherwise persist the
+        // session in the Keychain.
+        let credentialStore: CredentialStore = Self.isUITesting
+            ? InMemoryCredentialStore(seed: .anonymous)
+            : KeychainCredentialStore()
+        authService = AppleAuthenticationService(store: credentialStore)
+        authViewModel = AuthViewModel(service: authService)
 
         // Use cases
         let calculator = CalculateExpiryStatusUseCase()
