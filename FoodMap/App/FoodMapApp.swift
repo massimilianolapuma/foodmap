@@ -12,7 +12,9 @@ struct FoodMapApp: App {
     var body: some Scene {
         WindowGroup {
             OnboardingGateView {
-                RootView()
+                AuthGateView(model: container.authViewModel) {
+                    RootView()
+                }
             }
             .environmentObject(container)
             .modelContainer(container.modelContainer)
