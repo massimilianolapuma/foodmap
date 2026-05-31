@@ -3,11 +3,27 @@ import Foundation
 /// Abstraction over HTTP so the lookup service can be tested with a mock.
 public protocol HTTPClient: Sendable {
     func data(from url: URL) async throws -> (Data, URLResponse)
+    func data(for request: URLRequest) async throws -> (Data, URLResponse)
+}
+
+public extension HTTPClient {
+    /// Default fallback for clients that only model GET. Real network clients
+    /// (URLSession) provide their own implementation that sends the request body.
+    func data(for request: URLRequest) async throws -> (Data, URLResponse) {
+        guard let url = request.url else {
+            throw FoodMapError.network(reason: "Request is missing a URL.")
+        }
+        return try await data(from: url)
+    }
 }
 
 extension URLSession: HTTPClient {
     public func data(from url: URL) async throws -> (Data, URLResponse) {
         try await data(from: url, delegate: nil)
+    }
+
+    public func data(for request: URLRequest) async throws -> (Data, URLResponse) {
+        try await data(for: request, delegate: nil)
     }
 }
 
