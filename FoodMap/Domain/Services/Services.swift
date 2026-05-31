@@ -68,3 +68,24 @@ public extension MealPlannerAIService {
         []
     }
 }
+
+/// Persists the user's preferred meal-planner engine and reports which engines
+/// the current device can actually run.
+public protocol MealPlannerModelStore: Sendable {
+    /// The engine the user selected. Defaults to ``MealPlannerModel/automatic``.
+    func selectedModel() -> MealPlannerModel
+    /// Persists the user's engine choice.
+    func select(_ model: MealPlannerModel)
+    /// Whether the on-device FoundationModels engine is ready on this device.
+    func isOnDeviceModelAvailable() -> Bool
+}
+
+public extension MealPlannerModelStore {
+    /// Engines the user can actually choose on this device, hiding the on-device
+    /// option when it cannot run.
+    func availableModels() -> [MealPlannerModel] {
+        MealPlannerModel.allCases.filter { model in
+            model != .onDevice || isOnDeviceModelAvailable()
+        }
+    }
+}

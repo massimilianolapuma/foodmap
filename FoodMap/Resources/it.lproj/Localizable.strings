@@ -224,3 +224,13 @@
 "Expiry: use soon" = "Scadenza: consumare presto";
 "Expiry: this week" = "Scadenza: questa settimana";
 "Expiry: fresh" = "Scadenza: fresco";
+
+/* MARK: Meal planner model */
+"Meal planner" = "Generatore di piani";
+"Engine" = "Motore";
+"Automatic" = "Automatico";
+"Rule-based" = "Basato su regole";
+"On-device AI" = "IA sul dispositivo";
+"Picks the best engine for this device." = "Sceglie il motore migliore per questo dispositivo.";
+"Fast, deterministic, fully offline." = "Veloce, deterministico, completamente offline.";
+"Apple on-device model. Stays private." = "Modello Apple sul dispositivo. Resta privato.";

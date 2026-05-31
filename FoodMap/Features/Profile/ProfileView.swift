@@ -50,6 +50,9 @@ private struct ProfileForm: View {
     let profile: UserProfile
     let save: () -> Void
 
+    @EnvironmentObject private var container: AppContainer
+    @State private var plannerModel: MealPlannerModel = .automatic
+
     var body: some View {
         Form {
             Section("You") {
@@ -66,6 +69,8 @@ private struct ProfileForm: View {
                         .accessibilityIdentifier("profile.diet.\(diet.rawValue)")
                 }
             }
+
+            plannerSection
 
             Section("Allergens") {
                 ForEach(Allergen.allCases, id: \.self) { allergen in
@@ -108,6 +113,29 @@ private struct ProfileForm: View {
         } message: {
             Text("Enable notifications in Settings to receive expiry alerts.")
         }
+    }
+
+    private var plannerSection: some View {
+        Section {
+            Picker("Engine", selection: Binding(
+                get: { plannerModel },
+                set: { newValue in
+                    plannerModel = newValue
+                    container.mealPlannerModelStore.select(newValue)
+                }
+            )) {
+                ForEach(container.mealPlannerModelStore.availableModels(), id: \.self) { model in
+                    Text(model.displayName).tag(model)
+                }
+            }
+            .accessibilityIdentifier("profile.plannerModel")
+            Text(plannerModel.detail)
+                .font(.footnote)
+                .foregroundStyle(.secondary)
+        } header: {
+            Text("Meal planner")
+        }
+        .onAppear { plannerModel = container.mealPlannerModelStore.selectedModel() }
     }
 
     private var accountDescription: String {
