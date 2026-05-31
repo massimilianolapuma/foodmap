@@ -89,6 +89,51 @@ final class ProductEditViewModelTests: XCTestCase {
         XCTAssertNil(stored)
     }
 
+    func testFreezerSuggestionOfferedWhenMovingPerishableToFreezer() {
+        let product = Product(
+            name: "Chicken",
+            category: .meatFish,
+            storageLocation: .fridge,
+            quantity: 1,
+            expiryDate: Date.make(year: 2026, month: 6, day: 1)
+        )
+        let model = makeModel(product: product, repository: InMemoryProductRepository())
+        XCTAssertNil(model.freezerSuggestion)
+
+        model.storageLocation = .freezer
+        let suggestion = model.freezerSuggestion
+        XCTAssertNotNil(suggestion)
+        XCTAssertGreaterThan(suggestion?.suggestedExpiry ?? .distantPast, model.expiryDate)
+    }
+
+    func testApplyingFreezerSuggestionSetsEstimatedExpiry() {
+        let product = Product(
+            name: "Spinach",
+            category: .fruitsVegetables,
+            storageLocation: .freezer,
+            quantity: 1
+        )
+        let model = makeModel(product: product, repository: InMemoryProductRepository())
+        guard let suggestion = model.freezerSuggestion else {
+            return XCTFail("Expected a freezer suggestion")
+        }
+
+        model.applyFreezerSuggestion()
+        XCTAssertTrue(model.hasExpiry)
+        XCTAssertEqual(model.expiryDate, suggestion.suggestedExpiry)
+    }
+
+    func testNoFreezerSuggestionForShelfStableCategory() {
+        let product = Product(
+            name: "Pasta",
+            category: .pantryStaples,
+            storageLocation: .freezer,
+            quantity: 1
+        )
+        let model = makeModel(product: product, repository: InMemoryProductRepository())
+        XCTAssertNil(model.freezerSuggestion)
+    }
+
     func testSaveWithInvalidNameSurfacesFailure() async throws {
         let product = Product(name: "Carrots")
         let repository = InMemoryProductRepository()

@@ -237,3 +237,9 @@
 "Picks the best engine for this device." = "Sceglie il motore migliore per questo dispositivo.";
 "Fast, deterministic, fully offline." = "Veloce, deterministico, completamente offline.";
 "Apple on-device model. Stays private." = "Modello Apple sul dispositivo. Resta privato.";
+
+/* MARK: Frozen products */
+"Freezing" = "Congelamento";
+"Freezing pauses spoilage. We've estimated a freezer use-by date for this category." = "Il congelamento sospende il deterioramento. Abbiamo stimato una data di consumo da congelatore per questa categoria.";
+"Freeze items while still fresh and label them with today's date." = "Congela gli alimenti quando sono ancora freschi ed etichettali con la data di oggi.";
+"Use estimated freezer date (%@)" = "Usa la data stimata da congelatore (%@)";
