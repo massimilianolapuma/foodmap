@@ -22,6 +22,7 @@
 "Nothing expiring soon" = "Nothing expiring soon";
 "Scan products to start tracking expiry dates." = "Scan products to start tracking expiry dates.";
 "Expired" = "Expired";
+"Hi, %@" = "Hi, %@";
 
 /* MARK: Inventory */
 "Your pantry is empty" = "Your pantry is empty";
@@ -104,6 +105,8 @@
 "Double tap to toggle purchased" = "Double tap to toggle purchased";
 
 /* MARK: Profile */
+"You" = "You";
+"Your name" = "Your name";
 "Diet" = "Diet";
 "Diet type" = "Diet type";
 "Allergens" = "Allergens";

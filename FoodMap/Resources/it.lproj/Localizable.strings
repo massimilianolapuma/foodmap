@@ -22,6 +22,7 @@
 "Nothing expiring soon" = "Niente in scadenza";
 "Scan products to start tracking expiry dates." = "Scansiona i prodotti per iniziare a tracciare le scadenze.";
 "Expired" = "Scaduto";
+"Hi, %@" = "Ciao, %@";
 
 /* MARK: Inventory */
 "Your pantry is empty" = "La tua dispensa è vuota";
@@ -104,6 +105,8 @@
 "Double tap to toggle purchased" = "Tocca due volte per segnare come acquistato";
 
 /* MARK: Profile */
+"You" = "Tu";
+"Your name" = "Il tuo nome";
 "Diet" = "Dieta";
 "Diet type" = "Tipo di dieta";
 "Allergens" = "Allergeni";

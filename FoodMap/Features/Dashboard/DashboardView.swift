@@ -5,7 +5,12 @@ import SwiftUI
 /// Reads inventory via SwiftData `@Query`; expiry logic stays in the pure use case.
 struct DashboardView: View {
     @Query(sort: \Product.expiryDate, order: .forward) private var products: [Product]
+    @Query private var profiles: [UserProfile]
     private let expiryCalculator = CalculateExpiryStatusUseCase()
+
+    private var greetingName: String {
+        profiles.first?.displayName.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+    }
 
     private var expiring: [Product] {
         products
@@ -38,6 +43,19 @@ struct DashboardView: View {
                 }
             }
             .navigationTitle("Today")
+            .safeAreaInset(edge: .top) {
+                if !greetingName.isEmpty {
+                    HStack {
+                        Text("Hi, \(greetingName)")
+                            .font(DesignSystem.Typography.headline)
+                            .foregroundStyle(DesignSystem.Colors.secondaryText)
+                        Spacer()
+                    }
+                    .padding(.horizontal, DesignSystem.Spacing.md)
+                    .padding(.vertical, DesignSystem.Spacing.xs)
+                    .accessibilityIdentifier("dashboard.greeting")
+                }
+            }
         }
     }
 }

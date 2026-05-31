@@ -52,6 +52,12 @@ private struct ProfileForm: View {
 
     var body: some View {
         Form {
+            Section("You") {
+                TextField("Your name", text: nameBinding)
+                    .textContentType(.givenName)
+                    .accessibilityIdentifier("profile.displayName")
+            }
+
             Section("Diet") {
                 Picker("Diet type", selection: Binding(
                     get: { profile.dietType },
@@ -107,9 +113,24 @@ private struct ProfileForm: View {
     }
 
     private var accountDescription: String {
-        guard let user = authModel.user else { return "Local account" }
-        if user.isAnonymous { return "Local account" }
+        let localName = profile.displayName.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard let user = authModel.user else {
+            return localName.isEmpty ? "Local account" : localName
+        }
+        if user.isAnonymous {
+            return localName.isEmpty ? "Local account" : localName
+        }
         return user.email ?? user.displayName ?? "Apple account"
+    }
+
+    private var nameBinding: Binding<String> {
+        Binding(
+            get: { profile.displayName },
+            set: { newValue in
+                profile.displayName = newValue
+                save()
+            }
+        )
     }
 
     private var alertsBinding: Binding<Bool> {
