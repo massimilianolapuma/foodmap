@@ -88,8 +88,17 @@ struct SignInView: View {
             )
             Task { await model.completeSignIn(with: mapped) }
         case let .failure(error):
-            if let authError = error as? ASAuthorizationError, authError.code == .canceled {
-                model.handleSignInFailure(.authenticationCancelled)
+            if let authError = error as? ASAuthorizationError {
+                switch authError.code {
+                case .canceled:
+                    model.handleSignInFailure(.authenticationCancelled)
+                case .unknown, .notInteractive:
+                    // Surfaced when Sign in with Apple isn't entitled/configured
+                    // for this build (e.g. unsigned builds without a team).
+                    model.handleSignInFailure(.authenticationUnavailable)
+                default:
+                    model.handleSignInFailure(.authenticationFailed(reason: error.localizedDescription))
+                }
             } else {
                 model.handleSignInFailure(.authenticationFailed(reason: error.localizedDescription))
             }

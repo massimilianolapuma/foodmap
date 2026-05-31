@@ -13,6 +13,7 @@ public enum FoodMapError: LocalizedError, Equatable, Sendable {
     case invalidInput(reason: String)
     case authenticationFailed(reason: String)
     case authenticationCancelled
+    case authenticationUnavailable
 
     public var errorDescription: String? {
         switch self {
@@ -38,6 +39,8 @@ public enum FoodMapError: LocalizedError, Equatable, Sendable {
             "Couldn't sign you in: \(reason)"
         case .authenticationCancelled:
             "Sign in was cancelled."
+        case .authenticationUnavailable:
+            "Sign in with Apple isn't available in this build. Tap \"Continue without an account\" to keep using FoodMap."
         }
     }
 }

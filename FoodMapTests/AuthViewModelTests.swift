@@ -54,6 +54,15 @@ final class AuthViewModelTests: XCTestCase {
         XCTAssertNil(model.errorMessage)
     }
 
+    func testUnavailableFailureSurfacesGuidance() {
+        let service = AppleAuthenticationService(store: InMemoryCredentialStore())
+        let model = AuthViewModel(service: service)
+
+        model.handleSignInFailure(.authenticationUnavailable)
+
+        XCTAssertEqual(model.errorMessage, FoodMapError.authenticationUnavailable.errorDescription)
+    }
+
     func testContinueWithoutAccountStartsAnonymousSession() async {
         let service = AppleAuthenticationService(store: InMemoryCredentialStore())
         let model = AuthViewModel(service: service)
