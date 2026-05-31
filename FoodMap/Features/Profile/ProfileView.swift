@@ -5,7 +5,7 @@ import SwiftUI
 struct ProfileView: View {
     @EnvironmentObject private var container: AppContainer
     @Environment(\.modelContext) private var modelContext
-    @Query private var profiles: [UserProfile]
+    @Query(sort: \UserProfile.id) private var profiles: [UserProfile]
     @State private var model: ProfileViewModel?
 
     private var profile: UserProfile {
@@ -52,6 +52,14 @@ private struct ProfileForm: View {
 
     var body: some View {
         Form {
+            Section("You") {
+                TextField("Your name", text: nameBinding)
+                    .textContentType(.givenName)
+                    .submitLabel(.done)
+                    .onSubmit(save)
+                    .accessibilityIdentifier("profile.displayName")
+            }
+
             Section("Diet") {
                 Picker("Diet type", selection: Binding(
                     get: { profile.dietType },
@@ -107,9 +115,25 @@ private struct ProfileForm: View {
     }
 
     private var accountDescription: String {
-        guard let user = authModel.user else { return "Local account" }
-        if user.isAnonymous { return "Local account" }
+        let localName = profile.displayName.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard let user = authModel.user else {
+            return localName.isEmpty ? "Local account" : localName
+        }
+        if user.isAnonymous {
+            return localName.isEmpty ? "Local account" : localName
+        }
         return user.email ?? user.displayName ?? "Apple account"
+    }
+
+    private var nameBinding: Binding<String> {
+        Binding(
+            get: { profile.displayName },
+            set: { newValue in
+                // Sanitize and cap length on write; let SwiftData autosave persist
+                // intermediate edits, with an explicit save on submit/focus loss.
+                profile.displayName = UserProfile.sanitizedDisplayName(newValue)
+            }
+        )
     }
 
     private var alertsBinding: Binding<Bool> {
