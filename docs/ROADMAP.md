@@ -20,11 +20,13 @@ Legend: ✅ done · 🚧 in progress · ⬜ not started
 | P8 | Polish, accessibility, design system, App Store prep | ✅ | Typography tokens, VoiceOver/Dynamic Type, IT/EN localization, privacy manifest, App Store copy. Issues #17–#20. |
 | P9 | Open Food Facts contribution | ⬜ | When a barcode is missing from OFF, let the user attach a front photo + nutrition-label photo and optionally upload the new product to OFF. Issue #35. |
 | P10 | iCloud backup & sync | ⬜ | Persist data to the user's private iCloud (SwiftData + CloudKit) so it survives reinstall and syncs across devices; optional Sign in with Apple. Requires developer account + signing. Issue #36. |
+| P11 | UX & content expansion | 🚧 | First-launch onboarding, local-account name, guided + representative product images, complete & replaceable recipes, monthly plans, PDF export, multi-diet + diets section, selectable AI model. Issues #42–#52. |
 
 ## Current focus
 - **All phases P0–P8 complete** — full feature set, 64 tests green on iPhone 17 simulator.
 - **Next:** on-device verification (camera/OCR/notifications/FoundationModels) on a real device; App Store assets finalization (screenshots, icon); developer account + signing when ready.
 - **Planned (P9–P10):** Open Food Facts contribution (#35) and iCloud backup/sync (#36).
+- **In progress (P11):** UX & content expansion — onboarding (#42), local-account name (#48), product images (#43, #44), complete/replaceable recipes (#45, #46), monthly plans (#47), PDF export (#49), multi-diet + diets section (#50, #51), selectable AI model (#52).
 
 ## Verified build/test commands
 ```sh
