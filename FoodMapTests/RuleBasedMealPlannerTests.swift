@@ -113,4 +113,67 @@ final class RuleBasedMealPlannerTests: XCTestCase {
         let firstMeal = try XCTUnwrap(plan.meals.first)
         XCTAssertEqual(firstMeal.estimatedCalories, 320, "Calories should sum linked pantry products")
     }
+
+    func testAlternativesExcludeCurrentPrimaryAndKeepSlot() async throws {
+        let today = Date.make(year: 2026, month: 6, day: 1)
+        let spinach = Product(name: "Spinach", expiryDate: .make(year: 2026, month: 6, day: 1))
+        let rice = Product(name: "Rice", expiryDate: .make(year: 2026, month: 6, day: 3))
+        let beans = Product(name: "Beans", expiryDate: .make(year: 2026, month: 6, day: 6))
+        let planner = makePlanner(today: today)
+
+        let plan = try await planner.generatePlan(
+            from: [spinach, rice, beans],
+            profile: profileStandard,
+            planType: .singleDay
+        )
+        let dinner = try XCTUnwrap(plan.meals.first { $0.mealType == .dinner })
+        let currentPrimaryID = dinner.ingredients.first?.linkedProductID
+
+        let alternatives = try await planner.alternatives(
+            for: dinner,
+            from: [spinach, rice, beans],
+            profile: profileStandard,
+            count: 3
+        )
+
+        XCTAssertFalse(alternatives.isEmpty, "Should offer at least one alternative")
+        for alternative in alternatives {
+            XCTAssertEqual(alternative.mealType, dinner.mealType, "Alternatives keep the same slot")
+            XCTAssertEqual(alternative.dayIndex, dinner.dayIndex, "Alternatives keep the same day")
+            XCTAssertNotEqual(
+                alternative.ingredients.first?.linkedProductID,
+                currentPrimaryID,
+                "Alternatives must not reuse the current primary product"
+            )
+        }
+    }
+
+    func testAlternativesKeepExpiringFirstPriority() async throws {
+        let today = Date.make(year: 2026, month: 6, day: 1)
+        let chicken = Product(name: "Chicken", expiryDate: .make(year: 2026, month: 6, day: 20))
+        let spinach = Product(name: "Spinach", expiryDate: .make(year: 2026, month: 6, day: 1))
+        let rice = Product(name: "Rice", expiryDate: .make(year: 2026, month: 6, day: 3))
+        let planner = makePlanner(today: today)
+
+        // Build a meal whose primary is the freshest item, so the soonest-expiring
+        // product is still available as an alternative.
+        let meal = Meal(
+            name: "Dinner with Chicken",
+            mealType: .dinner,
+            dayIndex: 0,
+            ingredients: [
+                MealIngredient(name: "Chicken", quantity: 1, unit: .piece, isAvailableInPantry: true, linkedProductID: chicken.id)
+            ]
+        )
+
+        let alternatives = try await planner.alternatives(
+            for: meal,
+            from: [chicken, spinach, rice],
+            profile: profileStandard,
+            count: 3
+        )
+
+        let firstAlternativePrimary = try XCTUnwrap(alternatives.first?.ingredients.first?.name)
+        XCTAssertEqual(firstAlternativePrimary, "Spinach", "Most-expiring product drives the top alternative")
+    }
 }

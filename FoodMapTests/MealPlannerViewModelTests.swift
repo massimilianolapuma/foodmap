@@ -5,17 +5,37 @@ import XCTest
 final class MealPlannerViewModelTests: XCTestCase {
     private final class StubMealPlanner: MealPlannerAIService, @unchecked Sendable {
         let plan: MealPlan
-        init(plan: MealPlan) {
+        let alternativesToReturn: [Meal]
+        init(plan: MealPlan, alternatives: [Meal] = []) {
             self.plan = plan
+            alternativesToReturn = alternatives
         }
 
         func generatePlan(from _: [Product], profile _: UserProfile, planType _: MealPlanType) async throws -> MealPlan {
             plan
         }
+
+        func alternatives(for _: Meal, from _: [Product], profile _: UserProfile, count _: Int) async throws -> [Meal] {
+            alternativesToReturn
+        }
     }
 
+    private struct StubSaveError: Error {}
+
     private final class StubMealPlanRepository: MealPlanRepository, @unchecked Sendable {
-        func save(_: MealPlan) async throws {}
+        let failFromSaveIndex: Int?
+        private var saveCount = 0
+        init(failFromSaveIndex: Int? = nil) {
+            self.failFromSaveIndex = failFromSaveIndex
+        }
+
+        func save(_: MealPlan) async throws {
+            defer { saveCount += 1 }
+            if let failFromSaveIndex, saveCount >= failFromSaveIndex {
+                throw StubSaveError()
+            }
+        }
+
         func fetchLatest() async throws -> MealPlan? {
             nil
         }
@@ -33,6 +53,32 @@ final class MealPlannerViewModelTests: XCTestCase {
     ) -> MealPlannerViewModel {
         MealPlannerViewModel(
             planner: StubMealPlanner(plan: plan),
+            generateShoppingList: GenerateShoppingListFromMealPlanUseCase(),
+            mealPlanRepository: StubMealPlanRepository(),
+            shoppingListRepository: shopping
+        )
+    }
+
+    private func makeModel(
+        plan: MealPlan,
+        failFromSaveIndex: Int,
+        shopping: InMemoryShoppingListRepository
+    ) -> MealPlannerViewModel {
+        MealPlannerViewModel(
+            planner: StubMealPlanner(plan: plan),
+            generateShoppingList: GenerateShoppingListFromMealPlanUseCase(),
+            mealPlanRepository: StubMealPlanRepository(failFromSaveIndex: failFromSaveIndex),
+            shoppingListRepository: shopping
+        )
+    }
+
+    private func makeModel(
+        plan: MealPlan,
+        alternatives: [Meal],
+        shopping: InMemoryShoppingListRepository
+    ) -> MealPlannerViewModel {
+        MealPlannerViewModel(
+            planner: StubMealPlanner(plan: plan, alternatives: alternatives),
             generateShoppingList: GenerateShoppingListFromMealPlanUseCase(),
             mealPlanRepository: StubMealPlanRepository(),
             shoppingListRepository: shopping
@@ -102,5 +148,61 @@ final class MealPlannerViewModelTests: XCTestCase {
         XCTAssertTrue(repo.items.isEmpty)
         XCTAssertEqual(repo.addCount, 0)
         XCTAssertEqual(model.shoppingConfirmation, "All ingredients are already in your pantry.")
+    }
+
+    func testLoadAlternativesExposesPlannerSuggestions() async {
+        let original = Meal(name: "Original", mealType: .dinner, dayIndex: 0)
+        let altA = Meal(name: "Alt A", mealType: .dinner, dayIndex: 0)
+        let altB = Meal(name: "Alt B", mealType: .dinner, dayIndex: 0)
+        let repo = InMemoryShoppingListRepository()
+        let model = makeModel(
+            plan: MealPlan(title: "Plan", meals: [original]),
+            alternatives: [altA, altB],
+            shopping: repo
+        )
+        await model.generate(products: [], profile: UserProfile())
+
+        await model.loadAlternatives(for: original)
+
+        XCTAssertEqual(model.alternatives.map(\.name), ["Alt A", "Alt B"])
+        XCTAssertFalse(model.isLoadingAlternatives)
+    }
+
+    func testReplaceSwapsMealKeepingOthers() async {
+        let dinner = Meal(name: "Dinner", mealType: .dinner, dayIndex: 0)
+        let lunch = Meal(name: "Lunch", mealType: .lunch, dayIndex: 1)
+        let replacement = Meal(name: "New Dinner", mealType: .dinner, dayIndex: 0)
+        let repo = InMemoryShoppingListRepository()
+        let model = makeModel(
+            plan: MealPlan(title: "Plan", meals: [dinner, lunch]),
+            shopping: repo
+        )
+        await model.generate(products: [], profile: UserProfile())
+
+        await model.replace(dinner, with: replacement)
+
+        let names = model.plan?.meals.map(\.name).sorted()
+        XCTAssertEqual(names, ["Lunch", "New Dinner"])
+        XCTAssertEqual(model.plan?.meals.count, 2)
+    }
+
+    func testReplaceRollsBackWhenSaveFails() async {
+        let dinner = Meal(name: "Dinner", mealType: .dinner, dayIndex: 0)
+        let lunch = Meal(name: "Lunch", mealType: .lunch, dayIndex: 1)
+        let replacement = Meal(name: "New Dinner", mealType: .dinner, dayIndex: 0)
+        let repo = InMemoryShoppingListRepository()
+        let model = makeModel(
+            plan: MealPlan(title: "Plan", meals: [dinner, lunch]),
+            failFromSaveIndex: 1,
+            shopping: repo
+        )
+        await model.generate(products: [], profile: UserProfile())
+
+        let didReplace = await model.replace(dinner, with: replacement)
+
+        XCTAssertFalse(didReplace)
+        let names = model.plan?.meals.map(\.name).sorted()
+        XCTAssertEqual(names, ["Dinner", "Lunch"], "Plan should be rolled back when save fails")
+        XCTAssertNotNil(model.errorMessage)
     }
 }
