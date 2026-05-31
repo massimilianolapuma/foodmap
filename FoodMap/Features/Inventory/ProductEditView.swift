@@ -69,6 +69,7 @@ private struct EditForm: View {
                             systemImage: "snowflake"
                         )
                     }
+                    .accessibilityIdentifier("product.freezer.applyButton")
                 }
             }
 

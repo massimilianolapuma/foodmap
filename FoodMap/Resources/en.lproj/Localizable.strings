@@ -240,6 +240,5 @@
 
 /* MARK: Frozen products */
 "Freezing" = "Freezing";
-"Freezing pauses spoilage. We've estimated a freezer use-by date for this category." = "Freezing pauses spoilage. We've estimated a freezer use-by date for this category.";
-"Freeze items while still fresh and label them with today's date." = "Freeze items while still fresh and label them with today's date.";
+"Freezing pauses spoilage. We've estimated a freezer use-by date for this category.\nFreeze items while still fresh and label them with today's date." = "Freezing pauses spoilage. We've estimated a freezer use-by date for this category.\nFreeze items while still fresh and label them with today's date.";
 "Use estimated freezer date (%@)" = "Use estimated freezer date (%@)";

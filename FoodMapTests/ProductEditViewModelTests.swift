@@ -90,12 +90,13 @@ final class ProductEditViewModelTests: XCTestCase {
     }
 
     func testFreezerSuggestionOfferedWhenMovingPerishableToFreezer() {
+        let nearExpiry = Calendar.current.date(byAdding: .day, value: 3, to: .now) ?? .now
         let product = Product(
             name: "Chicken",
             category: .meatFish,
             storageLocation: .fridge,
             quantity: 1,
-            expiryDate: Date.make(year: 2026, month: 6, day: 1)
+            expiryDate: nearExpiry
         )
         let model = makeModel(product: product, repository: InMemoryProductRepository())
         XCTAssertNil(model.freezerSuggestion)

@@ -71,9 +71,12 @@ final class ProductEditViewModel: ObservableObject {
             return nil
         }
         if hasExpiry, expiryDate >= estimate { return nil }
-        let advice = String(localized: "Freezing pauses spoilage. We've estimated a freezer use-by date for this category.")
-            + " "
-            + String(localized: "Freeze items while still fresh and label them with today's date.")
+        // swiftlint:disable line_length
+        let advice =
+            String(
+                localized: "Freezing pauses spoilage. We've estimated a freezer use-by date for this category.\nFreeze items while still fresh and label them with today's date."
+            )
+        // swiftlint:enable line_length
         return FreezerSuggestion(suggestedExpiry: estimate, advice: advice)
     }
 
