@@ -1,6 +1,9 @@
 # Xcode / SwiftPM
 DerivedData/
 .build/
+build/
+*.xcresult
+coverage.xml
 *.xcodeproj
 !project.yml
 *.xcworkspace

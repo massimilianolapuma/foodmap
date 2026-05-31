@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: read
+  code-quality: write
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -56,9 +57,28 @@ jobs:
               | grep -oE 'iPhone [0-9][0-9A-Za-z ]*' | sed 's/ *$//' | head -1)
           fi
           echo "Using simulator: $DEVICE"
+          rm -rf build/FoodMap.xcresult
           xcodebuild test \
             -scheme "$SCHEME" \
             -destination "platform=iOS Simulator,name=$DEVICE" \
             -skip-testing:FoodMapUITests \
             -enableCodeCoverage YES \
+            -resultBundlePath build/FoodMap.xcresult \
             CODE_SIGNING_ALLOWED=NO
+
+      - name: Generate Cobertura coverage report
+        run: |
+          brew install xcresultparser
+          xcresultparser \
+            --output-format cobertura \
+            --project-root "$GITHUB_WORKSPACE" \
+            build/FoodMap.xcresult > coverage.xml
+          echo "Generated coverage.xml ($(wc -l < coverage.xml) lines)"
+
+      - name: Upload coverage report
+        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+        uses: actions/upload-code-coverage@v1
+        with:
+          file: coverage.xml
+          language: Swift
+          label: code-coverage/xctest
