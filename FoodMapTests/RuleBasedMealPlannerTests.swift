@@ -74,4 +74,43 @@ final class RuleBasedMealPlannerTests: XCTestCase {
             )
         }
     }
+
+    func testGeneratedMealsAreCompleteRecipes() async throws {
+        let today = Date.make(year: 2026, month: 6, day: 1)
+        let spinach = Product(name: "Spinach", expiryDate: .make(year: 2026, month: 6, day: 1))
+        let rice = Product(name: "Rice", expiryDate: .make(year: 2026, month: 6, day: 10))
+        let planner = makePlanner(today: today)
+
+        let plan = try await planner.generatePlan(
+            from: [spinach, rice],
+            profile: profileStandard,
+            planType: .singleDay
+        )
+
+        for meal in plan.meals {
+            XCTAssertFalse(meal.steps.isEmpty, "Each meal must include preparation steps")
+            XCTAssertFalse(meal.ingredients.isEmpty, "Each meal must list its ingredients")
+            let total = try XCTUnwrap(meal.totalMinutes, "Each meal must expose prep/cook time")
+            XCTAssertGreaterThan(total, 0)
+            XCTAssertEqual(meal.totalMinutes, (meal.prepMinutes ?? 0) + (meal.cookMinutes ?? 0))
+        }
+    }
+
+    func testEstimatedCaloriesSumLinkedProductEnergy() async throws {
+        let today = Date.make(year: 2026, month: 6, day: 1)
+        let spinach = Product(name: "Spinach", expiryDate: .make(year: 2026, month: 6, day: 1))
+        spinach.nutrition = NutritionInfo(energyKcal: 120)
+        let rice = Product(name: "Rice", expiryDate: .make(year: 2026, month: 6, day: 2))
+        rice.nutrition = NutritionInfo(energyKcal: 200)
+        let planner = makePlanner(today: today)
+
+        let plan = try await planner.generatePlan(
+            from: [spinach, rice],
+            profile: profileStandard,
+            planType: .singleDay
+        )
+
+        let firstMeal = try XCTUnwrap(plan.meals.first)
+        XCTAssertEqual(firstMeal.estimatedCalories, 320, "Calories should sum linked pantry products")
+    }
 }

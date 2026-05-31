@@ -44,13 +44,22 @@ struct MealPlannerView: View {
             if let plan = model.plan {
                 List {
                     ForEach(plan.meals.sorted { $0.dayIndex < $1.dayIndex }) { meal in
-                        VStack(alignment: .leading, spacing: DesignSystem.Spacing.xs) {
-                            Text(meal.name).font(DesignSystem.Typography.headline)
-                            Text("Day \(meal.dayIndex + 1) · \(meal.mealType.displayName)")
-                                .font(DesignSystem.Typography.caption)
-                                .foregroundStyle(DesignSystem.Colors.secondaryText)
-                            if !meal.recipeSummary.isEmpty {
-                                Text(meal.recipeSummary).font(DesignSystem.Typography.subheadline)
+                        NavigationLink {
+                            MealDetailView(meal: meal)
+                        } label: {
+                            VStack(alignment: .leading, spacing: DesignSystem.Spacing.xs) {
+                                Text(meal.name).font(DesignSystem.Typography.headline)
+                                Text("Day \(meal.dayIndex + 1) · \(meal.mealType.displayName)")
+                                    .font(DesignSystem.Typography.caption)
+                                    .foregroundStyle(DesignSystem.Colors.secondaryText)
+                                if !meal.recipeSummary.isEmpty {
+                                    Text(meal.recipeSummary).font(DesignSystem.Typography.subheadline)
+                                }
+                                if let detail = previewDetail(for: meal) {
+                                    Text(detail)
+                                        .font(DesignSystem.Typography.caption)
+                                        .foregroundStyle(DesignSystem.Colors.secondaryText)
+                                }
                             }
                         }
                         .accessibilityElement(children: .combine)
@@ -100,5 +109,16 @@ struct MealPlannerView: View {
         } message: { message in
             Text(message)
         }
+    }
+
+    private func previewDetail(for meal: Meal) -> String? {
+        var parts: [String] = []
+        if let minutes = meal.totalMinutes {
+            parts.append(String(localized: "\(minutes) min"))
+        }
+        if let kcal = meal.estimatedCalories {
+            parts.append(String(localized: "\(kcal) kcal"))
+        }
+        return parts.isEmpty ? nil : parts.joined(separator: " · ")
     }
 }
