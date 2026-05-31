@@ -103,6 +103,22 @@
 "Generating plan" = "Generazione piano";
 "Creates a meal plan that prioritizes products expiring soon" = "Crea un piano dei pasti che dà priorità ai prodotti in scadenza";
 
+/* MARK: Recipe detail */
+"Ingredients" = "Ingredienti";
+"No ingredients yet." = "Ancora nessun ingrediente.";
+"Steps" = "Passaggi";
+"No steps available." = "Nessun passaggio disponibile.";
+"Day %lld" = "Giorno %lld";
+"%lld min" = "%lld min";
+"%lld kcal" = "%lld kcal";
+"Step %lld: %@" = "Passaggio %lld: %@";
+"Add a few products to your pantry, then generate a plan again." = "Aggiungi qualche prodotto alla dispensa, poi genera di nuovo un piano.";
+"Gather your ingredients and wash anything fresh." = "Prepara gli ingredienti e lava ciò che è fresco.";
+"Prepare %@: peel, chop, or portion as needed." = "Prepara %@: sbuccia, taglia o porziona secondo necessità.";
+"Combine with %@." = "Unisci con %@.";
+"Assemble and serve fresh." = "Componi e servi fresco.";
+"Cook over medium heat until done, season to taste, and serve." = "Cuoci a fuoco medio fino a cottura, regola di sale e servi.";
+
 /* MARK: Shopping list */
 "Add item" = "Aggiungi articolo";
 "Clear purchased" = "Rimuovi acquistati";

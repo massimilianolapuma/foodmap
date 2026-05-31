@@ -103,6 +103,22 @@
 "Generating plan" = "Generating plan";
 "Creates a meal plan that prioritizes products expiring soon" = "Creates a meal plan that prioritizes products expiring soon";
 
+/* MARK: Recipe detail */
+"Ingredients" = "Ingredients";
+"No ingredients yet." = "No ingredients yet.";
+"Steps" = "Steps";
+"No steps available." = "No steps available.";
+"Day %lld" = "Day %lld";
+"%lld min" = "%lld min";
+"%lld kcal" = "%lld kcal";
+"Step %lld: %@" = "Step %lld: %@";
+"Add a few products to your pantry, then generate a plan again." = "Add a few products to your pantry, then generate a plan again.";
+"Gather your ingredients and wash anything fresh." = "Gather your ingredients and wash anything fresh.";
+"Prepare %@: peel, chop, or portion as needed." = "Prepare %@: peel, chop, or portion as needed.";
+"Combine with %@." = "Combine with %@.";
+"Assemble and serve fresh." = "Assemble and serve fresh.";
+"Cook over medium heat until done, season to taste, and serve." = "Cook over medium heat until done, season to taste, and serve.";
+
 /* MARK: Shopping list */
 "Add item" = "Add item";
 "Clear purchased" = "Clear purchased";

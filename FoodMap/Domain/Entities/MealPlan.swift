@@ -44,6 +44,12 @@ public final class Meal {
     public var dayIndex: Int
     public var recipeSummary: String
     public var estimatedCalories: Int?
+    /// Ordered, step-by-step preparation instructions for the recipe.
+    public var steps: [String]
+    /// Hands-on preparation time in minutes.
+    public var prepMinutes: Int?
+    /// Cooking time in minutes.
+    public var cookMinutes: Int?
     @Relationship(deleteRule: .cascade) public var ingredients: [MealIngredient]
 
     public init(
@@ -53,6 +59,9 @@ public final class Meal {
         dayIndex: Int = 0,
         recipeSummary: String = "",
         estimatedCalories: Int? = nil,
+        steps: [String] = [],
+        prepMinutes: Int? = nil,
+        cookMinutes: Int? = nil,
         ingredients: [MealIngredient] = []
     ) {
         self.id = id
@@ -61,6 +70,9 @@ public final class Meal {
         self.dayIndex = dayIndex
         self.recipeSummary = recipeSummary
         self.estimatedCalories = estimatedCalories
+        self.steps = steps
+        self.prepMinutes = prepMinutes
+        self.cookMinutes = cookMinutes
         self.ingredients = ingredients
     }
 }
@@ -69,6 +81,16 @@ public extension Meal {
     var mealType: MealType {
         get { MealType(rawValue: mealTypeRaw) ?? .dinner }
         set { mealTypeRaw = newValue.rawValue }
+    }
+
+    /// Total time (prep + cook) in minutes when at least one component is known.
+    var totalMinutes: Int? {
+        switch (prepMinutes, cookMinutes) {
+        case let (prep?, cook?): prep + cook
+        case let (prep?, nil): prep
+        case let (nil, cook?): cook
+        case (nil, nil): nil
+        }
     }
 }
 

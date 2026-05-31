@@ -95,7 +95,9 @@ public struct FoundationModelsMealPlanner: MealPlannerAIService {
             Create a \(days)-day meal plan with exactly two meals per day (lunch and dinner).
             Prioritize using the pantry items that expire soonest to reduce food waste.
             Respect the diet type "\(diet)" and strictly avoid these allergens: \(allergens).
-            Keep summaries practical and friendly. Do not include any health or medical claims.
+            For each meal include ingredients, ordered preparation steps, an estimated
+            calorie count per serving, and prep and cook times in minutes.
+            Keep summaries and steps practical and friendly. Do not include any health or medical claims.
 
             Pantry (most urgent first):
             \(pantryLines.isEmpty ? "- (empty)" : pantryLines)
@@ -132,11 +134,18 @@ public struct FoundationModelsMealPlanner: MealPlannerAIService {
                 }
                 let name = String(raw.name.prefix(120)).trimmingCharacters(in: .whitespacesAndNewlines)
                 let summary = String(raw.summary.prefix(280)).trimmingCharacters(in: .whitespacesAndNewlines)
+                let steps = raw.steps.prefix(12).map { step in
+                    String(step.prefix(200)).trimmingCharacters(in: .whitespacesAndNewlines)
+                }.filter { !$0.isEmpty }
                 return Meal(
                     name: name.isEmpty ? "\(slot.displayName)" : name,
                     mealType: slot,
                     dayIndex: index / 2 < days ? index / 2 : dayIndex,
                     recipeSummary: summary,
+                    estimatedCalories: clampCalories(raw.estimatedCalories),
+                    steps: Array(steps),
+                    prepMinutes: clampMinutes(raw.prepMinutes),
+                    cookMinutes: clampMinutes(raw.cookMinutes),
                     ingredients: Array(ingredients)
                 )
             }
@@ -157,6 +166,18 @@ public struct FoundationModelsMealPlanner: MealPlannerAIService {
             case .threeDays: "3-day plan"
             case .week: "Weekly plan"
             }
+        }
+
+        /// Clamps an untrusted calorie value into a sane range, or drops it.
+        private func clampCalories(_ value: Int?) -> Int? {
+            guard let value, value > 0 else { return nil }
+            return min(value, 5000)
+        }
+
+        /// Clamps an untrusted minute value into a sane range, or drops it.
+        private func clampMinutes(_ value: Int?) -> Int? {
+            guard let value, value > 0 else { return nil }
+            return min(value, 600)
         }
     #endif
 }
@@ -185,5 +206,13 @@ public struct FoundationModelsMealPlanner: MealPlannerAIService {
         var summary: String
         @Guide(description: "The ingredient names used in this meal")
         var ingredients: [String]
+        @Guide(description: "Ordered preparation steps, each a short practical sentence. No health or medical claims.")
+        var steps: [String]
+        @Guide(description: "Estimated total calories for one serving")
+        var estimatedCalories: Int?
+        @Guide(description: "Hands-on preparation time in minutes")
+        var prepMinutes: Int?
+        @Guide(description: "Cooking time in minutes")
+        var cookMinutes: Int?
     }
 #endif

@@ -67,7 +67,9 @@ public struct RuleBasedMealPlanner: MealPlannerAIService {
                 name: "\(mealType.displayName): pantry pick",
                 mealType: mealType,
                 dayIndex: dayIndex,
-                recipeSummary: "Add products to your pantry to get tailored suggestions."
+                recipeSummary: "Add products to your pantry to get tailored suggestions.",
+                steps: [String(localized: "Add a few products to your pantry, then generate a plan again.")],
+                ingredients: []
             )
         }
 
@@ -99,9 +101,51 @@ public struct RuleBasedMealPlanner: MealPlannerAIService {
             mealType: mealType,
             dayIndex: dayIndex,
             recipeSummary: "Use \(primary.name) before it expires, combined with what you already have.",
-            estimatedCalories: primary.nutrition?.energyKcal.map { Int($0) },
+            estimatedCalories: estimatedCalories(for: ingredients, products: pantry),
+            steps: steps(for: primary, ingredients: ingredients, mealType: mealType),
+            prepMinutes: 10,
+            cookMinutes: cookMinutes(for: mealType),
             ingredients: ingredients
         )
+    }
+
+    /// Sums known per-product energy values across the meal's pantry-linked ingredients.
+    private func estimatedCalories(for ingredients: [MealIngredient], products: [Product]) -> Int? {
+        let byID = Dictionary(uniqueKeysWithValues: products.map { ($0.id, $0) })
+        let total = ingredients.reduce(into: 0.0) { sum, ingredient in
+            if let id = ingredient.linkedProductID, let kcal = byID[id]?.nutrition?.energyKcal {
+                sum += kcal
+            }
+        }
+        return total > 0 ? Int(total.rounded()) : nil
+    }
+
+    /// Builds simple, practical preparation steps. No health or medical claims.
+    private func steps(for primary: Product, ingredients: [MealIngredient], mealType: MealType) -> [String] {
+        let others = ingredients.dropFirst().map(\.name)
+        var steps = [
+            String(localized: "Gather your ingredients and wash anything fresh."),
+            String(localized: "Prepare \(primary.name): peel, chop, or portion as needed.")
+        ]
+        if !others.isEmpty {
+            steps.append(String(localized: "Combine with \(others.joined(separator: ", "))."))
+        }
+        switch mealType {
+        case .breakfast:
+            steps.append(String(localized: "Assemble and serve fresh."))
+        case .lunch, .dinner, .snack:
+            steps.append(String(localized: "Cook over medium heat until done, season to taste, and serve."))
+        }
+        return steps
+    }
+
+    private func cookMinutes(for mealType: MealType) -> Int {
+        switch mealType {
+        case .breakfast: 5
+        case .snack: 5
+        case .lunch: 20
+        case .dinner: 25
+        }
     }
 
     private func planTitle(for type: MealPlanType) -> String {
