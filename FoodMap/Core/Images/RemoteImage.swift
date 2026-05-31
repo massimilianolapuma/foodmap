@@ -68,7 +68,11 @@ actor RemoteImageLoader {
         }
         do {
             let (data, response) = try await session.data(from: url)
+            // URLSession follows redirects automatically, so the initial guard is not
+            // enough: re-validate the final response URL to keep the HTTPS-only promise
+            // even if the server redirected to a downgraded (e.g. http) location.
             guard let http = response as? HTTPURLResponse,
+                  http.url?.scheme?.lowercased() == "https",
                   (200..<300).contains(http.statusCode),
                   data.count <= Self.maxBytes,
                   let image = ImageDownsampler.downsample(data: data, maxPixel: maxPixel)
