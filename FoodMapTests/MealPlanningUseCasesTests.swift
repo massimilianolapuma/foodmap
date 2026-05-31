@@ -20,6 +20,41 @@ final class MealPlanningUseCasesTests: XCTestCase {
         XCTAssertTrue(result.isEmpty)
     }
 
+    func testCombinedDietsRequireAllConstraints() {
+        let filter = FilterMealsByDietRestrictionsUseCase()
+        let profile = UserProfile(dietTypes: [.vegana, .glutenFree])
+
+        // Meat fails the vegan constraint even though it is gluten free.
+        let meatMeal = Meal(name: "Beef bowl", ingredients: [MealIngredient(name: "beef")])
+        // Pasta carrying gluten fails the gluten-free constraint.
+        let glutenProduct = Product(name: "Pasta", allergens: [.gluten])
+        let pastaMeal = Meal(
+            name: "Veggie pasta",
+            ingredients: [MealIngredient(name: "Pasta", linkedProductID: glutenProduct.id)]
+        )
+        // A vegan, gluten-free meal passes both constraints.
+        let saladMeal = Meal(name: "Garden salad", ingredients: [MealIngredient(name: "lettuce")])
+
+        let result = filter(
+            meals: [meatMeal, pastaMeal, saladMeal],
+            profile: profile,
+            productsByID: [glutenProduct.id: glutenProduct]
+        )
+        XCTAssertEqual(result.map(\.name), ["Garden salad"])
+    }
+
+    func testMultiDietBackfillsLegacySingleDiet() {
+        // A profile created with the legacy single-diet API still reports it
+        // through the new multi-diet accessor.
+        let profile = UserProfile(dietType: .vegetariana)
+        XCTAssertEqual(profile.dietTypes, [.vegetariana])
+    }
+
+    func testEmptyDietSelectionFallsBackToStandard() {
+        let profile = UserProfile(dietTypes: [])
+        XCTAssertEqual(profile.dietTypes, [.standard])
+    }
+
     func testShoppingListAggregatesMissingIngredients() {
         let useCase = GenerateShoppingListFromMealPlanUseCase()
         let meal1 = Meal(name: "M1", ingredients: [

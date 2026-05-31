@@ -7,6 +7,9 @@ public final class UserProfile {
     @Attribute(.unique) public var id: UUID
     public var displayName: String
     public var dietTypeRaw: String
+    /// Selected diet types. Inline default so lightweight migration can backfill
+    /// existing single-diet rows from ``dietTypeRaw``.
+    public var dietTypesRaw: [String] = []
     public var allergensRaw: [String]
     public var preferredCuisinesRaw: [String]
     public var dailyCalorieTarget: Int?
@@ -19,6 +22,7 @@ public final class UserProfile {
         id: UUID = UUID(),
         displayName: String = "",
         dietType: DietType = .standard,
+        dietTypes: [DietType]? = nil,
         allergens: [Allergen] = [],
         preferredCuisines: [CuisineType] = [.any],
         dailyCalorieTarget: Int? = nil,
@@ -29,7 +33,9 @@ public final class UserProfile {
     ) {
         self.id = id
         self.displayName = displayName
-        dietTypeRaw = dietType.rawValue
+        let resolved = UserProfile.normalize(dietTypes ?? [dietType])
+        dietTypeRaw = (resolved.first ?? .standard).rawValue
+        dietTypesRaw = resolved.map(\.rawValue)
         allergensRaw = allergens.map(\.rawValue)
         preferredCuisinesRaw = preferredCuisines.map(\.rawValue)
         self.dailyCalorieTarget = dailyCalorieTarget
@@ -58,6 +64,31 @@ public extension UserProfile {
     var dietType: DietType {
         get { DietType(rawValue: dietTypeRaw) ?? .standard }
         set { dietTypeRaw = newValue.rawValue }
+    }
+
+    /// All diet types the user follows. Falls back to the legacy single
+    /// ``dietType`` when no multi-diet selection has been stored yet, so
+    /// existing data keeps working without an explicit migration step.
+    var dietTypes: [DietType] {
+        get {
+            let decoded = dietTypesRaw.compactMap(DietType.init(rawValue:))
+            let resolved = decoded.isEmpty ? [dietType] : decoded
+            return UserProfile.normalize(resolved)
+        }
+        set {
+            let resolved = UserProfile.normalize(newValue)
+            dietTypesRaw = resolved.map(\.rawValue)
+            dietTypeRaw = (resolved.first ?? .standard).rawValue
+        }
+    }
+
+    /// Deduplicates diet types while preserving declaration order, and collapses
+    /// an empty selection to ``DietType/standard`` so a profile always has at
+    /// least one diet.
+    static func normalize(_ diets: [DietType]) -> [DietType] {
+        var seen: Set<DietType> = []
+        let ordered = DietType.allCases.filter { diets.contains($0) && seen.insert($0).inserted }
+        return ordered.isEmpty ? [.standard] : ordered
     }
 
     var allergens: [Allergen] {

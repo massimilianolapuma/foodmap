@@ -61,13 +61,9 @@ private struct ProfileForm: View {
             }
 
             Section("Diet") {
-                Picker("Diet type", selection: Binding(
-                    get: { profile.dietType },
-                    set: { profile.dietType = $0
-                        save()
-                    }
-                )) {
-                    ForEach(DietType.allCases, id: \.self) { Text($0.displayName).tag($0) }
+                ForEach(DietType.allCases, id: \.self) { diet in
+                    Toggle(diet.displayName, isOn: dietBinding(for: diet))
+                        .accessibilityIdentifier("profile.diet.\(diet.rawValue)")
                 }
             }
 
@@ -171,6 +167,22 @@ private struct ProfileForm: View {
                 var current = Set(profile.allergens)
                 if isOn { current.insert(allergen) } else { current.remove(allergen) }
                 profile.allergens = Array(current)
+                save()
+            }
+        )
+    }
+
+    private func dietBinding(for diet: DietType) -> Binding<Bool> {
+        Binding(
+            get: { profile.dietTypes.contains(diet) },
+            set: { isOn in
+                var current = profile.dietTypes
+                if isOn {
+                    if !current.contains(diet) { current.append(diet) }
+                } else {
+                    current.removeAll { $0 == diet }
+                }
+                profile.dietTypes = current
                 save()
             }
         )
