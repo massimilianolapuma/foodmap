@@ -27,7 +27,7 @@ build a shopping list.
 - [README](https://github.com/massimilianolapuma/foodmap/blob/main/README.md)
 - [Roadmap](https://github.com/massimilianolapuma/foodmap/blob/main/docs/ROADMAP.md)
 - [Architecture decisions (ADRs)](https://github.com/massimilianolapuma/foodmap/tree/main/docs/decisions)
-- [Privacy policy](https://github.com/massimilianolapuma/foodmap/blob/main/docs/appstore/privacy-policy.md)
+- [Draft privacy policy](https://github.com/massimilianolapuma/foodmap/blob/main/docs/appstore/privacy-policy.md)
 
 ## Tech stack
 
