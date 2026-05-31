@@ -156,14 +156,15 @@ private struct InventoryRow: View {
         .accessibilityHint("Double tap to edit")
     }
 
-    @ViewBuilder
     private var thumbnail: some View {
-        if let data = product.imageData {
-            ThumbnailImage(id: product.id.uuidString, data: data, size: 40)
-                .frame(width: 40, height: 40)
-                .clipShape(RoundedRectangle(cornerRadius: 8))
-                .accessibilityHidden(true)
-        }
+        ProductImageView(
+            id: product.id.uuidString,
+            imageData: product.imageData,
+            imageURLString: product.imageURLString,
+            category: product.category,
+            size: 40
+        )
+        .accessibilityHidden(true)
     }
 
     private var accessibilityLabel: String {

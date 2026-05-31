@@ -155,11 +155,23 @@ private struct ConfirmationSheet: View {
         NavigationStack {
             Form {
                 Section("Product") {
-                    Text(product.name)
-                        .font(DesignSystem.Typography.headline)
-                    if let brand = product.brand, !brand.isEmpty {
-                        Text(brand)
-                            .foregroundStyle(DesignSystem.Colors.secondaryText)
+                    HStack(spacing: DesignSystem.Spacing.md) {
+                        ProductImageView(
+                            id: product.barcode,
+                            imageData: model.capturedImageData,
+                            imageURLString: product.imageURLString,
+                            category: product.category,
+                            size: 56
+                        )
+                        .accessibilityHidden(true)
+                        VStack(alignment: .leading, spacing: DesignSystem.Spacing.xs) {
+                            Text(product.name)
+                                .font(DesignSystem.Typography.headline)
+                            if let brand = product.brand, !brand.isEmpty {
+                                Text(brand)
+                                    .foregroundStyle(DesignSystem.Colors.secondaryText)
+                            }
+                        }
                     }
                     Text(product.barcode)
                         .font(DesignSystem.Typography.caption)
