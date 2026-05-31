@@ -41,6 +41,20 @@ public final class UserProfile {
 }
 
 public extension UserProfile {
+    /// Maximum number of characters retained for a user-supplied display name.
+    static let maxDisplayNameLength = 64
+
+    /// Normalizes a raw display-name input: strips control/newline characters and
+    /// caps the length. Internal spaces are preserved so names can be typed naturally;
+    /// callers should trim leading/trailing whitespace when presenting the value.
+    static func sanitizedDisplayName(_ raw: String) -> String {
+        let withoutControl = raw.unicodeScalars.filter { scalar in
+            !CharacterSet.controlCharacters.contains(scalar) && !CharacterSet.newlines.contains(scalar)
+        }
+        let cleaned = String(String.UnicodeScalarView(withoutControl))
+        return String(cleaned.prefix(maxDisplayNameLength))
+    }
+
     var dietType: DietType {
         get { DietType(rawValue: dietTypeRaw) ?? .standard }
         set { dietTypeRaw = newValue.rawValue }

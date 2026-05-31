@@ -5,7 +5,7 @@ import SwiftUI
 struct ProfileView: View {
     @EnvironmentObject private var container: AppContainer
     @Environment(\.modelContext) private var modelContext
-    @Query private var profiles: [UserProfile]
+    @Query(sort: \UserProfile.id) private var profiles: [UserProfile]
     @State private var model: ProfileViewModel?
 
     private var profile: UserProfile {
@@ -55,6 +55,8 @@ private struct ProfileForm: View {
             Section("You") {
                 TextField("Your name", text: nameBinding)
                     .textContentType(.givenName)
+                    .submitLabel(.done)
+                    .onSubmit(save)
                     .accessibilityIdentifier("profile.displayName")
             }
 
@@ -127,8 +129,9 @@ private struct ProfileForm: View {
         Binding(
             get: { profile.displayName },
             set: { newValue in
-                profile.displayName = newValue
-                save()
+                // Sanitize and cap length on write; let SwiftData autosave persist
+                // intermediate edits, with an explicit save on submit/focus loss.
+                profile.displayName = UserProfile.sanitizedDisplayName(newValue)
             }
         )
     }

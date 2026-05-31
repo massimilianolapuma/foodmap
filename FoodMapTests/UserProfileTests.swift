@@ -25,4 +25,20 @@ final class UserProfileTests: XCTestCase {
         XCTAssertEqual(fetched.count, 1)
         XCTAssertEqual(fetched.first?.displayName, "Marco")
     }
+
+    func testSanitizedDisplayNamePreservesInternalSpaces() {
+        XCTAssertEqual(UserProfile.sanitizedDisplayName("Marco Rossi"), "Marco Rossi")
+    }
+
+    func testSanitizedDisplayNameStripsControlAndNewlineCharacters() {
+        XCTAssertEqual(UserProfile.sanitizedDisplayName("Marco\nRossi\t"), "MarcoRossi")
+    }
+
+    func testSanitizedDisplayNameCapsLength() {
+        let raw = String(repeating: "a", count: UserProfile.maxDisplayNameLength + 20)
+        XCTAssertEqual(
+            UserProfile.sanitizedDisplayName(raw).count,
+            UserProfile.maxDisplayNameLength
+        )
+    }
 }
