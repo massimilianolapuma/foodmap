@@ -5,6 +5,17 @@ public protocol ProductLookupService: Sendable {
     func fetchProduct(by barcode: String) async throws -> ProductLookupResult
 }
 
+/// Uploads a user-contributed product to an external database (e.g. Open Food Facts).
+///
+/// Contributing is opt-in and uses the user's own account credentials. Only
+/// public product metadata is sent — never the user's sensitive data.
+public protocol ProductContributionService: Sendable {
+    func contribute(
+        _ contribution: ProductContribution,
+        using credentials: OpenFoodFactsCredentials
+    ) async throws
+}
+
 /// Recognizes an expiry date from an image using on-device OCR.
 public protocol ExpiryOCRService: Sendable {
     /// Returns candidate dates parsed from the recognized text, most-likely first.
