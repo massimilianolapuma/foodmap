@@ -149,6 +149,48 @@ final class UpdateProductUseCaseTests: XCTestCase {
         XCTAssertNil(stored?.brand)
     }
 
+    func testChangingExpiryDateClearsEstimatedFlag() async throws {
+        let estimated = Date(timeIntervalSince1970: 1_700_000_000)
+        let product = Product(name: "Beef", expiryDate: estimated, expiryIsEstimated: true)
+        let repository = try await makeRepository(seed: product)
+        let useCase = UpdateProductUseCase(repository: repository)
+
+        let edits = ProductEdits(
+            name: "Beef",
+            brand: nil,
+            category: .meatFish,
+            storageLocation: .fridge,
+            quantity: 1,
+            unit: .piece,
+            expiryDate: Date(timeIntervalSince1970: 1_700_500_000)
+        )
+        try await useCase(id: product.id, edits: edits)
+
+        let stored = try await repository.fetch(id: product.id)
+        XCTAssertFalse(stored?.expiryIsEstimated ?? true)
+    }
+
+    func testUnchangedExpiryDateKeepsEstimatedFlag() async throws {
+        let estimated = Date(timeIntervalSince1970: 1_700_000_000)
+        let product = Product(name: "Beef", expiryDate: estimated, expiryIsEstimated: true)
+        let repository = try await makeRepository(seed: product)
+        let useCase = UpdateProductUseCase(repository: repository)
+
+        let edits = ProductEdits(
+            name: "Beef Steak",
+            brand: nil,
+            category: .meatFish,
+            storageLocation: .fridge,
+            quantity: 2,
+            unit: .piece,
+            expiryDate: estimated
+        )
+        try await useCase(id: product.id, edits: edits)
+
+        let stored = try await repository.fetch(id: product.id)
+        XCTAssertTrue(stored?.expiryIsEstimated ?? false)
+    }
+
     private func assertThrowsInvalidInput(
         _ body: () async throws -> Void,
         file: StaticString = #filePath,

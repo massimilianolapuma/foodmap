@@ -16,6 +16,9 @@ public final class Product {
     /// User-captured product photo, stored locally on-device as JPEG. Never uploaded to third parties.
     @Attribute(.externalStorage) public var imageData: Data?
     public var expiryDate: Date?
+    /// `true` when `expiryDate` was estimated for a perishable without an
+    /// explicit date, rather than read from packaging. Advisory only.
+    public var expiryIsEstimated: Bool = false
     public var openedDate: Date?
     public var addedDate: Date
     public var sourceRaw: String
@@ -34,6 +37,7 @@ public final class Product {
         imageURLString: String? = nil,
         imageData: Data? = nil,
         expiryDate: Date? = nil,
+        expiryIsEstimated: Bool = false,
         openedDate: Date? = nil,
         addedDate: Date = .now,
         source: ProductSource = .manual,
@@ -51,6 +55,7 @@ public final class Product {
         self.imageURLString = imageURLString
         self.imageData = imageData
         self.expiryDate = expiryDate
+        self.expiryIsEstimated = expiryIsEstimated
         self.openedDate = openedDate
         self.addedDate = addedDate
         sourceRaw = source.rawValue

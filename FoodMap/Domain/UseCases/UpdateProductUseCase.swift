@@ -63,6 +63,13 @@ public struct UpdateProductUseCase: Sendable {
         product.storageLocation = edits.storageLocation
         product.quantity = edits.quantity
         product.unit = edits.unit
+        // When the user changes the expiry date, it is no longer an estimate:
+        // clear the advisory flag so the product is no longer shown or announced
+        // as estimated. (`AddScannedProductToInventoryUseCase` is the only place
+        // that sets it.)
+        if edits.expiryDate != product.expiryDate {
+            product.expiryIsEstimated = false
+        }
         product.expiryDate = edits.expiryDate
         product.imageData = edits.imageData
 

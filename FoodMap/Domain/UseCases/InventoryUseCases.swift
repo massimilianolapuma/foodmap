@@ -22,9 +22,11 @@ public struct GetExpiringProductsUseCase: Sendable {
 /// entry that shares the same barcode and storage location when present.
 public struct AddScannedProductToInventoryUseCase: Sendable {
     private let repository: ProductRepository
+    private let estimateExpiry: EstimateExpiryDateUseCase
 
-    public init(repository: ProductRepository) {
+    public init(repository: ProductRepository, estimateExpiry: EstimateExpiryDateUseCase = .init()) {
         self.repository = repository
+        self.estimateExpiry = estimateExpiry
     }
 
     public func callAsFunction(
@@ -35,9 +37,20 @@ public struct AddScannedProductToInventoryUseCase: Sendable {
         expiryDate: Date?,
         imageData: Data? = nil
     ) async throws {
+        var resolvedExpiry = expiryDate
+        var expiryIsEstimated = false
+        if resolvedExpiry == nil,
+           let estimate = estimateExpiry(
+               category: lookup.category,
+               storageLocation: storageLocation
+           ) {
+            resolvedExpiry = estimate
+            expiryIsEstimated = true
+        }
+
         if let existing = try await repository.fetch(byBarcode: lookup.barcode),
            existing.storageLocation == storageLocation,
-           existing.expiryDate == expiryDate {
+           existing.expiryDate == resolvedExpiry {
             existing.quantity += quantity
             if existing.imageData == nil, let imageData {
                 existing.imageData = imageData
@@ -67,7 +80,8 @@ public struct AddScannedProductToInventoryUseCase: Sendable {
             unit: unit,
             imageURLString: lookup.imageURLString,
             imageData: imageData,
-            expiryDate: expiryDate,
+            expiryDate: resolvedExpiry,
+            expiryIsEstimated: expiryIsEstimated,
             source: lookup.source,
             allergens: lookup.allergens,
             nutrition: nutrition
