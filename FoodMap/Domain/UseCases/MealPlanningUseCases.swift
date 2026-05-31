@@ -18,18 +18,25 @@ public struct FilterMealsByDietRestrictionsUseCase: Sendable {
             return false
         }
 
-        switch profile.dietType {
+        // A meal must satisfy every selected diet's constraints simultaneously.
+        return profile.dietTypes.allSatisfy { diet in
+            satisfies(diet: diet, meal: meal, allergens: allergens)
+        }
+    }
+
+    private func satisfies(diet: DietType, meal: Meal, allergens: Set<Allergen>) -> Bool {
+        switch diet {
         case .vegana:
-            return allergens.isDisjoint(with: [.milk, .eggs, .fish, .crustaceans, .molluscs])
+            allergens.isDisjoint(with: [.milk, .eggs, .fish, .crustaceans, .molluscs])
                 && !mealMentions(meal, any: ["meat", "beef", "pork", "chicken", "fish", "carne", "pesce", "pollo"])
         case .vegetariana:
-            return !mealMentions(meal, any: ["meat", "beef", "pork", "chicken", "fish", "carne", "pesce", "pollo"])
+            !mealMentions(meal, any: ["meat", "beef", "pork", "chicken", "fish", "carne", "pesce", "pollo"])
         case .glutenFree:
-            return !allergens.contains(.gluten)
+            !allergens.contains(.gluten)
         case .lactoseFree:
-            return !allergens.contains(.milk)
+            !allergens.contains(.milk)
         case .standard, .mediterranea, .iposodica, .ipocalorica, .iperproteica, .diabetica:
-            return true
+            true
         }
     }
 

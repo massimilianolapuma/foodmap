@@ -89,7 +89,7 @@ public struct FoundationModelsMealPlanner: MealPlannerAIService {
                 return "- \(product.name)"
             }.joined(separator: "\n")
 
-            let diet = profile.dietType.displayName
+            let diet = profile.dietTypes.map(\.displayName).joined(separator: ", ")
             let allergens = profile.allergens.isEmpty
                 ? "none"
                 : profile.allergens.map(\.displayName).joined(separator: ", ")
@@ -97,7 +97,7 @@ public struct FoundationModelsMealPlanner: MealPlannerAIService {
             return """
             Create a \(days)-day meal plan with exactly two meals per day (lunch and dinner).
             Prioritize using the pantry items that expire soonest to reduce food waste.
-            Respect the diet type "\(diet)" and strictly avoid these allergens: \(allergens).
+            Respect all of these diet types "\(diet)" and strictly avoid these allergens: \(allergens).
             For each meal include ingredients, ordered preparation steps, an estimated
             calorie count per serving, and prep and cook times in minutes.
             Keep summaries and steps practical and friendly. Do not include any health or medical claims.
