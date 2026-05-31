@@ -15,16 +15,16 @@ public enum ProductCategory: String, Codable, CaseIterable, Sendable {
 
     public var displayName: String {
         switch self {
-        case .fruitsVegetables: "Fruits & Vegetables"
-        case .dairy: "Dairy"
-        case .meatFish: "Meat & Fish"
-        case .bakery: "Bakery"
-        case .pantryStaples: "Pantry Staples"
-        case .frozen: "Frozen"
-        case .beverages: "Beverages"
-        case .snacks: "Snacks"
-        case .condiments: "Condiments"
-        case .other: "Other"
+        case .fruitsVegetables: String(localized: "Fruits & Vegetables")
+        case .dairy: String(localized: "Dairy")
+        case .meatFish: String(localized: "Meat & Fish")
+        case .bakery: String(localized: "Bakery")
+        case .pantryStaples: String(localized: "Pantry Staples")
+        case .frozen: String(localized: "Frozen")
+        case .beverages: String(localized: "Beverages")
+        case .snacks: String(localized: "Snacks")
+        case .condiments: String(localized: "Condiments")
+        case .other: String(localized: "Other")
         }
     }
 }
@@ -37,9 +37,9 @@ public enum StorageLocation: String, Codable, CaseIterable, Sendable {
 
     public var displayName: String {
         switch self {
-        case .fridge: "Fridge"
-        case .freezer: "Freezer"
-        case .pantry: "Pantry"
+        case .fridge: String(localized: "Fridge")
+        case .freezer: String(localized: "Freezer")
+        case .pantry: String(localized: "Pantry")
         }
     }
 }
@@ -55,12 +55,12 @@ public enum MeasurementUnit: String, Codable, CaseIterable, Sendable {
 
     public var abbreviation: String {
         switch self {
-        case .piece: "pc"
-        case .gram: "g"
-        case .kilogram: "kg"
-        case .milliliter: "ml"
-        case .liter: "l"
-        case .pack: "pack"
+        case .piece: String(localized: "unit.pc")
+        case .gram: String(localized: "unit.g")
+        case .kilogram: String(localized: "unit.kg")
+        case .milliliter: String(localized: "unit.ml")
+        case .liter: String(localized: "unit.l")
+        case .pack: String(localized: "unit.pack")
         }
     }
 }
