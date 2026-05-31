@@ -32,6 +32,7 @@ public final class AppContainer: ObservableObject {
     public let addScannedProduct: AddScannedProductToInventoryUseCase
     public let updateProduct: UpdateProductUseCase
     public let generateShoppingList: GenerateShoppingListFromMealPlanUseCase
+    public let suggestProducts: SuggestProductsUseCase
     public let syncExpiryAlerts: SyncExpiryAlertsUseCase
 
     public init(inMemory: Bool = false) {
@@ -96,6 +97,7 @@ public final class AppContainer: ObservableObject {
         addScannedProduct = AddScannedProductToInventoryUseCase(repository: productRepo)
         updateProduct = UpdateProductUseCase(repository: productRepo)
         generateShoppingList = GenerateShoppingListFromMealPlanUseCase()
+        suggestProducts = SuggestProductsUseCase()
         syncExpiryAlerts = SyncExpiryAlertsUseCase(scheduler: notificationScheduler, products: productRepo)
     }
 }
