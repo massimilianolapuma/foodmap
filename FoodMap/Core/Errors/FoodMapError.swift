@@ -11,6 +11,8 @@ public enum FoodMapError: LocalizedError, Equatable, Sendable {
     case ocrFailed
     case notificationPermissionDenied
     case invalidInput(reason: String)
+    case authenticationFailed(reason: String)
+    case authenticationCancelled
 
     public var errorDescription: String? {
         switch self {
@@ -32,6 +34,10 @@ public enum FoodMapError: LocalizedError, Equatable, Sendable {
             "Notifications are off. Enable them to get expiry alerts."
         case let .invalidInput(reason):
             reason
+        case let .authenticationFailed(reason):
+            "Couldn't sign you in: \(reason)"
+        case .authenticationCancelled:
+            "Sign in was cancelled."
         }
     }
 }
