@@ -67,19 +67,26 @@ final class MealPlannerViewModel: ObservableObject {
     }
 
     /// Swaps `meal` for `alternative` in the current plan, preserving every other
-    /// recipe, then persists the change.
-    func replace(_ meal: Meal, with alternative: Meal) async {
-        guard let plan else { return }
-        var meals = plan.meals
-        guard let index = meals.firstIndex(where: { $0.id == meal.id }) else { return }
+    /// recipe, then persists the change. Returns `true` only when the change was
+    /// saved; on failure the in-memory plan is rolled back so UI/state stays
+    /// consistent with what was actually persisted.
+    @discardableResult
+    func replace(_ meal: Meal, with alternative: Meal) async -> Bool {
+        guard let plan else { return false }
+        let previousMeals = plan.meals
+        guard let index = previousMeals.firstIndex(where: { $0.id == meal.id }) else { return false }
+        var meals = previousMeals
         meals[index] = alternative
         plan.meals = meals
         do {
             try await mealPlanRepository.save(plan)
             self.plan = plan
             objectWillChange.send()
+            return true
         } catch {
+            plan.meals = previousMeals
             errorMessage = message(for: error)
+            return false
         }
     }
 

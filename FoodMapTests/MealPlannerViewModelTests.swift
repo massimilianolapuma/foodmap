@@ -20,8 +20,22 @@ final class MealPlannerViewModelTests: XCTestCase {
         }
     }
 
+    private struct StubSaveError: Error {}
+
     private final class StubMealPlanRepository: MealPlanRepository, @unchecked Sendable {
-        func save(_: MealPlan) async throws {}
+        let failFromSaveIndex: Int?
+        private var saveCount = 0
+        init(failFromSaveIndex: Int? = nil) {
+            self.failFromSaveIndex = failFromSaveIndex
+        }
+
+        func save(_: MealPlan) async throws {
+            defer { saveCount += 1 }
+            if let failFromSaveIndex, saveCount >= failFromSaveIndex {
+                throw StubSaveError()
+            }
+        }
+
         func fetchLatest() async throws -> MealPlan? {
             nil
         }
@@ -41,6 +55,19 @@ final class MealPlannerViewModelTests: XCTestCase {
             planner: StubMealPlanner(plan: plan),
             generateShoppingList: GenerateShoppingListFromMealPlanUseCase(),
             mealPlanRepository: StubMealPlanRepository(),
+            shoppingListRepository: shopping
+        )
+    }
+
+    private func makeModel(
+        plan: MealPlan,
+        failFromSaveIndex: Int,
+        shopping: InMemoryShoppingListRepository
+    ) -> MealPlannerViewModel {
+        MealPlannerViewModel(
+            planner: StubMealPlanner(plan: plan),
+            generateShoppingList: GenerateShoppingListFromMealPlanUseCase(),
+            mealPlanRepository: StubMealPlanRepository(failFromSaveIndex: failFromSaveIndex),
             shoppingListRepository: shopping
         )
     }
@@ -157,5 +184,25 @@ final class MealPlannerViewModelTests: XCTestCase {
         let names = model.plan?.meals.map(\.name).sorted()
         XCTAssertEqual(names, ["Lunch", "New Dinner"])
         XCTAssertEqual(model.plan?.meals.count, 2)
+    }
+
+    func testReplaceRollsBackWhenSaveFails() async {
+        let dinner = Meal(name: "Dinner", mealType: .dinner, dayIndex: 0)
+        let lunch = Meal(name: "Lunch", mealType: .lunch, dayIndex: 1)
+        let replacement = Meal(name: "New Dinner", mealType: .dinner, dayIndex: 0)
+        let repo = InMemoryShoppingListRepository()
+        let model = makeModel(
+            plan: MealPlan(title: "Plan", meals: [dinner, lunch]),
+            failFromSaveIndex: 1,
+            shopping: repo
+        )
+        await model.generate(products: [], profile: UserProfile())
+
+        let didReplace = await model.replace(dinner, with: replacement)
+
+        XCTAssertFalse(didReplace)
+        let names = model.plan?.meals.map(\.name).sorted()
+        XCTAssertEqual(names, ["Dinner", "Lunch"], "Plan should be rolled back when save fails")
+        XCTAssertNotNil(model.errorMessage)
     }
 }

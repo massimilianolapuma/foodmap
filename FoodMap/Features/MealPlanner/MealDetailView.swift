@@ -150,8 +150,9 @@ struct ReplaceRecipeView: View {
                     List(viewModel.alternatives) { alternative in
                         Button {
                             Task {
-                                await viewModel.replace(meal, with: alternative)
-                                onReplaced()
+                                if await viewModel.replace(meal, with: alternative) {
+                                    onReplaced()
+                                }
                             }
                         } label: {
                             VStack(alignment: .leading, spacing: DesignSystem.Spacing.xs) {
