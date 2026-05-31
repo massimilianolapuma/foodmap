@@ -94,6 +94,7 @@
 "1 day" = "1 day";
 "3 days" = "3 days";
 "Week" = "Week";
+"Month" = "Month";
 "Day %lld · %@" = "Day %lld · %@";
 "Add missing items to shopping list" = "Add missing items to shopping list";
 "Adds ingredients not in your pantry to the shopping list" = "Adds ingredients not in your pantry to the shopping list";

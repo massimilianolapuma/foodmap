@@ -45,14 +45,6 @@ public struct FoundationModelsMealPlanner: MealPlannerAIService {
         }
     }
 
-    private func dayCount(for planType: MealPlanType) -> Int {
-        switch planType {
-        case .singleDay: 1
-        case .threeDays: 3
-        case .week: 7
-        }
-    }
-
     #if canImport(FoundationModels)
         @available(iOS 26, *)
         private func generateOnDevice(
@@ -64,7 +56,7 @@ public struct FoundationModelsMealPlanner: MealPlannerAIService {
             guard case .available = SystemLanguageModel.default.availability else { return nil }
 
             let prioritizedProducts = prioritized(products)
-            let days = dayCount(for: planType)
+            let days = planType.dayCount
             let prompt = buildPrompt(
                 prioritized: prioritizedProducts,
                 profile: profile,
@@ -165,6 +157,7 @@ public struct FoundationModelsMealPlanner: MealPlannerAIService {
             case .singleDay: "Today's plan"
             case .threeDays: "3-day plan"
             case .week: "Weekly plan"
+            case .month: "Monthly plan"
             }
         }
 

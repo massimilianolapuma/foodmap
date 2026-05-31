@@ -41,7 +41,7 @@ final class RuleBasedMealPlannerTests: XCTestCase {
         ]
         let planner = makePlanner(today: today)
 
-        let cases: [(MealPlanType, Int)] = [(.singleDay, 2), (.threeDays, 6), (.week, 14)]
+        let cases: [(MealPlanType, Int)] = [(.singleDay, 2), (.threeDays, 6), (.week, 14), (.month, 60)]
         for (planType, expected) in cases {
             let plan = try await planner.generatePlan(from: products, profile: profileStandard, planType: planType)
             XCTAssertEqual(plan.meals.count, expected, "\(planType) should yield \(expected) meals (days × 2)")

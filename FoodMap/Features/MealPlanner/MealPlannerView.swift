@@ -37,6 +37,7 @@ struct MealPlannerView: View {
                 Text("1 day").tag(MealPlanType.singleDay)
                 Text("3 days").tag(MealPlanType.threeDays)
                 Text("Week").tag(MealPlanType.week)
+                Text("Month").tag(MealPlanType.month)
             }
             .pickerStyle(.segmented)
             .padding()

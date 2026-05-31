@@ -94,6 +94,7 @@
 "1 day" = "1 giorno";
 "3 days" = "3 giorni";
 "Week" = "Settimana";
+"Month" = "Mese";
 "Day %lld · %@" = "Giorno %lld · %@";
 "Add missing items to shopping list" = "Aggiungi gli ingredienti mancanti alla lista della spesa";
 "Adds ingredients not in your pantry to the shopping list" = "Aggiunge alla lista della spesa gli ingredienti che non hai in dispensa";

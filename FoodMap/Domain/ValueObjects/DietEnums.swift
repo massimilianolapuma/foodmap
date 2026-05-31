@@ -99,6 +99,26 @@ public enum MealPlanType: String, Codable, CaseIterable, Sendable {
     case singleDay
     case threeDays
     case week
+    case month
+
+    /// Number of days the horizon spans. A month is modeled as 30 days.
+    public var dayCount: Int {
+        switch self {
+        case .singleDay: 1
+        case .threeDays: 3
+        case .week: 7
+        case .month: 30
+        }
+    }
+
+    public var displayName: String {
+        switch self {
+        case .singleDay: String(localized: "1 day")
+        case .threeDays: String(localized: "3 days")
+        case .week: String(localized: "Week")
+        case .month: String(localized: "Month")
+        }
+    }
 }
 
 /// Shopping-list grouping for an efficient store route.
