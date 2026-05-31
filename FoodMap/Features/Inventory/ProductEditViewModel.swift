@@ -26,8 +26,14 @@ final class ProductEditViewModel: ObservableObject {
     private let productID: UUID
     private let update: UpdateProductUseCase
     private let repository: ProductRepository
+    private let estimateExpiry: EstimateExpiryDateUseCase
 
-    init(product: Product, update: UpdateProductUseCase, repository: ProductRepository) {
+    init(
+        product: Product,
+        update: UpdateProductUseCase,
+        repository: ProductRepository,
+        estimateExpiry: EstimateExpiryDateUseCase = .init()
+    ) {
         productID = product.id
         name = product.name
         brand = product.brand ?? ""
@@ -40,10 +46,46 @@ final class ProductEditViewModel: ObservableObject {
         imageData = product.imageData
         self.update = update
         self.repository = repository
+        self.estimateExpiry = estimateExpiry
     }
 
     var canSave: Bool {
         !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && quantity >= 0
+    }
+
+    /// A suggested, longer use-by date offered when an item is moved to the
+    /// freezer. Surfaced only when freezing would meaningfully extend the
+    /// current expiry, so the user can opt in. Advisory only — no food-safety
+    /// guarantees are made.
+    struct FreezerSuggestion: Equatable {
+        let suggestedExpiry: Date
+        let advice: String
+    }
+
+    /// Non-nil when the product is stored in the freezer, its category has a
+    /// known freezer shelf life, and that estimate is later than the current
+    /// expiry (or no expiry is set).
+    var freezerSuggestion: FreezerSuggestion? {
+        guard storageLocation == .freezer else { return nil }
+        guard let estimate = estimateExpiry(category: category, storageLocation: .freezer) else {
+            return nil
+        }
+        if hasExpiry, expiryDate >= estimate { return nil }
+        // swiftlint:disable line_length
+        let advice =
+            String(
+                localized: "Freezing pauses spoilage. We've estimated a freezer use-by date for this category.\nFreeze items while still fresh and label them with today's date."
+            )
+        // swiftlint:enable line_length
+        return FreezerSuggestion(suggestedExpiry: estimate, advice: advice)
+    }
+
+    /// Applies the freezer suggestion, marking the product as having an
+    /// estimated expiry far enough out to reflect frozen storage.
+    func applyFreezerSuggestion() {
+        guard let suggestion = freezerSuggestion else { return }
+        hasExpiry = true
+        expiryDate = suggestion.suggestedExpiry
     }
 
     func incrementQuantity(by step: Double = 1) {

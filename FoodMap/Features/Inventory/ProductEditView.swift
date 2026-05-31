@@ -56,6 +56,23 @@ private struct EditForm: View {
                 }
             }
 
+            if let suggestion = model.freezerSuggestion {
+                Section("Freezing") {
+                    Text(suggestion.advice)
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                    Button {
+                        model.applyFreezerSuggestion()
+                    } label: {
+                        Label(
+                            "Use estimated freezer date (\(suggestion.suggestedExpiry.formatted(date: .abbreviated, time: .omitted)))",
+                            systemImage: "snowflake"
+                        )
+                    }
+                    .accessibilityIdentifier("product.freezer.applyButton")
+                }
+            }
+
             Section("Photo") {
                 PhotoCaptureField(imageData: $model.imageData)
             }
