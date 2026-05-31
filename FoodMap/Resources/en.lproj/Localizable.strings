@@ -238,6 +238,20 @@
 "Fast, deterministic, fully offline." = "Fast, deterministic, fully offline.";
 "Apple on-device model. Stays private." = "Apple on-device model. Stays private.";
 
+/* MARK: Diet guide */
+"Diet guide" = "Diet guide";
+"About these diets" = "About these diets";
+"Informational only — not medical or nutritional advice. Adjust your diets anytime in your profile." = "Informational only — not medical or nutritional advice. Adjust your diets anytime in your profile.";
+"A balanced everyday diet with no specific restrictions. Includes a variety of foods across all groups." = "A balanced everyday diet with no specific restrictions. Includes a variety of foods across all groups.";
+"Emphasizes vegetables, fruit, whole grains, legumes, fish and olive oil. Limits red meat and processed foods." = "Emphasizes vegetables, fruit, whole grains, legumes, fish and olive oil. Limits red meat and processed foods.";
+"Keeps salt low. Favors fresh, unprocessed foods and herbs for flavor; limits cured meats, cheese and salty snacks." = "Keeps salt low. Favors fresh, unprocessed foods and herbs for flavor; limits cured meats, cheese and salty snacks.";
+"Reduces total calories while keeping meals balanced. Favors vegetables, lean protein and whole grains; limits sugary and fatty foods." = "Reduces total calories while keeping meals balanced. Favors vegetables, lean protein and whole grains; limits sugary and fatty foods.";
+"Increases protein intake. Favors lean meat, fish, eggs, dairy and legumes; balances with vegetables and whole grains." = "Increases protein intake. Favors lean meat, fish, eggs, dairy and legumes; balances with vegetables and whole grains.";
+"Excludes meat and fish. Includes vegetables, fruit, grains, legumes, eggs and dairy." = "Excludes meat and fish. Includes vegetables, fruit, grains, legumes, eggs and dairy.";
+"Excludes all animal products. Includes vegetables, fruit, grains, legumes, nuts and seeds." = "Excludes all animal products. Includes vegetables, fruit, grains, legumes, nuts and seeds.";
+"Focuses on steady blood-sugar choices: high-fiber foods, whole grains and lean protein; limits refined sugars and simple carbs." = "Focuses on steady blood-sugar choices: high-fiber foods, whole grains and lean protein; limits refined sugars and simple carbs.";
+"Excludes gluten (wheat, barley, rye). Favors naturally gluten-free grains like rice, corn and certified gluten-free oats." = "Excludes gluten (wheat, barley, rye). Favors naturally gluten-free grains like rice, corn and certified gluten-free oats.";
+"Excludes lactose. Favors lactose-free dairy or plant-based alternatives and naturally lactose-free foods." = "Excludes lactose. Favors lactose-free dairy or plant-based alternatives and naturally lactose-free foods.";
 /* MARK: Frozen products */
 "Freezing" = "Freezing";
 "Freezing pauses spoilage. We've estimated a freezer use-by date for this category.\nFreeze items while still fresh and label them with today's date." = "Freezing pauses spoilage. We've estimated a freezer use-by date for this category.\nFreeze items while still fresh and label them with today's date.";
