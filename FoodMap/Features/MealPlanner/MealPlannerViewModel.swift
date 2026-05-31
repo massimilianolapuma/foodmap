@@ -9,11 +9,18 @@ final class MealPlannerViewModel: ObservableObject {
     @Published var errorMessage: String?
     /// User-facing confirmation after adding missing items to the shopping list.
     @Published var shoppingConfirmation: String?
+    /// Candidate recipes offered when the user wants to replace a meal.
+    @Published private(set) var alternatives: [Meal] = []
+    @Published private(set) var isLoadingAlternatives = false
 
     private let planner: MealPlannerAIService
     private let generateShoppingList: GenerateShoppingListFromMealPlanUseCase
     private let mealPlanRepository: MealPlanRepository
     private let shoppingListRepository: ShoppingListRepository
+
+    /// Inputs from the last generation, reused when offering recipe alternatives.
+    private var lastProducts: [Product] = []
+    private var lastProfile = UserProfile()
 
     init(
         planner: MealPlannerAIService,
@@ -30,10 +37,47 @@ final class MealPlannerViewModel: ObservableObject {
     func generate(products: [Product], profile: UserProfile) async {
         isGenerating = true
         defer { isGenerating = false }
+        lastProducts = products
+        lastProfile = profile
         do {
             let newPlan = try await planner.generatePlan(from: products, profile: profile, planType: planType)
             try await mealPlanRepository.save(newPlan)
             plan = newPlan
+        } catch {
+            errorMessage = message(for: error)
+        }
+    }
+
+    /// Loads a few alternative recipes for `meal`, keeping its slot and day, so the
+    /// user can swap a single recipe without regenerating the whole plan.
+    func loadAlternatives(for meal: Meal) async {
+        isLoadingAlternatives = true
+        defer { isLoadingAlternatives = false }
+        alternatives = []
+        do {
+            alternatives = try await planner.alternatives(
+                for: meal,
+                from: lastProducts,
+                profile: lastProfile,
+                count: 3
+            )
+        } catch {
+            errorMessage = message(for: error)
+        }
+    }
+
+    /// Swaps `meal` for `alternative` in the current plan, preserving every other
+    /// recipe, then persists the change.
+    func replace(_ meal: Meal, with alternative: Meal) async {
+        guard let plan else { return }
+        var meals = plan.meals
+        guard let index = meals.firstIndex(where: { $0.id == meal.id }) else { return }
+        meals[index] = alternative
+        plan.meals = meals
+        do {
+            try await mealPlanRepository.save(plan)
+            self.plan = plan
+            objectWillChange.send()
         } catch {
             errorMessage = message(for: error)
         }

@@ -61,6 +61,47 @@ public struct RuleBasedMealPlanner: MealPlannerAIService {
         )
     }
 
+    /// Builds a handful of alternative recipes for a single slot, each driven by a
+    /// different prioritized pantry item (most-expiring first) so the user can swap
+    /// one recipe without losing the waste-reducing focus or touching the rest of the plan.
+    public func alternatives(
+        for meal: Meal,
+        from products: [Product],
+        profile: UserProfile,
+        count: Int
+    ) async throws -> [Meal] {
+        guard count > 0 else { return [] }
+
+        let prioritized = products.sorted {
+            expiryCalculator.priorityScore(for: $0) > expiryCalculator.priorityScore(for: $1)
+        }
+        let productsByID = Dictionary(uniqueKeysWithValues: products.map { ($0.id, $0) })
+
+        // Don't re-suggest the recipe's current primary product.
+        var usedPrimaryIDs = Set<UUID>()
+        if let currentPrimary = meal.ingredients.first?.linkedProductID {
+            usedPrimaryIDs.insert(currentPrimary)
+        }
+
+        var result: [Meal] = []
+        for product in prioritized {
+            if result.count >= count { break }
+            if usedPrimaryIDs.contains(product.id) { continue }
+            usedPrimaryIDs.insert(product.id)
+            result.append(
+                makeMeal(
+                    around: product,
+                    pantry: prioritized,
+                    mealType: meal.mealType,
+                    dayIndex: meal.dayIndex
+                )
+            )
+        }
+
+        let allowed = dietFilter(meals: result, profile: profile, productsByID: productsByID)
+        return allowed.isEmpty ? result : allowed
+    }
+
     private func makeMeal(around primary: Product?, pantry: [Product], mealType: MealType, dayIndex: Int) -> Meal {
         guard let primary else {
             return Meal(

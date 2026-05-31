@@ -108,6 +108,10 @@
 "No ingredients yet." = "No ingredients yet.";
 "Steps" = "Steps";
 "No steps available." = "No steps available.";
+"Replace" = "Replace";
+"Replace recipe" = "Replace recipe";
+"No alternatives" = "No alternatives";
+"Add more products to your pantry to get other recipe ideas." = "Add more products to your pantry to get other recipe ideas.";
 "Day %lld" = "Day %lld";
 "%lld min" = "%lld min";
 "%lld kcal" = "%lld kcal";

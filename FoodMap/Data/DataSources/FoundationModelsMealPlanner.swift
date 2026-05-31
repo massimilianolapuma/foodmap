@@ -38,6 +38,17 @@ public struct FoundationModelsMealPlanner: MealPlannerAIService {
         return try await fallback.generatePlan(from: products, profile: profile, planType: planType)
     }
 
+    /// Alternatives reuse the deterministic fallback so swaps stay fast and offline,
+    /// while keeping the expiring-first prioritization intact.
+    public func alternatives(
+        for meal: Meal,
+        from products: [Product],
+        profile: UserProfile,
+        count: Int
+    ) async throws -> [Meal] {
+        try await fallback.alternatives(for: meal, from: products, profile: profile, count: count)
+    }
+
     /// Products sorted most-expiring first, so the model is steered toward reducing waste.
     private func prioritized(_ products: [Product]) -> [Product] {
         products.sorted {

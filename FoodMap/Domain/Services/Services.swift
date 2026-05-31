@@ -46,4 +46,25 @@ public protocol MealPlannerAIService: Sendable {
         profile: UserProfile,
         planType: MealPlanType
     ) async throws -> MealPlan
+
+    /// Produces up to `count` alternative recipes that could stand in for `meal`,
+    /// keeping the same meal slot and day while still prioritizing expiring products.
+    func alternatives(
+        for meal: Meal,
+        from products: [Product],
+        profile: UserProfile,
+        count: Int
+    ) async throws -> [Meal]
+}
+
+public extension MealPlannerAIService {
+    /// Default: no alternatives. Concrete planners override to offer real choices.
+    func alternatives(
+        for _: Meal,
+        from _: [Product],
+        profile _: UserProfile,
+        count _: Int
+    ) async throws -> [Meal] {
+        []
+    }
 }

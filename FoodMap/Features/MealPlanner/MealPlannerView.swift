@@ -45,7 +45,7 @@ struct MealPlannerView: View {
                 List {
                     ForEach(plan.meals.sorted { $0.dayIndex < $1.dayIndex }) { meal in
                         NavigationLink {
-                            MealDetailView(meal: meal)
+                            MealDetailView(meal: meal, viewModel: model)
                         } label: {
                             VStack(alignment: .leading, spacing: DesignSystem.Spacing.xs) {
                                 Text(meal.name).font(DesignSystem.Typography.headline)

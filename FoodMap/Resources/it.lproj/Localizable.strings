@@ -108,6 +108,10 @@
 "No ingredients yet." = "Ancora nessun ingrediente.";
 "Steps" = "Passaggi";
 "No steps available." = "Nessun passaggio disponibile.";
+"Replace" = "Sostituisci";
+"Replace recipe" = "Sostituisci ricetta";
+"No alternatives" = "Nessuna alternativa";
+"Add more products to your pantry to get other recipe ideas." = "Aggiungi altri prodotti alla dispensa per avere altre idee di ricette.";
 "Day %lld" = "Giorno %lld";
 "%lld min" = "%lld min";
 "%lld kcal" = "%lld kcal";

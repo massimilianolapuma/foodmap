@@ -5,12 +5,18 @@ import XCTest
 final class MealPlannerViewModelTests: XCTestCase {
     private final class StubMealPlanner: MealPlannerAIService, @unchecked Sendable {
         let plan: MealPlan
-        init(plan: MealPlan) {
+        let alternativesToReturn: [Meal]
+        init(plan: MealPlan, alternatives: [Meal] = []) {
             self.plan = plan
+            alternativesToReturn = alternatives
         }
 
         func generatePlan(from _: [Product], profile _: UserProfile, planType _: MealPlanType) async throws -> MealPlan {
             plan
+        }
+
+        func alternatives(for _: Meal, from _: [Product], profile _: UserProfile, count _: Int) async throws -> [Meal] {
+            alternativesToReturn
         }
     }
 
@@ -33,6 +39,19 @@ final class MealPlannerViewModelTests: XCTestCase {
     ) -> MealPlannerViewModel {
         MealPlannerViewModel(
             planner: StubMealPlanner(plan: plan),
+            generateShoppingList: GenerateShoppingListFromMealPlanUseCase(),
+            mealPlanRepository: StubMealPlanRepository(),
+            shoppingListRepository: shopping
+        )
+    }
+
+    private func makeModel(
+        plan: MealPlan,
+        alternatives: [Meal],
+        shopping: InMemoryShoppingListRepository
+    ) -> MealPlannerViewModel {
+        MealPlannerViewModel(
+            planner: StubMealPlanner(plan: plan, alternatives: alternatives),
             generateShoppingList: GenerateShoppingListFromMealPlanUseCase(),
             mealPlanRepository: StubMealPlanRepository(),
             shoppingListRepository: shopping
@@ -102,5 +121,41 @@ final class MealPlannerViewModelTests: XCTestCase {
         XCTAssertTrue(repo.items.isEmpty)
         XCTAssertEqual(repo.addCount, 0)
         XCTAssertEqual(model.shoppingConfirmation, "All ingredients are already in your pantry.")
+    }
+
+    func testLoadAlternativesExposesPlannerSuggestions() async {
+        let original = Meal(name: "Original", mealType: .dinner, dayIndex: 0)
+        let altA = Meal(name: "Alt A", mealType: .dinner, dayIndex: 0)
+        let altB = Meal(name: "Alt B", mealType: .dinner, dayIndex: 0)
+        let repo = InMemoryShoppingListRepository()
+        let model = makeModel(
+            plan: MealPlan(title: "Plan", meals: [original]),
+            alternatives: [altA, altB],
+            shopping: repo
+        )
+        await model.generate(products: [], profile: UserProfile())
+
+        await model.loadAlternatives(for: original)
+
+        XCTAssertEqual(model.alternatives.map(\.name), ["Alt A", "Alt B"])
+        XCTAssertFalse(model.isLoadingAlternatives)
+    }
+
+    func testReplaceSwapsMealKeepingOthers() async {
+        let dinner = Meal(name: "Dinner", mealType: .dinner, dayIndex: 0)
+        let lunch = Meal(name: "Lunch", mealType: .lunch, dayIndex: 1)
+        let replacement = Meal(name: "New Dinner", mealType: .dinner, dayIndex: 0)
+        let repo = InMemoryShoppingListRepository()
+        let model = makeModel(
+            plan: MealPlan(title: "Plan", meals: [dinner, lunch]),
+            shopping: repo
+        )
+        await model.generate(products: [], profile: UserProfile())
+
+        await model.replace(dinner, with: replacement)
+
+        let names = model.plan?.meals.map(\.name).sorted()
+        XCTAssertEqual(names, ["Lunch", "New Dinner"])
+        XCTAssertEqual(model.plan?.meals.count, 2)
     }
 }
