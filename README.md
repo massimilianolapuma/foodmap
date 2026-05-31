@@ -197,4 +197,4 @@ See [AGENTS.md](AGENTS.md) and [.github/copilot-instructions.md](.github/copilot
 
 ## License
 
-[Apache-2.0](LICENSE).
+[MIT](LICENSE).
