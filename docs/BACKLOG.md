@@ -34,3 +34,5 @@ gh issue create --title "<title>" --body-file <(echo "<body>") \
 | [#18](https://github.com/massimilianolapuma/foodmap/issues/18) | P8 | Accessibility pass (VoiceOver, Dynamic Type, contrast) | phase:P8, area:ui, type:chore |
 | [#19](https://github.com/massimilianolapuma/foodmap/issues/19) | P8 | Localization IT/EN | phase:P8, area:ui, type:chore |
 | [#20](https://github.com/massimilianolapuma/foodmap/issues/20) | P8 | Privacy manifest + App Store assets | phase:P8, area:infra, type:chore |
+| [#35](https://github.com/massimilianolapuma/foodmap/issues/35) | P9 | Contribute unknown products to Open Food Facts (photo + nutrition upload) | phase:P9, area:data, type:feature |
+| [#36](https://github.com/massimilianolapuma/foodmap/issues/36) | P10 | iCloud backup & cross-device sync (SwiftData + CloudKit, optional Sign in with Apple) | phase:P10, area:data, type:feature |

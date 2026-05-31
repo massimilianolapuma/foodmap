@@ -18,10 +18,13 @@ Legend: ✅ done · 🚧 in progress · ⬜ not started
 | P6 | AI meal planning | ✅ | RuleBased prioritizes expiring items; FoundationModels on-device adapter (iOS 26+) with fallback. Issues #13–#14. |
 | P7 | Shopping list | ✅ | Generate from meal plan (aggregated), check-off, category sections, manual add, Shopping tab. Issues #15–#16. |
 | P8 | Polish, accessibility, design system, App Store prep | ✅ | Typography tokens, VoiceOver/Dynamic Type, IT/EN localization, privacy manifest, App Store copy. Issues #17–#20. |
+| P9 | Open Food Facts contribution | ⬜ | When a barcode is missing from OFF, let the user attach a front photo + nutrition-label photo and optionally upload the new product to OFF. Issue #35. |
+| P10 | iCloud backup & sync | ⬜ | Persist data to the user's private iCloud (SwiftData + CloudKit) so it survives reinstall and syncs across devices; optional Sign in with Apple. Requires developer account + signing. Issue #36. |
 
 ## Current focus
 - **All phases P0–P8 complete** — full feature set, 64 tests green on iPhone 17 simulator.
 - **Next:** on-device verification (camera/OCR/notifications/FoundationModels) on a real device; App Store assets finalization (screenshots, icon); developer account + signing when ready.
+- **Planned (P9–P10):** Open Food Facts contribution (#35) and iCloud backup/sync (#36).
 
 ## Verified build/test commands
 ```sh
