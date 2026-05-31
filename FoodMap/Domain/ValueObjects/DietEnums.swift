@@ -64,6 +64,48 @@ public enum DietType: String, Codable, CaseIterable, Sendable {
         case .lactoseFree: String(localized: "Lactose-free")
         }
     }
+
+    // swiftlint:disable line_length
+    /// A short, informational description of the diet's principles and the foods
+    /// it typically includes or excludes. Informational only — not medical or
+    /// nutritional advice.
+    public var explanation: String {
+        switch self {
+        case .standard:
+            String(localized: "A balanced everyday diet with no specific restrictions. Includes a variety of foods across all groups.")
+        case .mediterranea:
+            String(
+                localized: "Emphasizes vegetables, fruit, whole grains, legumes, fish and olive oil. Limits red meat and processed foods."
+            )
+        case .iposodica:
+            String(
+                localized: "Keeps salt low. Favors fresh, unprocessed foods and herbs for flavor; limits cured meats, cheese and salty snacks."
+            )
+        case .ipocalorica:
+            String(
+                localized: "Reduces total calories while keeping meals balanced. Favors vegetables, lean protein and whole grains; limits sugary and fatty foods."
+            )
+        case .iperproteica:
+            String(
+                localized: "Increases protein intake. Favors lean meat, fish, eggs, dairy and legumes; balances with vegetables and whole grains."
+            )
+        case .vegetariana:
+            String(localized: "Excludes meat and fish. Includes vegetables, fruit, grains, legumes, eggs and dairy.")
+        case .vegana:
+            String(localized: "Excludes all animal products. Includes vegetables, fruit, grains, legumes, nuts and seeds.")
+        case .diabetica:
+            String(
+                localized: "Focuses on steady blood-sugar choices: high-fiber foods, whole grains and lean protein; limits refined sugars and simple carbs."
+            )
+        case .glutenFree:
+            String(
+                localized: "Excludes gluten (wheat, barley, rye). Favors naturally gluten-free grains like rice, corn and certified gluten-free oats."
+            )
+        case .lactoseFree:
+            String(localized: "Excludes lactose. Favors lactose-free dairy or plant-based alternatives and naturally lactose-free foods.")
+        }
+    }
+    // swiftlint:enable line_length
 }
 
 /// Style of cuisine, used as a soft preference for meal suggestions.

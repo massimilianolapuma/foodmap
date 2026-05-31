@@ -237,3 +237,18 @@
 "Picks the best engine for this device." = "Sceglie il motore migliore per questo dispositivo.";
 "Fast, deterministic, fully offline." = "Veloce, deterministico, completamente offline.";
 "Apple on-device model. Stays private." = "Modello Apple sul dispositivo. Resta privato.";
+
+/* MARK: Diet guide */
+"Diet guide" = "Guida alle diete";
+"About these diets" = "Informazioni sulle diete";
+"Informational only — not medical or nutritional advice. Adjust your diets anytime in your profile." = "Solo a scopo informativo — non è un consiglio medico o nutrizionale. Puoi modificare le tue diete in qualsiasi momento nel profilo.";
+"A balanced everyday diet with no specific restrictions. Includes a variety of foods across all groups." = "Una dieta quotidiana equilibrata senza restrizioni specifiche. Include una varietà di alimenti di tutti i gruppi.";
+"Emphasizes vegetables, fruit, whole grains, legumes, fish and olive oil. Limits red meat and processed foods." = "Privilegia verdura, frutta, cereali integrali, legumi, pesce e olio d'oliva. Limita carne rossa e alimenti processati.";
+"Keeps salt low. Favors fresh, unprocessed foods and herbs for flavor; limits cured meats, cheese and salty snacks." = "Mantiene basso il sale. Predilige alimenti freschi non processati ed erbe aromatiche; limita salumi, formaggi e snack salati.";
+"Reduces total calories while keeping meals balanced. Favors vegetables, lean protein and whole grains; limits sugary and fatty foods." = "Riduce le calorie totali mantenendo pasti equilibrati. Predilige verdura, proteine magre e cereali integrali; limita alimenti zuccherati e grassi.";
+"Increases protein intake. Favors lean meat, fish, eggs, dairy and legumes; balances with vegetables and whole grains." = "Aumenta l'apporto proteico. Predilige carne magra, pesce, uova, latticini e legumi; bilancia con verdura e cereali integrali.";
+"Excludes meat and fish. Includes vegetables, fruit, grains, legumes, eggs and dairy." = "Esclude carne e pesce. Include verdura, frutta, cereali, legumi, uova e latticini.";
+"Excludes all animal products. Includes vegetables, fruit, grains, legumes, nuts and seeds." = "Esclude tutti i prodotti animali. Include verdura, frutta, cereali, legumi, frutta secca e semi.";
+"Focuses on steady blood-sugar choices: high-fiber foods, whole grains and lean protein; limits refined sugars and simple carbs." = "Si concentra su scelte che stabilizzano la glicemia: alimenti ricchi di fibre, cereali integrali e proteine magre; limita zuccheri raffinati e carboidrati semplici.";
+"Excludes gluten (wheat, barley, rye). Favors naturally gluten-free grains like rice, corn and certified gluten-free oats." = "Esclude il glutine (frumento, orzo, segale). Predilige cereali naturalmente senza glutine come riso, mais e avena certificata senza glutine.";
+"Excludes lactose. Favors lactose-free dairy or plant-based alternatives and naturally lactose-free foods." = "Esclude il lattosio. Predilige latticini senza lattosio o alternative vegetali e alimenti naturalmente privi di lattosio.";

@@ -68,6 +68,12 @@ private struct ProfileForm: View {
                     Toggle(diet.displayName, isOn: dietBinding(for: diet))
                         .accessibilityIdentifier("profile.diet.\(diet.rawValue)")
                 }
+                NavigationLink {
+                    DietGuideView()
+                } label: {
+                    Label("About these diets", systemImage: "info.circle")
+                }
+                .accessibilityIdentifier("profile.dietGuideLink")
             }
 
             plannerSection
