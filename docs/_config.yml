@@ -1,0 +1,18 @@
+title: FoodMap
+description: >-
+  Native iOS app for pantry & expiry management with on-device AI meal planning.
+theme: jekyll-theme-cayman
+show_downloads: false
+
+# Only the curated landing page is published. Everything else under docs/
+# (session logs, ADRs, App Store assets, backlog) is internal documentation and
+# is excluded to keep the site focused and to avoid Liquid parsing of raw notes.
+include:
+  - index.md
+exclude:
+  - ai-sessions
+  - appstore
+  - decisions
+  - BACKLOG.md
+  - ROADMAP.md
+  - skills-evaluation.md
