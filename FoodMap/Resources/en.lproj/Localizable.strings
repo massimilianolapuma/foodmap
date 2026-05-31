@@ -252,3 +252,7 @@
 "Focuses on steady blood-sugar choices: high-fiber foods, whole grains and lean protein; limits refined sugars and simple carbs." = "Focuses on steady blood-sugar choices: high-fiber foods, whole grains and lean protein; limits refined sugars and simple carbs.";
 "Excludes gluten (wheat, barley, rye). Favors naturally gluten-free grains like rice, corn and certified gluten-free oats." = "Excludes gluten (wheat, barley, rye). Favors naturally gluten-free grains like rice, corn and certified gluten-free oats.";
 "Excludes lactose. Favors lactose-free dairy or plant-based alternatives and naturally lactose-free foods." = "Excludes lactose. Favors lactose-free dairy or plant-based alternatives and naturally lactose-free foods.";
+/* MARK: Frozen products */
+"Freezing" = "Freezing";
+"Freezing pauses spoilage. We've estimated a freezer use-by date for this category.\nFreeze items while still fresh and label them with today's date." = "Freezing pauses spoilage. We've estimated a freezer use-by date for this category.\nFreeze items while still fresh and label them with today's date.";
+"Use estimated freezer date (%@)" = "Use estimated freezer date (%@)";

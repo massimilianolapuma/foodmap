@@ -252,3 +252,7 @@
 "Focuses on steady blood-sugar choices: high-fiber foods, whole grains and lean protein; limits refined sugars and simple carbs." = "Si concentra su scelte che stabilizzano la glicemia: alimenti ricchi di fibre, cereali integrali e proteine magre; limita zuccheri raffinati e carboidrati semplici.";
 "Excludes gluten (wheat, barley, rye). Favors naturally gluten-free grains like rice, corn and certified gluten-free oats." = "Esclude il glutine (frumento, orzo, segale). Predilige cereali naturalmente senza glutine come riso, mais e avena certificata senza glutine.";
 "Excludes lactose. Favors lactose-free dairy or plant-based alternatives and naturally lactose-free foods." = "Esclude il lattosio. Predilige latticini senza lattosio o alternative vegetali e alimenti naturalmente privi di lattosio.";
+/* MARK: Frozen products */
+"Freezing" = "Congelamento";
+"Freezing pauses spoilage. We've estimated a freezer use-by date for this category.\nFreeze items while still fresh and label them with today's date." = "Il congelamento sospende il deterioramento. Abbiamo stimato una data di consumo da congelatore per questa categoria.\nCongela gli alimenti quando sono ancora freschi ed etichettali con la data di oggi.";
+"Use estimated freezer date (%@)" = "Usa la data stimata da congelatore (%@)";
