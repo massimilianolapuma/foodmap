@@ -36,3 +36,14 @@ gh issue create --title "<title>" --body-file <(echo "<body>") \
 | [#20](https://github.com/massimilianolapuma/foodmap/issues/20) | P8 | Privacy manifest + App Store assets | phase:P8, area:infra, type:chore |
 | [#35](https://github.com/massimilianolapuma/foodmap/issues/35) | P9 | Contribute unknown products to Open Food Facts (photo + nutrition upload) | phase:P9, area:data, type:feature |
 | [#36](https://github.com/massimilianolapuma/foodmap/issues/36) | P10 | iCloud backup & cross-device sync (SwiftData + CloudKit, optional Sign in with Apple) | phase:P10, area:data, type:feature |
+| [#42](https://github.com/massimilianolapuma/foodmap/issues/42) | P11 | First-launch welcome / onboarding screen (shown once) | phase:P11, area:ui, type:feature |
+| [#43](https://github.com/massimilianolapuma/foodmap/issues/43) | P11 | Guided (skippable) product image capture on manual add + manual edit later | phase:P11, area:ui, type:feature |
+| [#44](https://github.com/massimilianolapuma/foodmap/issues/44) | P11 | Representative image for every product (OFF official photo or generated category icon) | phase:P11, area:data, type:feature |
+| [#45](https://github.com/massimilianolapuma/foodmap/issues/45) | P11 | Complete recipes — ingredients, estimated kcal, steps, time | phase:P11, area:domain, type:feature |
+| [#46](https://github.com/massimilianolapuma/foodmap/issues/46) | P11 | Replace a recipe — update or choose among similar | phase:P11, area:domain, type:feature |
+| [#47](https://github.com/massimilianolapuma/foodmap/issues/47) | P11 | Monthly meal plan generation (in addition to weekly) | phase:P11, area:domain, type:feature |
+| [#48](https://github.com/massimilianolapuma/foodmap/issues/48) | P11 | User name for local account | phase:P11, area:ui, type:feature |
+| [#49](https://github.com/massimilianolapuma/foodmap/issues/49) | P11 | Export recipes and meal plan to PDF | phase:P11, area:ui, type:feature |
+| [#50](https://github.com/massimilianolapuma/foodmap/issues/50) | P11 | Select multiple diet types | phase:P11, area:domain, type:feature |
+| [#51](https://github.com/massimilianolapuma/foodmap/issues/51) | P11 | Dedicated diets section with explanations | phase:P11, area:ui, type:feature |
+| [#52](https://github.com/massimilianolapuma/foodmap/issues/52) | P11 | Select the model that generates plans and suggestions | phase:P11, area:data, type:feature |
