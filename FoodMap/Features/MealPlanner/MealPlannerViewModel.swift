@@ -15,6 +15,7 @@ final class MealPlannerViewModel: ObservableObject {
 
     private let planner: MealPlannerAIService
     private let generateShoppingList: GenerateShoppingListFromMealPlanUseCase
+    private let generateShoppingListFromMeal: GenerateShoppingListFromMealUseCase
     private let mealPlanRepository: MealPlanRepository
     private let shoppingListRepository: ShoppingListRepository
 
@@ -26,10 +27,12 @@ final class MealPlannerViewModel: ObservableObject {
         planner: MealPlannerAIService,
         generateShoppingList: GenerateShoppingListFromMealPlanUseCase,
         mealPlanRepository: MealPlanRepository,
-        shoppingListRepository: ShoppingListRepository
+        shoppingListRepository: ShoppingListRepository,
+        generateShoppingListFromMeal: GenerateShoppingListFromMealUseCase = .init()
     ) {
         self.planner = planner
         self.generateShoppingList = generateShoppingList
+        self.generateShoppingListFromMeal = generateShoppingListFromMeal
         self.mealPlanRepository = mealPlanRepository
         self.shoppingListRepository = shoppingListRepository
     }
@@ -96,6 +99,25 @@ final class MealPlannerViewModel: ObservableObject {
     func createShoppingList() async {
         guard let plan else { return }
         let generated = generateShoppingList(plan: plan)
+        guard !generated.isEmpty else {
+            shoppingConfirmation = "All ingredients are already in your pantry."
+            return
+        }
+        isAddingToShopping = true
+        defer { isAddingToShopping = false }
+        do {
+            shoppingConfirmation = try await merge(generated)
+        } catch {
+            errorMessage = message(for: error)
+        }
+    }
+
+    /// Adds a single meal's missing ingredients to the shopping list, merging into
+    /// any items already present (same name + unit) instead of creating
+    /// duplicates, then surfaces a confirmation. Lets the user shop for one recipe
+    /// without adding the whole plan.
+    func addMealToShoppingList(_ meal: Meal) async {
+        let generated = generateShoppingListFromMeal(meal: meal, sourceMealPlanID: plan?.id)
         guard !generated.isEmpty else {
             shoppingConfirmation = "All ingredients are already in your pantry."
             return

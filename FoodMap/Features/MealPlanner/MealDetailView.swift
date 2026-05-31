@@ -9,6 +9,7 @@ struct MealDetailView: View {
 
     @Environment(\.dismiss) private var dismiss
     @State private var showingAlternatives = false
+    @State private var shoppingConfirmation: String?
 
     var body: some View {
         List {
@@ -48,6 +49,23 @@ struct MealDetailView: View {
                 }
             }
             .accessibilityIdentifier("mealDetail.ingredients")
+
+            if let viewModel {
+                Section {
+                    Button {
+                        Task {
+                            await viewModel.addMealToShoppingList(meal)
+                            shoppingConfirmation = viewModel.shoppingConfirmation
+                            viewModel.shoppingConfirmation = nil
+                        }
+                    } label: {
+                        Label("Add to shopping list", systemImage: "cart.badge.plus")
+                    }
+                    .disabled(viewModel.isAddingToShopping)
+                    .accessibilityIdentifier("mealDetail.addToShoppingButton")
+                    .accessibilityHint("Adds this recipe's ingredients not in your pantry to the shopping list")
+                }
+            }
 
             Section("Steps") {
                 if meal.steps.isEmpty {
@@ -92,6 +110,18 @@ struct MealDetailView: View {
                     dismiss()
                 }
             }
+        }
+        .alert(
+            "Shopping list",
+            isPresented: Binding(
+                get: { shoppingConfirmation != nil },
+                set: { if !$0 { shoppingConfirmation = nil } }
+            ),
+            presenting: shoppingConfirmation
+        ) { _ in
+            Button("OK", role: .cancel) {}
+        } message: { message in
+            Text(message)
         }
     }
 

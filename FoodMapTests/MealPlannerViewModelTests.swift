@@ -150,6 +150,38 @@ final class MealPlannerViewModelTests: XCTestCase {
         XCTAssertEqual(model.shoppingConfirmation, "All ingredients are already in your pantry.")
     }
 
+    func testAddMealToShoppingListAddsOnlyThatMealsMissingItems() async {
+        let mealA = Meal(name: "A", ingredients: [
+            MealIngredient(name: "Tomato", quantity: 2, unit: .piece, isAvailableInPantry: false)
+        ])
+        let mealB = Meal(name: "B", ingredients: [
+            MealIngredient(name: "Onion", quantity: 1, unit: .piece, isAvailableInPantry: false)
+        ])
+        let repo = InMemoryShoppingListRepository()
+        let model = makeModel(plan: MealPlan(title: "Plan", meals: [mealA, mealB]), shopping: repo)
+        await model.generate(products: [], profile: UserProfile())
+
+        await model.addMealToShoppingList(mealA)
+
+        XCTAssertEqual(repo.items.count, 1)
+        XCTAssertEqual(repo.items.first?.name, "Tomato")
+        XCTAssertEqual(model.shoppingConfirmation, "Added 1 item to your shopping list.")
+    }
+
+    func testAddMealToShoppingListWithNothingMissingConfirmsPantry() async {
+        let meal = Meal(name: "A", ingredients: [
+            MealIngredient(name: "Salt", quantity: 1, unit: .piece, isAvailableInPantry: true)
+        ])
+        let repo = InMemoryShoppingListRepository()
+        let model = makeModel(plan: MealPlan(title: "Plan", meals: [meal]), shopping: repo)
+        await model.generate(products: [], profile: UserProfile())
+
+        await model.addMealToShoppingList(meal)
+
+        XCTAssertTrue(repo.items.isEmpty)
+        XCTAssertEqual(model.shoppingConfirmation, "All ingredients are already in your pantry.")
+    }
+
     func testLoadAlternativesExposesPlannerSuggestions() async {
         let original = Meal(name: "Original", mealType: .dinner, dayIndex: 0)
         let altA = Meal(name: "Alt A", mealType: .dinner, dayIndex: 0)
