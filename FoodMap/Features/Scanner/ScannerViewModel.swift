@@ -15,6 +15,8 @@ final class ScannerViewModel: ObservableObject {
     @Published var unit: MeasurementUnit = .piece
     @Published var hasExpiry = false
     @Published var expiryDate = Date()
+    /// Optional user-captured product photo (JPEG), stored on-device only. Skippable.
+    @Published var capturedImageData: Data?
     @Published private(set) var state: State = .idle
 
     /// Drives the live-camera scanning sheet.
@@ -93,7 +95,8 @@ final class ScannerViewModel: ObservableObject {
                 storageLocation: storageLocation,
                 quantity: quantity,
                 unit: unit,
-                expiryDate: hasExpiry ? expiryDate : nil
+                expiryDate: hasExpiry ? expiryDate : nil,
+                imageData: capturedImageData
             )
             state = .found(name: result.name)
             pendingProduct = nil
@@ -110,6 +113,7 @@ final class ScannerViewModel: ObservableObject {
     func cancelConfirmation() {
         pendingProduct = nil
         state = .idle
+        capturedImageData = nil
         resetExpiryCapture()
     }
 
@@ -164,6 +168,7 @@ final class ScannerViewModel: ObservableObject {
         quantity = 1
         hasExpiry = false
         expiryDate = Date()
+        capturedImageData = nil
         resetExpiryCapture()
     }
 

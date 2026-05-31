@@ -66,6 +66,26 @@ final class ScannerViewModelTests: XCTestCase {
         XCTAssertEqual(stored.first?.name, "Milk")
     }
 
+    func testConfirmAddStoresCapturedPhoto() async throws {
+        let repository = InMemoryProductRepository()
+        let model = makeModel(
+            lookup: FakeProductLookup(product: sampleProduct()),
+            scanner: FakeBarcodeScanner(codes: ["123"]),
+            repository: repository
+        )
+
+        model.barcode = "123"
+        await model.lookupManual()
+        let photo = Data([0x10, 0x20, 0x30])
+        model.capturedImageData = photo
+
+        await model.confirmAdd()
+
+        let stored = try await repository.fetchAll()
+        XCTAssertEqual(stored.first?.imageData, photo)
+        XCTAssertNil(model.capturedImageData)
+    }
+
     func testLookupNotFoundFailsWithoutPendingProduct() async {
         let model = makeModel(
             lookup: FakeProductLookup(error: .productNotFound(barcode: "999")),

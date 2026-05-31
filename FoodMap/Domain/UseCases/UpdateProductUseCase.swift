@@ -10,6 +10,8 @@ public struct ProductEdits: Sendable, Equatable {
     public var quantity: Double
     public var unit: MeasurementUnit
     public var expiryDate: Date?
+    /// User-captured product photo (JPEG) or `nil` to leave unset / remove. On-device only.
+    public var imageData: Data?
 
     public init(
         name: String,
@@ -18,7 +20,8 @@ public struct ProductEdits: Sendable, Equatable {
         storageLocation: StorageLocation,
         quantity: Double,
         unit: MeasurementUnit,
-        expiryDate: Date? = nil
+        expiryDate: Date? = nil,
+        imageData: Data? = nil
     ) {
         self.name = name
         self.brand = brand
@@ -27,6 +30,7 @@ public struct ProductEdits: Sendable, Equatable {
         self.quantity = quantity
         self.unit = unit
         self.expiryDate = expiryDate
+        self.imageData = imageData
     }
 }
 
@@ -60,6 +64,7 @@ public struct UpdateProductUseCase: Sendable {
         product.quantity = edits.quantity
         product.unit = edits.unit
         product.expiryDate = edits.expiryDate
+        product.imageData = edits.imageData
 
         try await repository.update(product)
     }

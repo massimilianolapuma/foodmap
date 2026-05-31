@@ -32,12 +32,16 @@ public struct AddScannedProductToInventoryUseCase: Sendable {
         storageLocation: StorageLocation,
         quantity: Double,
         unit: MeasurementUnit,
-        expiryDate: Date?
+        expiryDate: Date?,
+        imageData: Data? = nil
     ) async throws {
         if let existing = try await repository.fetch(byBarcode: lookup.barcode),
            existing.storageLocation == storageLocation,
            existing.expiryDate == expiryDate {
             existing.quantity += quantity
+            if existing.imageData == nil, let imageData {
+                existing.imageData = imageData
+            }
             try await repository.update(existing)
             return
         }
@@ -62,6 +66,7 @@ public struct AddScannedProductToInventoryUseCase: Sendable {
             quantity: quantity,
             unit: unit,
             imageURLString: lookup.imageURLString,
+            imageData: imageData,
             expiryDate: expiryDate,
             source: lookup.source,
             allergens: lookup.allergens,

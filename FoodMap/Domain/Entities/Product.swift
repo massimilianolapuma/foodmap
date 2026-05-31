@@ -13,6 +13,8 @@ public final class Product {
     public var quantity: Double
     public var unitRaw: String
     public var imageURLString: String?
+    /// User-captured product photo, stored locally on-device as JPEG. Never uploaded to third parties.
+    @Attribute(.externalStorage) public var imageData: Data?
     public var expiryDate: Date?
     public var openedDate: Date?
     public var addedDate: Date
@@ -30,6 +32,7 @@ public final class Product {
         quantity: Double = 1,
         unit: MeasurementUnit = .piece,
         imageURLString: String? = nil,
+        imageData: Data? = nil,
         expiryDate: Date? = nil,
         openedDate: Date? = nil,
         addedDate: Date = .now,
@@ -46,6 +49,7 @@ public final class Product {
         self.quantity = quantity
         unitRaw = unit.rawValue
         self.imageURLString = imageURLString
+        self.imageData = imageData
         self.expiryDate = expiryDate
         self.openedDate = openedDate
         self.addedDate = addedDate
