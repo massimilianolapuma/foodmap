@@ -103,3 +103,76 @@
 "Household size: %lld" = "Household size: %lld";
 "Notifications are off" = "Notifications are off";
 "Enable notifications in Settings to receive expiry alerts." = "Enable notifications in Settings to receive expiry alerts.";
+
+/* MARK: Common actions (cont.) */
+"Done" = "Done";
+
+/* MARK: Product categories */
+"Fruits & Vegetables" = "Fruits & Vegetables";
+"Dairy" = "Dairy";
+"Meat & Fish" = "Meat & Fish";
+"Bakery" = "Bakery";
+"Pantry Staples" = "Pantry Staples";
+"Frozen" = "Frozen";
+"Beverages" = "Beverages";
+"Snacks" = "Snacks";
+"Condiments" = "Condiments";
+"Other" = "Other";
+"Produce" = "Produce";
+
+/* MARK: Storage locations */
+"Fridge" = "Fridge";
+"Freezer" = "Freezer";
+
+/* MARK: Measurement units */
+"unit.pc" = "pc";
+"unit.g" = "g";
+"unit.kg" = "kg";
+"unit.ml" = "ml";
+"unit.l" = "l";
+"unit.pack" = "pack";
+
+/* MARK: Diet types */
+"Standard" = "Standard";
+"Mediterranean" = "Mediterranean";
+"Low-sodium" = "Low-sodium";
+"Low-calorie" = "Low-calorie";
+"High-protein" = "High-protein";
+"Vegetarian" = "Vegetarian";
+"Vegan" = "Vegan";
+"Diabetic-friendly" = "Diabetic-friendly";
+"Gluten-free" = "Gluten-free";
+"Lactose-free" = "Lactose-free";
+
+/* MARK: Allergens */
+"Gluten" = "Gluten";
+"Crustaceans" = "Crustaceans";
+"Eggs" = "Eggs";
+"Fish" = "Fish";
+"Peanuts" = "Peanuts";
+"Soybeans" = "Soybeans";
+"Milk" = "Milk";
+"Nuts" = "Nuts";
+"Celery" = "Celery";
+"Mustard" = "Mustard";
+"Sesame" = "Sesame";
+"Sulphites" = "Sulphites";
+"Lupin" = "Lupin";
+"Molluscs" = "Molluscs";
+
+/* MARK: Meal types */
+"Breakfast" = "Breakfast";
+"Lunch" = "Lunch";
+"Dinner" = "Dinner";
+"Snack" = "Snack";
+
+/* MARK: Expiry status */
+"Use today" = "Use today";
+"Use soon" = "Use soon";
+"This week" = "This week";
+"Fresh" = "Fresh";
+"Expiry: expired" = "Expiry: expired";
+"Expiry: critical, use today" = "Expiry: critical, use today";
+"Expiry: use soon" = "Expiry: use soon";
+"Expiry: this week" = "Expiry: this week";
+"Expiry: fresh" = "Expiry: fresh";

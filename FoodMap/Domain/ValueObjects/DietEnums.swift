@@ -18,7 +18,22 @@ public enum Allergen: String, Codable, CaseIterable, Sendable {
     case molluscs
 
     public var displayName: String {
-        rawValue.capitalized
+        switch self {
+        case .gluten: String(localized: "Gluten")
+        case .crustaceans: String(localized: "Crustaceans")
+        case .eggs: String(localized: "Eggs")
+        case .fish: String(localized: "Fish")
+        case .peanuts: String(localized: "Peanuts")
+        case .soybeans: String(localized: "Soybeans")
+        case .milk: String(localized: "Milk")
+        case .nuts: String(localized: "Nuts")
+        case .celery: String(localized: "Celery")
+        case .mustard: String(localized: "Mustard")
+        case .sesame: String(localized: "Sesame")
+        case .sulphites: String(localized: "Sulphites")
+        case .lupin: String(localized: "Lupin")
+        case .molluscs: String(localized: "Molluscs")
+        }
     }
 }
 
@@ -37,16 +52,16 @@ public enum DietType: String, Codable, CaseIterable, Sendable {
 
     public var displayName: String {
         switch self {
-        case .standard: "Standard"
-        case .mediterranea: "Mediterranean"
-        case .iposodica: "Low-sodium"
-        case .ipocalorica: "Low-calorie"
-        case .iperproteica: "High-protein"
-        case .vegetariana: "Vegetarian"
-        case .vegana: "Vegan"
-        case .diabetica: "Diabetic-friendly"
-        case .glutenFree: "Gluten-free"
-        case .lactoseFree: "Lactose-free"
+        case .standard: String(localized: "Standard")
+        case .mediterranea: String(localized: "Mediterranean")
+        case .iposodica: String(localized: "Low-sodium")
+        case .ipocalorica: String(localized: "Low-calorie")
+        case .iperproteica: String(localized: "High-protein")
+        case .vegetariana: String(localized: "Vegetarian")
+        case .vegana: String(localized: "Vegan")
+        case .diabetica: String(localized: "Diabetic-friendly")
+        case .glutenFree: String(localized: "Gluten-free")
+        case .lactoseFree: String(localized: "Lactose-free")
         }
     }
 }
@@ -70,7 +85,12 @@ public enum MealType: String, Codable, CaseIterable, Sendable {
     case snack
 
     public var displayName: String {
-        rawValue.capitalized
+        switch self {
+        case .breakfast: String(localized: "Breakfast")
+        case .lunch: String(localized: "Lunch")
+        case .dinner: String(localized: "Dinner")
+        case .snack: String(localized: "Snack")
+        }
     }
 }
 
@@ -94,14 +114,14 @@ public enum GroceryCategory: String, Codable, CaseIterable, Sendable {
 
     public var displayName: String {
         switch self {
-        case .produce: "Produce"
-        case .dairy: "Dairy"
-        case .meatFish: "Meat & Fish"
-        case .bakery: "Bakery"
-        case .pantry: "Pantry"
-        case .frozen: "Frozen"
-        case .beverages: "Beverages"
-        case .other: "Other"
+        case .produce: String(localized: "Produce")
+        case .dairy: String(localized: "Dairy")
+        case .meatFish: String(localized: "Meat & Fish")
+        case .bakery: String(localized: "Bakery")
+        case .pantry: String(localized: "Pantry")
+        case .frozen: String(localized: "Frozen")
+        case .beverages: String(localized: "Beverages")
+        case .other: String(localized: "Other")
         }
     }
 }

@@ -10,11 +10,11 @@ public enum ExpiryStatus: String, Codable, CaseIterable, Sendable {
 
     public var displayName: String {
         switch self {
-        case .expired: "Expired"
-        case .critical: "Use today"
-        case .soon: "Use soon"
-        case .upcoming: "This week"
-        case .fresh: "Fresh"
+        case .expired: String(localized: "Expired")
+        case .critical: String(localized: "Use today")
+        case .soon: String(localized: "Use soon")
+        case .upcoming: String(localized: "This week")
+        case .fresh: String(localized: "Fresh")
         }
     }
 
@@ -23,11 +23,11 @@ public enum ExpiryStatus: String, Codable, CaseIterable, Sendable {
     /// sufficient for colorblind users). Pure presentation-agnostic string.
     public var accessibilityDescription: String {
         switch self {
-        case .expired: "Expiry: expired"
-        case .critical: "Expiry: critical, use today"
-        case .soon: "Expiry: use soon"
-        case .upcoming: "Expiry: this week"
-        case .fresh: "Expiry: fresh"
+        case .expired: String(localized: "Expiry: expired")
+        case .critical: String(localized: "Expiry: critical, use today")
+        case .soon: String(localized: "Expiry: use soon")
+        case .upcoming: String(localized: "Expiry: this week")
+        case .fresh: String(localized: "Expiry: fresh")
         }
     }
 

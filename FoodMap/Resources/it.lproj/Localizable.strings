@@ -103,3 +103,76 @@
 "Household size: %lld" = "Componenti del nucleo: %lld";
 "Notifications are off" = "Le notifiche sono disattivate";
 "Enable notifications in Settings to receive expiry alerts." = "Abilita le notifiche nelle Impostazioni per ricevere gli avvisi di scadenza.";
+
+/* MARK: Common actions (cont.) */
+"Done" = "Fine";
+
+/* MARK: Product categories */
+"Fruits & Vegetables" = "Frutta e verdura";
+"Dairy" = "Latticini";
+"Meat & Fish" = "Carne e pesce";
+"Bakery" = "Panetteria";
+"Pantry Staples" = "Prodotti da dispensa";
+"Frozen" = "Surgelati";
+"Beverages" = "Bevande";
+"Snacks" = "Snack";
+"Condiments" = "Condimenti";
+"Other" = "Altro";
+"Produce" = "Frutta e verdura";
+
+/* MARK: Storage locations */
+"Fridge" = "Frigorifero";
+"Freezer" = "Congelatore";
+
+/* MARK: Measurement units */
+"unit.pc" = "pz";
+"unit.g" = "g";
+"unit.kg" = "kg";
+"unit.ml" = "ml";
+"unit.l" = "l";
+"unit.pack" = "conf";
+
+/* MARK: Diet types */
+"Standard" = "Standard";
+"Mediterranean" = "Mediterranea";
+"Low-sodium" = "Iposodica";
+"Low-calorie" = "Ipocalorica";
+"High-protein" = "Iperproteica";
+"Vegetarian" = "Vegetariana";
+"Vegan" = "Vegana";
+"Diabetic-friendly" = "Per diabetici";
+"Gluten-free" = "Senza glutine";
+"Lactose-free" = "Senza lattosio";
+
+/* MARK: Allergens */
+"Gluten" = "Glutine";
+"Crustaceans" = "Crostacei";
+"Eggs" = "Uova";
+"Fish" = "Pesce";
+"Peanuts" = "Arachidi";
+"Soybeans" = "Soia";
+"Milk" = "Latte";
+"Nuts" = "Frutta a guscio";
+"Celery" = "Sedano";
+"Mustard" = "Senape";
+"Sesame" = "Sesamo";
+"Sulphites" = "Solfiti";
+"Lupin" = "Lupini";
+"Molluscs" = "Molluschi";
+
+/* MARK: Meal types */
+"Breakfast" = "Colazione";
+"Lunch" = "Pranzo";
+"Dinner" = "Cena";
+"Snack" = "Spuntino";
+
+/* MARK: Expiry status */
+"Use today" = "Da consumare oggi";
+"Use soon" = "Da consumare presto";
+"This week" = "Questa settimana";
+"Fresh" = "Fresco";
+"Expiry: expired" = "Scadenza: scaduto";
+"Expiry: critical, use today" = "Scadenza: critica, consumare oggi";
+"Expiry: use soon" = "Scadenza: consumare presto";
+"Expiry: this week" = "Scadenza: questa settimana";
+"Expiry: fresh" = "Scadenza: fresco";
