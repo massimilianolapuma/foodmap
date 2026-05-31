@@ -74,7 +74,7 @@ xcrun simctl boot 'iPhone 17' 2>/dev/null; open -a Simulator
 APP=$(xcodebuild -scheme FoodMap -destination 'platform=iOS Simulator,name=iPhone 17' \
   -showBuildSettings 2>/dev/null | awk -F' = ' '/ BUILT_PRODUCTS_DIR /{d=$2} / FULL_PRODUCT_NAME /{n=$2} END{print d"/"n}')
 xcrun simctl install booted "$APP"
-xcrun simctl launch booted com.foodmap.app
+xcrun simctl launch booted com.massimilianolapuma.foodmap
 ```
 
 > Camera-based features (barcode scanning, expiry OCR) and notifications work
