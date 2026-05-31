@@ -10,6 +10,7 @@ public final class AppContainer: ObservableObject {
     // Services
     public let productLookup: ProductLookupService
     public let mealPlanner: MealPlannerAIService
+    public let mealPlannerModelStore: MealPlannerModelStore
     public let notificationScheduler: NotificationScheduler
     public let expiryDateParser: ExpiryDateParser
     public let expiryOCR: ExpiryOCRService
@@ -58,10 +59,17 @@ public final class AppContainer: ObservableObject {
         // Under UI testing, use the deterministic rule-based planner directly so the app
         // never spins up the on-device model subsystem (which keeps the app from reaching
         // an idle state the automation can drive).
+        let modelStore = UserDefaultsMealPlannerModelStore()
+        mealPlannerModelStore = modelStore
         if Self.isUITesting {
             mealPlanner = RuleBasedMealPlanner()
         } else {
-            mealPlanner = FoundationModelsMealPlanner(fallback: RuleBasedMealPlanner())
+            let ruleBased = RuleBasedMealPlanner()
+            mealPlanner = RoutingMealPlanner(
+                store: modelStore,
+                ruleBased: ruleBased,
+                onDevice: FoundationModelsMealPlanner(fallback: ruleBased)
+            )
         }
         notificationScheduler = LocalNotificationScheduler()
         let parser = ExpiryDateParser()

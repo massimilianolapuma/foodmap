@@ -224,3 +224,13 @@
 "Expiry: use soon" = "Expiry: use soon";
 "Expiry: this week" = "Expiry: this week";
 "Expiry: fresh" = "Expiry: fresh";
+
+/* MARK: Meal planner model */
+"Meal planner" = "Meal planner";
+"Engine" = "Engine";
+"Automatic" = "Automatic";
+"Rule-based" = "Rule-based";
+"On-device AI" = "On-device AI";
+"Picks the best engine for this device." = "Picks the best engine for this device.";
+"Fast, deterministic, fully offline." = "Fast, deterministic, fully offline.";
+"Apple on-device model. Stays private." = "Apple on-device model. Stays private.";
