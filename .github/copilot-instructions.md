@@ -41,6 +41,13 @@ Strict layering. Dependencies point inward only.
   - Only the **iPhone 17 family** simulators are installed (17, 17 Pro, 17 Pro Max, 17e). Do NOT use iPhone 16.
   - During tests, CoreData `error: ... Failed to create file` log lines are recovery noise — recovery succeeds and tests pass.
 
+## Code coverage
+
+- **Target: ≥ 80% line coverage** over the logic layers (`Domain`, `Data`, `Core`, `App` composition, and Feature **view models**). This is the project goal — every change that adds testable logic should add tests for it.
+- SwiftUI **Views**, the **Design System**, and app entry points (`*View.swift`, `Core/DesignSystem/**`, `*App.swift`, `RootView.swift`) are excluded from the enforced metric — they are exercised by `FoodMapUITests`, which CI skips for speed/stability, so unit-test coverage there is not a meaningful signal.
+- CI enforces a **ratchet baseline** via `scripts/coverage_gate.py` (the `COVERAGE_MIN` env in `.github/workflows/ci.yml`). The baseline only ever goes **up** toward 80%; never lower it to make a build pass — add tests instead.
+- Measure locally: run the test gate, then `python3 scripts/coverage_gate.py build/FoodMap.xcresult` (requires the `xcresult` from a coverage-enabled `xcodebuild test` run).
+
 ## Tracking & context (read these first)
 
 - **`AGENTS.md`** — single entry point: the working loop, where things live, golden rules.

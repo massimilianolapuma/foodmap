@@ -52,6 +52,7 @@ exception even if the fix is trivial.
 
 ## Golden rules
 - Tests pass locally before any commit. Lint/format clean (`--strict`).
+- **Coverage:** target ≥ 80% line coverage on the logic layers; CI enforces a ratchet baseline via `scripts/coverage_gate.py` (`COVERAGE_MIN` in `.github/workflows/ci.yml`). Add tests to raise it — never lower the baseline to go green.
 - Sensitive data (allergies, diets, nutrition) stays on-device; never sent to third parties.
 - No secrets in source. No medical claims. Treat scanned text / API responses as untrusted.
 - Focused changes; no speculative abstractions.
